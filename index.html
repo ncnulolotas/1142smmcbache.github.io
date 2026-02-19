@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="dark"> <!-- Default to Dark Mode & Chinese -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMMC - Executive Course Hub</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        bcg: {
+                            green: '#177a46',
+                            dark: '#1e1e1e',
+                            light: '#f3f4f6',
+                            textDark: '#e5e7eb',
+                            textLight: '#111827'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Roboto', 'Noto Sans TC', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        body, header, footer, div, span, p, h1, h2, h3, button, nav, a, li, ul, label, section, main {
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .custom-checkbox:checked + div {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+
+        #sidebar { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        
+        /* Audio Wave Animation */
+        .playing-indicator span {
+            display: inline-block;
+            width: 3px;
+            height: 10px;
+            background-color: currentColor;
+            margin: 0 1px;
+            animation: wave 1s infinite ease-in-out;
+        }
+        .playing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .playing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes wave {
+            0%, 100% { height: 10px; }
+            50% { height: 16px; }
+        }
+
+        /* TBD Card Style */
+        .tbd-card {
+            background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(100,100,100,0.05) 10px, rgba(100,100,100,0.05) 20px);
+        }
+        .dark .tbd-card {
+            background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.03) 10px, rgba(255,255,255,0.03) 20px);
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen bg-white dark:bg-bcg-dark text-gray-900 dark:text-bcg-textDark font-sans transition-colors duration-300">
+
+    <!-- HEADER (Compact Height: h-14) -->
+    <header class="fixed w-full top-0 z-50 h-14 flex items-center justify-between px-3 md:px-6 bg-white dark:bg-black/95 shadow-md border-b border-gray-200 dark:border-gray-800 transition-all duration-300">
+        
+        <!-- Left: Menu & Brand -->
+        <div class="flex items-center h-full">
+            <!-- Hamburger -->
+            <button id="menu-btn" class="text-gray-700 dark:text-gray-300 hover:text-bcg-green focus:outline-none transition p-2 mr-2">
+                <i class="fas fa-bars text-lg"></i>
+            </button>
+            
+            <!-- Logo (Updated to SMMC) -->
+            <div onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="cursor-pointer mr-4 border-r border-gray-300 dark:border-gray-700 pr-4 h-8 flex items-center">
+                <span class="font-bold text-xl tracking-wider text-bcg-green leading-none">SMMC</span>
+            </div>
+
+            <!-- Course Names (Updated) -->
+            <div class="hidden lg:flex flex-col justify-center h-full py-1">
+                <div class="text-[10px] text-gray-600 dark:text-gray-400 font-medium leading-none mb-0.5">
+                    國際策略管理
+                </div>
+                <div class="text-[9px] text-gray-500 dark:text-gray-500 leading-tight">
+                    Strategic Management of Multinational Corporations
+                </div>
+            </div>
+        </div>
+
+        <!-- Center: Fixed Title -->
+        <h1 class="absolute left-1/2 transform -translate-x-1/2 text-lg md:text-xl font-bold text-gray-900 dark:text-gray-100 tracking-wide text-center uppercase whitespace-nowrap">
+            <span class="lang-en hidden">Course Notification</span>
+            <span class="lang-zh">課程通知</span>
+        </h1>
+
+        <!-- Right: Tools -->
+        <div class="flex items-center space-x-2"> 
+            <!-- Audio Toggle -->
+            <button id="audio-btn" class="w-7 h-7 rounded-full flex items-center justify-center text-gray-600 dark:text-gray-400 hover:text-bcg-green hover:bg-gray-100 dark:hover:bg-white/10 transition" title="Audio Guide">
+                <i class="fas fa-headphones text-sm"></i>
+            </button>
+
+            <!-- Theme Toggle -->
+            <button id="theme-toggle" class="w-7 h-7 rounded-full flex items-center justify-center text-gray-600 dark:text-gray-400 hover:text-yellow-500 hover:bg-gray-100 dark:hover:bg-white/10 transition">
+                <i class="fas fa-sun text-sm"></i>
+            </button>
+
+            <!-- Lang Toggle -->
+            <button id="lang-toggle" class="text-[10px] font-bold border border-gray-400 dark:border-gray-600 text-gray-800 dark:text-gray-300 rounded px-1.5 py-0.5 hover:border-bcg-green hover:text-bcg-green transition whitespace-nowrap bg-transparent">
+                ENG/繁中
+            </button>
+        </div>
+    </header>
+
+    <!-- AUDIO STATUS BAR -->
+    <div id="audio-status" class="hidden fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-black/90 text-white px-4 py-2 rounded-full text-xs items-center space-x-3 shadow-lg z-50 backdrop-blur border border-gray-700">
+        <div class="playing-indicator flex items-end h-3 text-bcg-green">
+            <span></span><span></span><span></span>
+        </div>
+        <span id="audio-text">語音導覽中</span>
+        <button onclick="stopAudio()" class="ml-2 text-gray-400 hover:text-white"><i class="fas fa-times"></i></button>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div id="overlay" class="fixed inset-0 bg-black/50 z-40 hidden backdrop-blur-sm transition-opacity"></div>
+    <div id="sidebar" class="fixed top-0 left-0 w-fit min-w-[200px] max-w-[85vw] h-full bg-white dark:bg-bcg-dark border-r border-gray-200 dark:border-gray-700 z-50 transform -translate-x-full shadow-2xl flex flex-col">
+        <!-- Sidebar Header (Click to Close - No X button) -->
+        <div onclick="toggleSidebar()" class="h-14 flex items-center justify-between px-6 border-b border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-black/20 cursor-pointer hover:bg-gray-100 dark:hover:bg-white/5 transition group">
+            <span class="font-bold text-lg text-gray-800 dark:text-white tracking-widest group-hover:text-bcg-green transition">MENU</span>
+            <i class="fas fa-chevron-left text-gray-400 group-hover:text-bcg-green transition text-sm"></i>
+        </div>
+
+        <nav class="flex-1 overflow-y-auto no-scrollbar py-4 space-y-1">
+            <a href="#" onclick="switchSection('overview')" id="nav-overview" class="block px-6 py-4 border-l-4 border-bcg-green bg-gray-100 dark:bg-white/5 text-bcg-green dark:text-white whitespace-nowrap">
+                <div class="flex items-center">
+                    <span class="w-6 text-center mr-3"><i class="fas fa-chart-pie"></i></span>
+                    <span class="lang-en hidden">Overview</span><span class="lang-zh">綜覽</span>
+                </div>
+            </a>
+            
+            <!-- Week 1 - Active -->
+            <a href="#" onclick="switchSection('w1w2')" id="nav-w1w2" class="block px-6 py-3 border-l-4 border-transparent text-gray-700 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5 transition whitespace-nowrap">
+                <div class="flex items-center">
+                    <span class="w-6 text-center mr-3"><i class="fas fa-flag"></i></span>
+                    <span>第一週</span>
+                    <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse ml-2"></span>
+                </div>
+            </a>
+
+            <!-- Week 2 - Inactive -->
+            <a href="#" class="block px-6 py-3 border-l-4 border-transparent text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap">
+                <div class="flex items-center">
+                    <span class="w-6 text-center mr-3"><i class="fas fa-flag"></i></span>
+                    <span>第二週</span>
+                </div>
+            </a>
+
+            <!-- Week 3 - Inactive -->
+            <a href="#" class="block px-6 py-3 border-l-4 border-transparent text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap">
+                <div class="flex items-center">
+                    <span class="w-6 text-center mr-3"><i class="fas fa-robot"></i></span>
+                    <span>第三週</span>
+                </div>
+            </a>
+
+            <!-- Week 4 - Inactive -->
+            <a href="#" class="block px-6 py-3 border-l-4 border-transparent text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap">
+                <div class="flex items-center">
+                    <span class="w-6 text-center mr-3"><i class="fas fa-robot"></i></span>
+                    <span>第四週</span>
+                </div>
+            </a>
+
+            <!-- Week 5 - Inactive -->
+            <a href="#" class="block px-6 py-3 border-l-4 border-transparent text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap">
+                <div class="flex items-center">
+                    <span class="w-6 text-center mr-3"><i class="fas fa-robot"></i></span>
+                    <span>第五週</span>
+                </div>
+            </a>
+
+            <!-- Future Weeks (6-16) -->
+            <a href="#" class="block px-6 py-3 text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap"><i class="fas fa-briefcase w-6 mr-3"></i> 第六週</a>
+            <a href="#" class="block px-6 py-3 text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap"><i class="fas fa-briefcase w-6 mr-3"></i> 第七週</a>
+            <a href="#" class="block px-6 py-3 text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap"><i class="fas fa-briefcase w-6 mr-3"></i> 第八週</a>
+            <a href="#" class="block px-6 py-3 text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap"><i class="fas fa-rocket w-6 mr-3"></i> 第九週</a>
+            <a href="#" class="block px-6 py-3 text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap"><i class="fas fa-compass w-6 mr-3"></i> 第十週</a>
+            <a href="#" class="block px-6 py-3 text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap"><i class="fas fa-compass w-6 mr-3"></i> 第十一週</a>
+            <a href="#" class="block px-6 py-3 text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap"><i class="fas fa-compass w-6 mr-3"></i> 第十二週</a>
+            <a href="#" class="block px-6 py-3 text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap"><i class="fas fa-tasks w-6 mr-3"></i> 第十三週</a>
+            <a href="#" class="block px-6 py-3 text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap"><i class="fas fa-tasks w-6 mr-3"></i> 第十四週</a>
+            <a href="#" class="block px-6 py-3 text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap"><i class="fas fa-tasks w-6 mr-3"></i> 第十五週</a>
+            <a href="#" class="block px-6 py-3 text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap"><i class="fas fa-rocket w-6 mr-3"></i> 第十六週</a>
+        </nav>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 pt-20 pb-20 px-4 max-w-4xl mx-auto w-full">
+        
+        <!-- SECTION: OVERVIEW -->
+        <div id="section-overview" class="animate-fade-in">
+            <div class="mb-6 border-b border-gray-200 dark:border-gray-700 pb-4">
+                <h2 class="text-2xl font-light text-bcg-green uppercase tracking-wider">
+                    <span class="lang-en hidden">Overview</span><span class="lang-zh">綜覽</span>
+                </h2>
+            </div>
+
+            <div class="mb-8 border-l-4 border-bcg-green pl-6">
+                <h3 class="text-xl font-medium text-gray-900 dark:text-white mb-2">
+                    <span class="lang-en hidden">Welcome to SMMC</span>
+                    <span class="lang-zh">歡迎來到 SMMC</span>
+                </h3>
+                <p class="text-gray-700 dark:text-gray-400 text-sm max-w-2xl leading-relaxed">
+                    <span class="lang-en hidden">Strategic thinking and project execution in the age of Artificial Intelligence. This course integrates PBL (Problem-Based Learning) and SDL (Self-Directed Learning).</span>
+                    <span class="lang-zh">人工智慧時代的策略思維與專案執行。本課程整合了問題導向學習 (PBL) 與自主學習 (SDL)。</span>
+                </p> 
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Syllabus Card -->
+                <div class="bg-white dark:bg-white/5 border border-gray-300 dark:border-white/10 rounded-lg p-6 hover:shadow-md dark:hover:bg-white/10 transition group">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-3 bg-bcg-green/10 text-bcg-green rounded-md">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <i class="fas fa-arrow-right text-gray-400 group-hover:text-bcg-green transition"></i>
+                    </div>
+                    <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                        <span class="lang-en hidden">Course Syllabus</span><span class="lang-zh">課程大綱</span>
+                    </h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-4 h-10">
+                        <span class="lang-en hidden">Comprehensive guide to grading, schedule, and expectations.</span>
+                        <span class="lang-zh">包含完整評分標準、課程進度表與課堂預期。</span>
+                    </p>
+                    <!-- Text Only representation -->
+                    <div class="mt-4 text-xs font-bold text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-white/5 px-3 py-2 rounded border border-gray-200 dark:border-white/5 inline-block">
+                        <span class="lang-en hidden"><i class="fas fa-info-circle mr-1"></i> Syllabus will be uploaded on Week 1</span>
+                        <span class="lang-zh"><i class="fas fa-info-circle mr-1"></i> 將在學期第一週更新</span>
+                    </div>
+                </div>
+
+                <!-- 1132 Showcase -->
+                <div class="bg-white dark:bg-white/5 border border-gray-300 dark:border-white/10 rounded-lg p-6 hover:shadow-md dark:hover:bg-white/10 transition group">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-3 bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-500 rounded-md">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <i class="fas fa-external-link-alt text-gray-400 group-hover:text-blue-500 transition"></i>
+                    </div>
+                    <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                        <span class="lang-en hidden">1132 Project Gallery</span><span class="lang-zh">1132 期末專案</span>
+                    </h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-4 h-10">
+                        <span class="lang-en hidden">Explore capstone projects from the previous semester.</span>
+                        <span class="lang-zh">探索上學期學長姐的優秀期末專案作品。</span>
+                    </p>
+                    <a href="https://youtube.com/playlist?list=PLV7QLse05AWSA1-qA3oid6pE8LQT92bRn&si=gIhJmm6qipqSVd7f" target="_blank" class="text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wide hover:underline">View Showcase</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION: W1 & W2 -->
+        <div id="section-w1w2" class="hidden animate-fade-in">
+            <div class="mb-6 border-b border-gray-200 dark:border-gray-700 pb-4">
+                <h2 class="text-2xl font-light text-bcg-green uppercase tracking-wider">
+                    <span class="lang-en hidden">W1 Orientation</span><span class="lang-zh">第一週 課程定位</span>
+                </h2>
+            </div>
+
+            <!-- Tabs -->
+            <div class="flex space-x-2 mb-6">
+                <button onclick="switchTab('w1-pre')" id="tab-w1-pre" class="px-4 py-2 text-sm font-medium border-b-2 border-bcg-green text-bcg-green transition">
+                    Pre W1 #1 (02/14)
+                </button>
+                <button onclick="switchTab('w1-post')" id="tab-w1-post" class="px-4 py-2 text-sm font-medium border-b-2 border-transparent text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition">
+                    Post W1 #2 (TBD)
+                </button>
+            </div>
+
+            <!-- Pre W1 Content -->
+            <div id="content-w1-pre">
+                <!-- UPDATED LOGISTICS -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+                    <div class="bg-white dark:bg-white/5 p-4 rounded border border-gray-300 dark:border-white/5 flex flex-col items-center justify-center text-center shadow-sm">
+                        <span class="text-[10px] uppercase text-gray-500 font-bold mb-1">上課時間</span>
+                        <span class="text-lg font-bold text-gray-900 dark:text-white">週一09:00</span>
+                        <span class="text-xs text-gray-600 dark:text-gray-500">請準時</span>
+                    </div>
+                    <div class="bg-white dark:bg-white/5 p-4 rounded border border-gray-300 dark:border-white/5 flex flex-col items-center justify-center text-center shadow-sm">
+                        <span class="text-[10px] uppercase text-gray-500 font-bold mb-1">上課教室</span>
+                        <span class="text-lg font-bold text-gray-900 dark:text-white">管228</span>
+                        <span class="text-xs text-gray-600 dark:text-gray-500">管理學院</span>
+                    </div>
+                    <div class="bg-white dark:bg-white/5 p-4 rounded border border-gray-300 dark:border-white/5 flex flex-col items-center justify-center text-center shadow-sm">
+                        <span class="text-[10px] uppercase text-gray-500 font-bold mb-1">評分</span>
+                        <span class="text-lg font-bold text-bcg-green">10%</span>
+                        <span class="text-xs text-gray-600 dark:text-gray-500">課程參與</span>
+                    </div>
+                </div>
+
+                <!-- Checklist -->
+                <div class="bg-white dark:bg-white/5 rounded-lg border border-gray-300 dark:border-gray-700 overflow-hidden shadow-md">
+                    <div class="px-6 py-4 border-b border-gray-300 dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-black/20">
+                        <h3 class="font-bold text-gray-800 dark:text-white text-sm uppercase tracking-wide flex items-center">
+                            <i class="fas fa-list-check mr-2 text-bcg-green"></i>
+                            <span class="lang-en hidden">Mission Checklist</span><span class="lang-zh">W1 課前任務清單</span>
+                        </h3>
+                        <span class="text-xs font-mono text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-900/20 px-2 py-1 rounded font-bold">Due: 2/22</span>
+                    </div>
+
+                    <div class="divide-y divide-gray-200 dark:divide-gray-700/50" id="checklist-container">
+                        <!-- Task 1: Form (Updated Link) -->
+                        <label class="flex items-start p-5 hover:bg-gray-50 dark:hover:bg-white/5 transition cursor-pointer">
+                            <input type="checkbox" class="custom-checkbox mt-1 mr-4 accent-bcg-green w-5 h-5">
+                            <div class="flex-1">
+                                <span class="block text-gray-900 dark:text-white font-bold mb-1">
+                                    <span class="lang-en hidden">1. Personal Info Form</span><span class="lang-zh">1. 填寫個人資料表單</span>
+                                </span>
+                                <span class="text-sm text-gray-700 dark:text-gray-400 mb-2 block">
+                                    <span class="lang-en hidden">Please complete before the first class.</span><span class="lang-zh">請務必於第一堂課前 (2/23) 完成。</span>
+                                </span>
+                                <a href="https://forms.gle/5vwizzWa535yrEcY9" target="_blank" class="inline-flex items-center text-sm text-blue-600 dark:text-blue-400 hover:underline bg-blue-50 dark:bg-blue-900/20 px-3 py-1 rounded-full border border-blue-200 dark:border-transparent">
+                                    <i class="fas fa-link mr-2"></i> Google Form Link
+                                </a>
+                            </div>
+                        </label>
+
+                        <!-- Task 2: Form Group (Replaced Syllabus) -->
+                        <label class="flex items-start p-5 hover:bg-gray-50 dark:hover:bg-white/5 transition cursor-pointer">
+                            <input type="checkbox" class="custom-checkbox mt-1 mr-4 accent-bcg-green w-5 h-5">
+                            <div class="flex-1">
+                                <span class="block text-gray-900 dark:text-white font-bold mb-1">
+                                    <span class="lang-en hidden">2. Form Group</span><span class="lang-zh">2. 事先找好組員</span>
+                                </span>
+                                <span class="text-sm text-gray-700 dark:text-gray-400 mb-2 block">
+                                    <span class="lang-en hidden">Report before W1 class. 6 people per group.</span>
+                                    <span class="lang-zh">事先找好組員並在第一週課前回報，6人即可成為一組。</span>
+                                </span>
+                                <div class="bg-gray-50 dark:bg-white/5 p-3 rounded text-xs text-gray-600 dark:text-gray-400 border-l-4 border-orange-400">
+                                    <i class="fas fa-info-circle mr-1 text-orange-500"></i>
+                                    <span class="lang-en hidden">Note: Choose teammates carefully. Groups must accept assigned members in W1.</span>
+                                    <span class="lang-zh">為了達到更好的合作體驗，請慎選你的組員；另外，組別有義務接受老師安排未分到組別的組員，第一週會協助未分組的組員加入各組。</span>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Visual Progress Bar (Thermometer Style) -->
+                    <div class="bg-gray-50 dark:bg-black/20 px-6 py-4 border-t border-gray-300 dark:border-gray-700">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="w-full max-w-xs h-4 bg-gray-300 dark:bg-gray-700 rounded-full overflow-hidden relative shadow-inner">
+                                <div id="progress-bar" class="h-full bg-gradient-to-r from-bcg-green to-green-400 transition-all duration-500 ease-out" style="width: 0%"></div>
+                            </div>
+                            <div class="mt-2 text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">
+                                <span class="lang-en hidden">Progress</span><span class="lang-zh">完成進度</span>: 
+                                <span id="checked-count" class="text-bcg-green text-sm">0</span> / <span id="total-count">2</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Post W1 Content (TBD) -->
+            <div id="content-w1-post" class="hidden"> 
+                <div class="tbd-card border border-dashed border-gray-300 dark:border-gray-600 rounded-lg h-48 flex flex-col items-center justify-center p-6 text-center">
+                    <i class="fas fa-hourglass-half text-3xl text-gray-400 dark:text-gray-600 mb-3"></i>
+                    <h3 class="text-lg font-bold text-gray-500 dark:text-gray-400">Post-Class Content</h3>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                        <span class="lang-en hidden">Will be available after W1 class</span><span class="lang-zh">第一週課後開放</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION: W3-5 (TBD) -->
+        <div id="section-w3w5" class="hidden animate-fade-in"> 
+            <div class="mb-6 border-b border-gray-200 dark:border-gray-700 pb-4">
+                <h2 class="text-2xl font-light text-bcg-green uppercase tracking-wider">
+                    <span class="lang-en hidden">W3-5 GenAI</span><span class="lang-zh">第三至五週 生成式 AI</span>
+                </h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="tbd-card border border-dashed border-gray-300 dark:border-gray-600 rounded-lg h-40 flex flex-col items-center justify-center">
+                    <span class="text-xl font-bold text-gray-400 dark:text-gray-600">Module 1</span>
+                    <span class="text-xs text-gray-500 dark:text-gray-400 mt-1">Week 3</span>
+                </div>
+                <div class="tbd-card border border-dashed border-gray-300 dark:border-gray-600 rounded-lg h-40 flex flex-col items-center justify-center">
+                    <span class="text-xl font-bold text-gray-400 dark:text-gray-600">Module 2</span>
+                    <span class="text-xs text-gray-500 dark:text-gray-400 mt-1">Week 4-5</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER (Compact Height: h-14) -->
+    <footer class="fixed bottom-0 w-full h-14 bg-white dark:bg-black/95 border-t border-gray-200 dark:border-gray-800 flex items-center justify-between px-3 md:px-6 z-50 text-xs transition-colors duration-300">
+        <!-- Left: Version & Instructor -->
+        <div class="flex flex-col space-y-0.5">
+            <span class="text-[9px] text-gray-500 dark:text-gray-500 font-mono">v2026.02.14 &copy; NCNU</span>
+            <div class="flex items-center space-x-1">
+                <span class="text-gray-600 dark:text-gray-500 uppercase font-bold text-[9px]">Inst.</span>
+                <a href="mailto:katiemhc@gmail.com" class="text-gray-800 dark:text-gray-300 hover:text-bcg-green dark:hover:text-white hover:underline transition font-medium">
+                    Prof. Katie Mei
+                </a>
+                <span class="text-gray-800 dark:text-gray-300 font-medium">&</span>
+                <a href="https://www.ibs.ncnu.edu.tw/index.php/faculty/tenured-professor/299-smlo" target="_blank" class="text-gray-800 dark:text-gray-300 hover:text-bcg-green dark:hover:text-white hover:underline transition font-medium">
+                    Prof. Shihmin Lo
+                </a>
+            </div>
+        </div>
+
+        <!-- Right: TAs Stacked Vertically -->
+        <div class="flex flex-col space-y-1 items-end">
+            <div class="flex items-center space-x-2">
+                <a href="mailto:s113212501@mail1.ncnu.edu.tw" class="flex items-center text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-white transition group">
+                    <span class="hidden md:inline mr-1.5 text-[10px] group-hover:underline">Jan Tai</span>
+                    <span class="lang-zh md:inline mr-1.5 text-[10px] group-hover:underline">戴子然</span>
+                    <span class="w-4 h-4 rounded-full bg-gray-200 dark:bg-gray-800 flex items-center justify-center text-[8px] text-gray-600 dark:text-gray-400 group-hover:bg-blue-500 group-hover:text-white">J</span>
+                </a>
+            </div>
+            <div class="flex items-center space-x-2">
+                <a href="mailto:s112251011@mail1.ncnu.edu.tw" class="flex items-center text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-white transition group">
+                    <span class="hidden md:inline mr-1.5 text-[10px] group-hover:underline">Jeremy Wang</span>
+                    <span class="lang-zh md:inline mr-1.5 text-[10px] group-hover:underline">王毓翰</span>
+                    <span class="w-4 h-4 rounded-full bg-gray-200 dark:bg-gray-800 flex items-center justify-center text-[8px] text-gray-600 dark:text-gray-400 group-hover:bg-green-500 group-hover:text-white">J</span>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // === STATE & CONFIG ===
+        let currentLang = 'zh'; // Default to Chinese
+        let isDarkMode = true;
+        let isAudioPlaying = false;
+        let speechUtterance = null;
+        
+        // === UI ELEMENTS ===
+        const langToggle = document.getElementById('lang-toggle');
+        const themeToggle = document.getElementById('theme-toggle');
+        const audioBtn = document.getElementById('audio-btn');
+        const audioStatus = document.getElementById('audio-status');
+        const checklistInputs = document.querySelectorAll('#checklist-container input[type="checkbox"]');
+        const checkedCountEl = document.getElementById('checked-count');
+        const totalCountEl = document.getElementById('total-count');
+        const progressBar = document.getElementById('progress-bar');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+
+        // === INIT ===
+        updateChecklistCounter();
+        
+        // --- THEME LOGIC FIX ---
+        // Force default to Dark Mode unless user explicitly set to light
+        if (localStorage.theme === 'light') {
+            isDarkMode = false;
+            document.documentElement.classList.remove('dark');
+        } else {
+            // Default to dark if 'dark' or if no preference (regardless of system pref)
+            isDarkMode = true;
+            document.documentElement.classList.add('dark');
+        }
+        updateThemeIcon();
+
+        // 2. Toggle Theme Function
+        themeToggle.addEventListener('click', () => {
+            isDarkMode = !isDarkMode;
+            
+            if (isDarkMode) {
+                document.documentElement.classList.add('dark');
+                localStorage.theme = 'dark';
+            } else {
+                document.documentElement.classList.remove('dark');
+                localStorage.theme = 'light';
+            }
+            
+            updateThemeIcon();
+        });
+
+        function updateThemeIcon() {
+            themeToggle.innerHTML = isDarkMode 
+                 ? '<i class="fas fa-sun text-sm"></i>' 
+                 : '<i class="fas fa-moon text-sm"></i>';
+        }
+
+        // 2. Language Toggle
+        langToggle.addEventListener('click', () => {
+            currentLang = currentLang === 'en' ? 'zh' : 'en';
+            
+            // Toggle Logic
+            document.querySelectorAll('.lang-en').forEach(el => el.classList.toggle('hidden', currentLang !== 'en'));
+            document.querySelectorAll('.lang-zh').forEach(el => el.classList.toggle('hidden', currentLang !== 'zh'));
+            
+            if(isAudioPlaying) stopAudio();
+        });
+
+        // 3. Audio Guide (Comprehensive Read from Top)
+        audioBtn.addEventListener('click', () => {
+            if(isAudioPlaying) {
+                stopAudio();
+            } else {
+                playAudio();
+            }
+        });
+
+        function playAudio() {
+            if (!('speechSynthesis' in window)) {
+                alert("Audio not supported");
+                return;
+            }
+
+            let textToRead = "";
+            const isOverview = !document.getElementById('section-overview').classList.contains('hidden');
+            const isW1W2 = !document.getElementById('section-w1w2').classList.contains('hidden');
+            const isW3W5 = !document.getElementById('section-w3w5').classList.contains('hidden');
+
+            // Header Info + Page Title (Read first for context)
+            if(currentLang === 'en') {
+                textToRead += "SMMC. Strategic Management of Multinational Corporations. Course Notification. ";
+            } else {
+                textToRead += "SMMC。國際策略管理。課程通知。";
+            }
+
+            // Content Logic based on active section
+            if(isOverview) {
+                if(currentLang === 'en') {
+                    // UPDATED AUDIO TEXT: Added specific mention of syllabus availability
+                    textToRead += "Overview Section. Welcome to SMMC. Strategic thinking and project execution in the age of Artificial Intelligence. Please note that the Course Syllabus will be uploaded on Week 1.";
+                } else {
+                    // UPDATED AUDIO TEXT: Added specific mention of syllabus availability in Chinese
+                    textToRead += "綜覽頁面。歡迎來到 SMMC。這是人工智慧時代的策略思維與專案執行課程。請注意，課程大綱將於第一週上傳。";
+                }
+            } else if(isW1W2) {
+                // Determine active tab within W1W2
+                const isPre = !document.getElementById('content-w1-pre').classList.contains('hidden');
+                if(isPre) {
+                    if(currentLang === 'en') { 
+                        // Updated to Mon 09:00, Room 228, 10%, and Checklist 
+                        textToRead += "Week 1 Orientation Section. Pre-Week 1 Content. Logistics: Monday 9:00 AM at College of Management Room 228. Participation is 10 percent. Mission Checklist: Complete Personal Info Form and Form your group before Week 1 class.";
+                    } else {
+                        // Updated to Mon 09:00, Room 228, 10%, and Checklist
+                        textToRead += "第一週課程定位頁面。第一週課前內容。行政資訊：週一早上九點，管理學院 228 教室。出席佔分百分之十。本週任務清單包括：填寫個人資料表，以及在第一週課前找好組員。";
+                    }
+                } else {
+                    if(currentLang === 'en') {
+                        textToRead += "Week 1 Orientation Section. Post-Week 1 Content. This content will be available after the first class.";
+                    } else {
+                        textToRead += "第一週課程定位頁面。第一週課後內容。此內容將於第一週課後開放。";
+                    }
+                }
+            } else if(isW3W5) {
+                if(currentLang === 'en') {
+                    textToRead += "Week 3 to 5, Generative AI Section. Modules coming soon.";
+                } else { 
+                    textToRead += "第三至五週，生成式 AI 頁面。模組即將發布。";
+                }
+            }
+
+            speechUtterance = new SpeechSynthesisUtterance(textToRead);
+            
+            // Voice Selection (Try best match)
+            const voices = window.speechSynthesis.getVoices();
+            if(currentLang === 'en') { 
+                // Try UK Male -> UK -> Any EN
+                const voice = voices.find(v => v.lang === 'en-GB' && v.name.includes('Male'))
+                            || voices.find(v => v.lang === 'en-GB')
+                            || voices.find(v => v.lang.startsWith('en'));
+                if(voice) speechUtterance.voice = voice;
+            } else {
+                // Try TW -> CN
+                const voice = voices.find(v => v.lang === 'zh-TW') || voices.find(v => v.lang === 'zh-CN');
+                if(voice) speechUtterance.voice = voice;
+            }
+
+            speechUtterance.onstart = () => {
+                isAudioPlaying = true;
+                audioBtn.classList.add('text-bcg-green', 'bg-gray-100', 'dark:bg-white/10');
+                audioStatus.classList.remove('hidden');
+                audioStatus.classList.add('flex');
+                document.getElementById('audio-text').textContent = currentLang === 'en' ? "Audio Guide Active" : "語音導覽中";
+            };
+
+            speechUtterance.onend = () => {
+                stopAudio();
+            };
+
+            window.speechSynthesis.speak(speechUtterance);
+        }
+
+        function stopAudio() {
+            window.speechSynthesis.cancel();
+            isAudioPlaying = false;
+            audioBtn.classList.remove('text-bcg-green', 'bg-gray-100', 'dark:bg-white/10');
+            audioStatus.classList.add('hidden');
+            audioStatus.classList.remove('flex');
+        }
+
+        // 4. Navigation & Tabs
+        window.switchSection = function(sectionId) {
+            ['overview', 'w1w2', 'w3w5'].forEach(id => document.getElementById('section-' + id).classList.add('hidden'));
+            document.getElementById('section-' + sectionId).classList.remove('hidden');
+            
+            document.querySelectorAll('#sidebar a').forEach(el => {
+                el.classList.remove('border-bcg-green', 'bg-gray-100', 'dark:bg-white/5', 'text-bcg-green', 'dark:text-white');
+                el.classList.add('border-transparent', 'text-gray-700', 'dark:text-gray-400');
+            });
+            
+            const activeNav = document.getElementById('nav-' + sectionId);
+            if(activeNav) {
+                activeNav.classList.remove('border-transparent', 'text-gray-700', 'dark:text-gray-400');
+                activeNav.classList.add('border-bcg-green', 'bg-gray-100', 'dark:bg-white/5', 'text-bcg-green', 'dark:text-white');
+            }
+
+            window.scrollTo(0,0);
+            
+            // Auto close sidebar on mobile AND desktop for smoother navigation as requested
+            const sidebar = document.getElementById('sidebar');
+            if (!sidebar.classList.contains('-translate-x-full')) {
+                toggleSidebar();
+            }
+        }
+
+        window.switchTab = function(tabId) {
+            document.getElementById('tab-w1-pre').classList.replace('border-bcg-green', 'border-transparent');
+            document.getElementById('tab-w1-pre').classList.replace('text-bcg-green', 'text-gray-500');
+            document.getElementById('tab-w1-post').classList.replace('border-bcg-green', 'border-transparent');
+            document.getElementById('tab-w1-post').classList.replace('text-bcg-green', 'text-gray-500');
+            
+            const activeTab = document.getElementById('tab-' + tabId);
+            activeTab.classList.replace('border-transparent', 'border-bcg-green');
+            activeTab.classList.replace('text-gray-500', 'text-bcg-green');
+            
+            if(tabId === 'w1-pre') {
+                document.getElementById('content-w1-pre').classList.remove('hidden');
+                document.getElementById('content-w1-post').classList.add('hidden');
+            } else {
+                document.getElementById('content-w1-pre').classList.add('hidden');
+                document.getElementById('content-w1-post').classList.remove('hidden');
+            }
+        }
+
+        // 5. Sidebar
+        function toggleSidebar() {
+            const isClosed = sidebar.classList.contains('-translate-x-full');
+            if (isClosed) {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+            }
+        }
+        document.getElementById('menu-btn').addEventListener('click', toggleSidebar);
+        document.getElementById('overlay').addEventListener('click', toggleSidebar); // Overlay closes sidebar
+
+        // 6. Checklist & Thermometer Logic
+        checklistInputs.forEach(input => input.addEventListener('change', updateChecklistCounter));
+        
+        function updateChecklistCounter() {
+            const checked = document.querySelectorAll('#checklist-container input[type="checkbox"]:checked').length;
+            const total = checklistInputs.length;
+            
+            // Update Text
+            checkedCountEl.textContent = checked;
+            totalCountEl.textContent = total;
+
+            // Update Thermometer Bar
+            const percentage = Math.round((checked / total) * 100);
+            progressBar.style.width = percentage + '%';
+        }
+
+        // Init Voice Load
+        window.speechSynthesis.getVoices();
+
+    </script>
+</body>
+</html>
