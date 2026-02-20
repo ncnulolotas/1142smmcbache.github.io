@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-TW" class="dark"> <!-- Default to Dark Mode & Chinese -->
 <head>
@@ -102,8 +103,8 @@
         </div>
 
         <!-- Center: Fixed Title -->
-        <h1 class="absolute left-1/2 transform -translate-x-1/2 text-lg md:text-xl font-bold text-gray-900 dark:text-gray-100 tracking-wide text-center uppercase whitespace-nowrap">
-            <span class="lang-en hidden">Course Notification</span>
+        <h1 class="absolute left-1/2 transform -translate-x-1/2 text-[10px] md:text-xl font-bold text-gray-900 dark:text-gray-100 tracking-wide text-center uppercase whitespace-normal sm:whitespace-nowrap leading-tight">
+            <span class="lang-en hidden">Course <br class="sm:hidden">Notification</span>
             <span class="lang-zh">課程通知</span>
         </h1>
 
@@ -145,7 +146,7 @@
         </div>
 
         <nav class="flex-1 overflow-y-auto no-scrollbar py-4 space-y-1">
-            <a href="#" onclick="switchSection('overview')" id="nav-overview" class="block px-6 py-4 border-l-4 border-bcg-green bg-gray-100 dark:bg-white/5 text-bcg-green dark:text-white whitespace-nowrap">
+            <a href="javascript:void(0)" onclick="switchSection('overview')" id="nav-overview" class="block px-6 py-4 border-l-4 border-bcg-green bg-gray-100 dark:bg-white/5 text-bcg-green dark:text-white whitespace-nowrap">
                 <div class="flex items-center">
                     <span class="w-6 text-center mr-3"><i class="fas fa-chart-pie"></i></span>
                     <span class="lang-en hidden">Overview</span><span class="lang-zh">綜覽</span>
@@ -153,7 +154,7 @@
             </a>
             
             <!-- Week 1 - Active -->
-            <a href="#" onclick="switchSection('w1w2')" id="nav-w1w2" class="block px-6 py-3 border-l-4 border-transparent text-gray-700 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5 transition whitespace-nowrap">
+            <a href="javascript:void(0)" onclick="switchSection('w1w2')" id="nav-w1w2" class="block px-6 py-3 border-l-4 border-transparent text-gray-700 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5 transition whitespace-nowrap">
                 <div class="flex items-center">
                     <span class="w-6 text-center mr-3"><i class="fas fa-flag"></i></span>
                     <span>第一週</span>
@@ -162,7 +163,7 @@
             </a>
 
             <!-- Week 2 - Inactive -->
-            <a href="#" class="block px-6 py-3 border-l-4 border-transparent text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap">
+            <a href="javascript:void(0)" class="block px-6 py-3 border-l-4 border-transparent text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap">
                 <div class="flex items-center">
                     <span class="w-6 text-center mr-3"><i class="fas fa-flag"></i></span>
                     <span>第二週</span>
@@ -170,7 +171,7 @@
             </a>
 
             <!-- Week 3 - Inactive -->
-            <a href="#" class="block px-6 py-3 border-l-4 border-transparent text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap">
+            <a href="javascript:void(0)" class="block px-6 py-3 border-l-4 border-transparent text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap">
                 <div class="flex items-center">
                     <span class="w-6 text-center mr-3"><i class="fas fa-robot"></i></span>
                     <span>第三週</span>
@@ -246,10 +247,13 @@
                         <span class="lang-en hidden">Comprehensive guide to grading, schedule, and expectations.</span>
                         <span class="lang-zh">包含完整評分標準、課程進度表與課堂預期。</span>
                     </p>
-                    <!-- Text Only representation -->
-                    <div class="mt-4 text-xs font-bold text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-white/5 px-3 py-2 rounded border border-gray-200 dark:border-white/5 inline-block">
-                        <span class="lang-en hidden"><i class="fas fa-info-circle mr-1"></i> Syllabus will be uploaded on Week 1</span>
-                        <span class="lang-zh"><i class="fas fa-info-circle mr-1"></i> 將在學期第一週更新</span>
+                    <div class="flex flex-wrap gap-2">
+                        <a href="https://drive.google.com/file/d/1d9F6zv4x09E6c1ZNnyvGL3BCPcroWaB0/view?usp=sharing" target="_blank" class="inline-block text-xs font-bold text-bcg-green uppercase tracking-wide border border-bcg-green px-3 py-1 rounded hover:bg-bcg-green hover:text-white transition">
+                            <span class="lang-en hidden">Syllabus</span><span class="lang-zh">課綱</span>
+                        </a>
+                        <a href="https://drive.google.com/file/d/1S5lUWJm6gMxraF5ATCVr8FUsp2GV1uTC/view?usp=sharing" target="_blank" class="inline-block text-xs font-bold text-bcg-green uppercase tracking-wide border border-bcg-green px-3 py-1 rounded hover:bg-bcg-green hover:text-white transition">
+                            <span class="lang-en hidden">TP List</span><span class="lang-zh">TP 公司清單</span>
+                        </a>
                     </div>
                 </div>
 
@@ -268,7 +272,17 @@
                         <span class="lang-en hidden">Explore capstone projects from the previous semester.</span>
                         <span class="lang-zh">探索上學期學長姐的優秀期末專案作品。</span>
                     </p>
-                    <a href="https://youtube.com/playlist?list=PLV7QLse05AWSA1-qA3oid6pE8LQT92bRn&si=gIhJmm6qipqSVd7f" target="_blank" class="text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wide hover:underline">View Showcase</a>
+                    <div class="flex flex-wrap gap-2">
+                        <a href="https://jeremywang0121.github.io/CDPS_First-Place-in-114_webpage-competition/" target="_blank" class="inline-block text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wide border border-blue-600 dark:border-blue-400 px-3 py-1 rounded hover:bg-blue-600 hover:text-white dark:hover:bg-blue-500 transition">
+                            <span class="lang-en hidden">Example 1</span><span class="lang-zh">範例1</span>
+                        </a>
+                        <a href="https://novoicefire.github.io/NCNU_1141-Co-opetitive-Dynamics-and-Platform-Strategy_G2_Nvidia/" target="_blank" class="inline-block text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wide border border-blue-600 dark:border-blue-400 px-3 py-1 rounded hover:bg-blue-600 hover:text-white dark:hover:bg-blue-500 transition">
+                            <span class="lang-en hidden">Example 2</span><span class="lang-zh">範例2</span>
+                        </a>
+                        <a href="https://gemini.google.com/share/d26e44cefd1d" target="_blank" class="inline-block text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wide border border-blue-600 dark:border-blue-400 px-3 py-1 rounded hover:bg-blue-600 hover:text-white dark:hover:bg-blue-500 transition">
+                            <span class="lang-en hidden">Example 3</span><span class="lang-zh">範例3</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -347,8 +361,8 @@
                                     <span class="lang-en hidden">2. Form Group</span><span class="lang-zh">2. 事先找好組員</span>
                                 </span>
                                 <span class="text-sm text-gray-700 dark:text-gray-400 mb-2 block">
-                                    <span class="lang-en hidden">Report before W1 class. 6 people per group.</span>
-                                    <span class="lang-zh">事先找好組員並在第一週課前回報，6人即可成為一組。</span>
+                                    <span class="lang-en hidden">Groups registered in W1 class. 6 people per group.</span>
+                                    <span class="lang-zh">第一週課堂會登記小組名單，6人即可成為一組。</span>
                                 </span>
                                 <div class="bg-gray-50 dark:bg-white/5 p-3 rounded text-xs text-gray-600 dark:text-gray-400 border-l-4 border-orange-400">
                                     <i class="fas fa-info-circle mr-1 text-orange-500"></i>
