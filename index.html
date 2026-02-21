@@ -1,705 +1,734 @@
 <!DOCTYPE html>
-<html lang="zh-TW" class="dark"> <!-- Default to Dark Mode & Chinese -->
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMMC - Executive Course Hub</title>
-    <!-- Tailwind CSS -->
+    <title>Global Boundary Spanner | SMMC-EMI</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
-    
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        bcg: {
-                            green: '#177a46',
-                            dark: '#1e1e1e',
-                            light: '#f3f4f6',
-                            textDark: '#e5e7eb',
-                            textLight: '#111827'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Roboto', 'Noto Sans TC', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-    
+    <!-- React & Babel CDN -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            margin: 0;
+            background-color: #050507;
+            color: white;
+            scroll-behavior: smooth;
+        }
+
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        body, header, footer, div, span, p, h1, h2, h3, button, nav, a, li, ul, label, section, main {
-            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-        }
 
-        .custom-checkbox:checked + div {
-            text-decoration: line-through;
-            opacity: 0.6;
-        }
-
-        #sidebar { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        
-        /* Audio Wave Animation */
-        .playing-indicator span {
+        /* 標題不裁切修復 */
+        .text-gradient {
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
             display: inline-block;
-            width: 3px;
-            height: 10px;
-            background-color: currentColor;
-            margin: 0 1px;
-            animation: wave 1s infinite ease-in-out;
-        }
-        .playing-indicator span:nth-child(2) { animation-delay: 0.2s; }
-        .playing-indicator span:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes wave {
-            0%, 100% { height: 10px; }
-            50% { height: 16px; }
+            padding-bottom: 0.1em; 
+            line-height: 1.2;
+            overflow: visible !important;
         }
 
-        /* TBD Card Style */
-        .tbd-card {
-            background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(100,100,100,0.05) 10px, rgba(100,100,100,0.05) 20px);
+        /* 區塊活躍特效 */
+        .active-section {
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            border-left: 0px solid transparent;
         }
-        .dark .tbd-card {
-            background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.03) 10px, rgba(255,255,255,0.03) 20px);
+        .active-section:hover {
+            border-left: 6px solid #f97316; 
+            padding-left: 2rem;
+            transform: translateX(10px);
+            background: rgba(255, 255, 255, 0.05);
         }
+
+        .hover-card {
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .hover-card:hover {
+            transform: translateY(-12px) translateX(8px) scale(1.03);
+            box-shadow: 0 40px 80px -20px rgba(0,0,0,0.8);
+        }
+
+        .glass-nav {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        @keyframes menuIn { from { transform: translateY(-15px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .menu-animate { animation: menuIn 0.3s ease-out forwards; }
+        
+        @keyframes subMenuIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+        .submenu-animate { animation: subMenuIn 0.3s ease-out forwards; }
+
+        @keyframes modalIn { from { transform: scale(0.9) translateY(20px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
+        .modal-animate { animation: modalIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-in { animation: slideUp 0.8s ease-out forwards; }
     </style>
 </head>
-<body class="flex flex-col min-h-screen bg-white dark:bg-bcg-dark text-gray-900 dark:text-bcg-textDark font-sans transition-colors duration-300">
+<body>
+    <div id="root"></div>
 
-    <!-- HEADER (Compact Height: h-14) -->
-    <header class="fixed w-full top-0 z-50 h-14 flex items-center justify-between px-3 md:px-6 bg-white dark:bg-black/95 shadow-md border-b border-gray-200 dark:border-gray-800 transition-all duration-300">
-        
-        <!-- Left: Menu & Brand -->
-        <div class="flex items-center h-full">
-            <!-- Hamburger -->
-            <button id="menu-btn" class="text-gray-700 dark:text-gray-300 hover:text-bcg-green focus:outline-none transition p-2 mr-2">
-                <i class="fas fa-bars text-lg"></i>
-            </button>
-            
-            <!-- Logo (Updated to SMMC) -->
-            <div onclick="switchSection('overview'); window.scrollTo({top: 0, behavior: 'smooth'})" class="cursor-pointer mr-4 border-r border-gray-300 dark:border-gray-700 pr-4 h-8 flex items-center">
-                <span class="font-bold text-xl tracking-wider text-bcg-green leading-none">SMMC</span>
-            </div>
+    <script type="text/babel">
+        const { useState, useEffect } = React;
 
-            <!-- Course Names (Updated) -->
-            <div class="hidden lg:flex flex-col justify-center h-full py-1">
-                <div class="text-[10px] text-gray-600 dark:text-gray-400 font-medium leading-none mb-0.5">
-                    國際策略管理
-                </div>
-                <div class="text-[9px] text-gray-500 dark:text-gray-500 leading-tight">
-                    Strategic Management of Multinational Corporations
-                </div>
-            </div>
-        </div>
+        // ==========================================
+        // 1. 全域資料定義 (確保在 App 渲染前定義)
+        // ==========================================
 
-        <!-- Center: Fixed Title -->
-        <h1 class="absolute left-1/2 transform -translate-x-1/2 text-[10px] md:text-xl font-bold text-gray-900 dark:text-gray-100 tracking-wide text-center uppercase whitespace-normal sm:whitespace-nowrap leading-tight">
-            <span class="lang-en hidden">Course <br class="sm:hidden">Notification</span>
-            <span class="lang-zh">課程通知</span>
-        </h1>
+        const Icons = {
+            Globe: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1 4-10z"/></svg>,
+            Earth: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21.54 15H17a2 2 0 0 0-2 2v4.54"/><path d="M7 3.34V5a3 3 0 0 0 3 3v0a2 2 0 0 1 2 2v0c0 1.1.9 2 2 2v0a2 2 0 0 0 2-2v0c0-1.1.9-2 2-2h3.17"/><path d="M11 21.95V18a2 2 0 0 0-2-2v0a2 2 0 0 1-2-2v-1a2 2 0 0 0-2-2H2.05"/><circle cx="12" cy="12" r="10"/></svg>,
+            Sun: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>,
+            Moon: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>,
+            Languages: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg>,
+            ChevronRight: ({size=20, className=""}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="9 18 15 12 9 6"/></svg>,
+            ChevronDown: ({size=20, className=""}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="6 9 12 15 18 9"/></svg>,
+            Book: () => <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>,
+            Help: () => <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
+            ArrowLeft: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
+            Menu: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>,
+            X: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+            Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+            Users: () => <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+            Play: ({size=24, className=""}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="white" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polygon points="5 3 19 12 5 21 5 3"/></svg>,
+            External: ({size=12}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
+            Target: ({size=40}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+            Graduation: ({size=40}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2.2 3 6 3s6-1 6-3v-5"/></svg>,
+            Sparkles: ({size=40}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 3 1.912 5.813a2 2 0 0 0 1.275 1.275L21 12l-5.813 1.912a2 2 0 0 0-1.275 1.275L12 21l-1.912-5.813a2 2 0 0 0-1.275-1.275L3 12l5.813-1.912a2 2 0 0 0 1.275-1.275L12 3Z"/></svg>,
+            MousePointer: ({className=""}) => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m3 3 7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/><path d="m13 13 6 6"/></svg>,
+            Youtube: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M21.582 6.186a2.66 2.66 0 0 0-1.874-1.885C17.962 3.84 12 3.84 12 3.84s-5.962 0-7.708.461a2.66 2.66 0 0 0-1.874 1.885C1.962 7.94 1.962 12 1.962 12s0 4.06.456 5.814a2.66 2.66 0 0 0 1.874 1.885c1.746.461 7.708.461 7.708.461s5.962 0 7.708-.461a2.66 2.66 0 0 0 1.874-1.885C22.038 16.06 22.038 12 22.038 12s0-4.06-.456-5.814zM9.962 15.48V8.52l6.538 3.48-6.538 3.48z"/></svg>,
+            Mail: ({size=20, className=""}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        };
 
-        <!-- Right: Tools -->
-        <div class="flex items-center space-x-2"> 
-            <!-- Audio Toggle -->
-            <button id="audio-btn" class="w-7 h-7 rounded-full flex items-center justify-center text-gray-600 dark:text-gray-400 hover:text-bcg-green hover:bg-gray-100 dark:hover:bg-white/10 transition" title="Audio Guide">
-                <i class="fas fa-headphones text-sm"></i>
-            </button>
+        const allLectures = [
+            { id: 1, part: 1, title_en: "LN1: The Basics of Strategy & Corporate Governance", title_zh: "LN1: 策略基礎與公司治理", quote_en: "Foundations & Governance.", quote_zh: "策略基礎與公司治理。", tag_en: "STRATEGY TRIPOD", tag_zh: "策略金三角", color: "from-blue-600 to-indigo-500" },
+            { id: 2, part: 1, title_en: "LN2: VPC Framework & Business Model", title_zh: "LN2: VPC 架構與商業模式", quote_en: "Creating and appropriating value.", quote_zh: "商業模式的價值創造與獲取。", tag_en: "VPC FRAMEWORK", tag_zh: "VPC 架構", color: "from-cyan-600 to-blue-500" },
+            { id: 3, part: 1, title_en: "LN3: The General Environment & Industry Analysis", title_zh: "LN3: 總體環境與產業分析", quote_en: "Decoding industry profitability.", quote_zh: "解碼產業結構與獲利潛力。", tag_en: "PESTEL & FIVE FORCES", tag_zh: "PESTEL 與五力分析", color: "from-indigo-600 to-purple-500" },
+            { id: 4, part: 1, title_en: "LN4: Competitive Analysis & Co-opetitive Dynamics", title_zh: "LN4: 競爭分析與競合動態", quote_en: "Business is not a zero-sum game.", quote_zh: "商業並非零和遊戲。", tag_en: "CO-OPETITION & AMC", tag_zh: "競合與 AMC 模式", color: "from-blue-500 to-teal-400" },
+            { id: 5, part: 1, title_en: "LN5: Internal Appraisal: Value Chain Analysis & RBV", title_zh: "LN5: 內部評估：價值鏈與資源觀點", quote_en: "Securing advantage through resources.", quote_zh: "透過異質資源極大化競爭優勢。", tag_en: "RESOURCE-BASED VIEW", tag_zh: "資源基礎觀點 (RBV)", color: "from-emerald-600 to-cyan-500" },
+            { id: 6, part: 1, title_en: "LN6: Internal Appraisal: Intellectual Capital & Dynamic Capabilities", title_zh: "LN6: 智慧資本與動態能力", quote_en: "Adapting to a changing landscape.", quote_zh: "適應快速變動的動態競爭環境。", tag_en: "DYNAMIC CAPABILITIES", tag_zh: "動態能力與核心能耐", color: "from-purple-600 to-fuchsia-500" },
+            { id: 7, part: 1, title_en: "LN7: Competitive Advantages: Differentiation, Cost Leadership & Focus", title_zh: "LN7: 事業策略與競爭優勢", quote_en: "Positioning for competitive advantage.", quote_zh: "定位你的專屬競爭優勢。", tag_en: "GENERIC STRATEGIES", tag_zh: "一般性策略", color: "from-blue-700 to-indigo-600" },
+            { id: 8, part: 1, title_en: "LN8: Management of Technology, Innovation and Entrepreneurship", title_zh: "LN8: 科技管理與創新創業", quote_en: "Riding the wave of tech change.", quote_zh: "駕馭技術變革的創新浪潮。", tag_en: "STRATEGIC INNOVATION", tag_zh: "科技管理與策略創新", color: "from-orange-600 to-red-500" },
+            { id: 9, part: 2, title_en: "LN9: Corporate Strategy: Vertical Integration", title_zh: "LN9: 集團策略：垂直整合", quote_en: "Defining the vertical scope.", quote_zh: "定義企業價值鏈的垂直邊界。", tag_en: "VERTICAL INTEGRATION", tag_zh: "垂直整合與交易成本", color: "from-rose-600 to-pink-500" },
+            { id: 10, part: 2, title_en: "LN10: Corporate Strategy: Horizontal Diversification", title_zh: "LN10: 集團策略：水平多角化", quote_en: "Expanding across product markets.", quote_zh: "跨越產品市場的集團版圖擴張。", tag_en: "HORIZONTAL DIVERSIFICATION", tag_zh: "水平多角化與範疇經濟", color: "from-pink-600 to-orange-500" },
+            { id: 11, part: 2, title_en: "LN11: Corporate Strategy: Geographical Expansion", title_zh: "LN11: 集團策略：地理擴張", quote_en: "Navigating the global market.", quote_zh: "航向無國界的全球市場。", tag_en: "GEOGRAPHICAL EXPANSION", tag_zh: "地理擴張與全球化", color: "from-amber-600 to-orange-500" },
+            { id: 12, part: 2, title_en: "LN12: Strategic Alliances and Mergers & Acquisitions", title_zh: "LN12: 策略聯盟與併購", quote_en: "Growing through external partnerships.", quote_zh: "透過外部夥伴關係加速成長。", tag_en: "ALLIANCES & M&A", tag_zh: "策略聯盟與併購", color: "from-red-600 to-rose-500" },
+        ];
 
-            <!-- Theme Toggle -->
-            <button id="theme-toggle" class="w-7 h-7 rounded-full flex items-center justify-center text-gray-600 dark:text-gray-400 hover:text-yellow-500 hover:bg-gray-100 dark:hover:bg-white/10 transition">
-                <i class="fas fa-sun text-sm"></i>
-            </button>
+        const members = [
+            { 
+                id: 1, 
+                initials: "J", 
+                img: "https://drive.google.com/thumbnail?id=14MlGCV7o2jCmhLGQkzCfUWNhjWUQq_EL&sz=w1000",
+                youtubeId: "RokMKyqjtGE",
+                ytThumbnail: "https://drive.google.com/thumbnail?id=16PjcKLNTgQ0KT0zqdOnzQK4fvmWbDVav&sz=w1000",
+                email: "hank940121@gmail.com",
+                en: { name: "Jeremy Wang", dept: "IPCM3 Senior TA/Web Developer (AI-assisted)", about: ["Former President of College of Management Student Association", "Teaching Assistant for Prof. Shih-Min Lo (English-taught PM & Strategy courses)", "Farmer at Nanping Mountain Organic Farm (Lettuce)"] },
+                zh: { name: "王毓翰", dept: "管學三 資深助教/網頁開發者（AI協作）", about: ["管理學院學士班前系學會長", "國際企業學系駱世民教授課程教學助理（全英授課，產品經理與策略管理相關課程）", "南平山道田有機生態農場農夫（生菜種植）"] }
+            },
+            { 
+                id: 2, 
+                initials: "T", 
+                img: "https://drive.google.com/thumbnail?id=13F_2Ags3tBefgHh5n3j25Wvu0jnZCKQH&sz=w1000",
+                youtubeId: "fy65dYkplXI",
+                ytThumbnail: "https://drive.google.com/thumbnail?id=1KXq6Z2NHkF_xfnm09jzbhZcAc5eXJ6HC&sz=w1000",
+                email: "s112212015@mail1.ncnu.edu.tw",
+                en: { name: "Tina Wang", dept: "IBS3 Senior TA", about: ["I enjoy working with numbers, but not manipulating people.", "Previously taught elementary mathematics at the Boyo Foundation."] },
+                zh: { name: "王怡婷", dept: "國企三 資深助教", about: ["喜歡計算不喜歡算計", "曾在博幼基金會教國小數學"] }
+            },
+            { 
+                id: 3, 
+                initials: "T", 
+                img: "https://drive.google.com/thumbnail?id=1BVEXd-CL8ugjGRJNx-DNgF5NoYLl46Zs&sz=w1000",
+                youtubeId: "dTYX7XhcCyc",
+                ytThumbnail: "https://drive.google.com/thumbnail?id=1fv4Ui1adZnNdryelWQVyBKMSIyX732WT&sz=w1000",
+                email: "s113212016@mail1.ncnu.edu.tw",
+                en: { name: "Tina Lin", dept: "IBS2 TA", about: ["Vice President of IBS Student Association, NCNU", "Volunteer for 2025 'UI GreenMetric World University Rankings' Launch", "General Coordinator of 9th Taiwan Youth Hackathon"] },
+                zh: { name: "林庭伃", dept: "國企二 助教", about: ["暨大國際企業學系系學會副會長", "2025「UI GreenMetric World University Rankings」全球綠色大學排名發佈會志工", "第九屆台灣青年黑克松總召"] }
+            }
+        ];
 
-            <!-- Lang Toggle -->
-            <button id="lang-toggle" class="text-[10px] font-bold border border-gray-400 dark:border-gray-600 text-gray-800 dark:text-gray-300 rounded px-1.5 py-0.5 hover:border-bcg-green hover:text-bcg-green transition whitespace-nowrap bg-transparent">
-                ENG/繁中
-            </button>
-        </div>
-    </header>
+        const quizData = [
+            { id: 1, en: { q: "In the 'Flipped Classroom' model adopted by this course, what is the main task for students before class?", options: [ { label: "A", text: "Complete webpage development for term project", correct: false, expl: "Incorrect. This is a term-long goal, not a routine pre-class task." }, { label: "B", text: "Engage with core materials and complete self-study notes", correct: true, expl: "Correct. Flipped learning means engaging with core materials and notes before class to reserve class time for analysis." }, { label: "C", text: "Search for the latest paid versions of AI tools", correct: false, expl: "Incorrect. Not a pre-class requirement." }, { label: "D", text: "Conduct online mind-mapping presentations", correct: false, expl: "Incorrect. Presentations occur in class." } ] }, zh: { q: "第 1 題：本課程採用的「翻轉教室」（Flipped Classroom）模式，學生在課前的主要任務是什麼？", options: [ { label: "A", text: "完成期末專案的網頁開發", correct: false, expl: "錯誤。網頁開發屬於期末專題的目標 (MVP)。" }, { label: "B", text: "接觸核心教材並完成自學筆記", correct: true, expl: "正確。本課程精神是讓學生在課前完成自學，進而將課堂寶貴時間保留給深度的討論與分析。" }, { label: "C", text: "尋找 AI 工具的最新付費版本", correct: false, expl: "錯誤。課程並未要求學生在課前去尋找付費版本。" }, { label: "D", text: "與組員進行即時線上心智圖發表", correct: false, expl: "錯誤。「發表」動作是安排在課堂上進行。" } ] } },
+            { id: 2, en: { q: "Which online tool will students use to structure strategic analysis and visualize concepts?", options: [ { label: "A", text: "Slack", correct: false, expl: "Incorrect. Slack is for communication." }, { label: "B", text: "Canva", correct: false, expl: "Incorrect. Not the primary tool for strategy mapping here." }, { label: "C", text: "Trello", correct: false, expl: "Incorrect. Used for projects." }, { label: "D", text: "Coggle", correct: true, expl: "Correct. Coggle is the specified online collaborative tool to structure analysis and visualize concepts." } ] }, zh: { q: "第 2 題：在教學方法中，學生將使用哪種線上協作工具來建構策略分析並進行視覺化呈現？", options: [ { label: "A", text: "Slack", correct: false, expl: "錯誤。這是一款通訊軟體。" }, { label: "B", text: "Canva", correct: false, expl: "錯誤。這是一般的平面設計工具。" }, { label: "C", text: "Trello", correct: false, expl: "錯誤。這是專案管理工具。" }, { label: "D", text: "Coggle", correct: true, expl: "正確。教材明確指出，學生將運用「Coggle」線上協作心智圖工具將概念結構化。" } ] } },
+            { id: 3, en: { q: "The term project requires building a 'Minimum Viable Product' (MVP). What is its specific format?", options: [ { label: "A", text: "Market research report", correct: false, expl: "Incorrect. Moving away from traditional paper reports." }, { label: "B", text: "Physical product prototype", correct: false, expl: "Incorrect. Strategy outcomes are digital." }, { label: "C", text: "AI automated scripting program", correct: false, expl: "Incorrect. Not the final MVP format." }, { label: "D", text: "Interactive Learning Webpage", correct: true, expl: "Correct. Teams build an Interactive Learning Webpage as an MVP for POC verification." } ] }, zh: { q: "第 3 題：課程期末專案要求學生打造「最小可行性產品」（MVP），其具體形式為何？", options: [ { label: "A", text: "市場調查報告書", correct: false, expl: "錯誤。本課程要求學生跳脫傳統書面報告形式。" }, { label: "B", text: "實體產品原型", correct: false, expl: "錯誤。本課程聚焦策略分析，成果是數位而非硬體。" }, { label: "C", text: "AI 自動化腳本程式", correct: false, expl: "錯誤。成果不是寫程式腳本。" }, { label: "D", text: "互動式學習網頁", correct: true, expl: "正確。學生團隊將打造一個互動式學習網頁作為 MVP，用來驗證學習成果 (POC)。" } ] } },
+            { id: 4, en: { q: "The course promotes the IRF cycle through AI. What does 'R' stand for?", options: [ { label: "A", text: "Response", correct: true, expl: "Correct. Initiation - Response - Feedback cycle enhances critical thinking." }, { label: "B", text: "Research", correct: false, expl: "Incorrect." }, { label: "C", text: "Retention", correct: false, expl: "Incorrect." }, { label: "D", text: "Resource", correct: false, expl: "Incorrect." } ] }, zh: { q: "第 4 題：本課程強調運用 AI 促進 IRF 循環，其中的 'R' 代表什麼意思？", options: [ { label: "A", text: "Response (回應)", correct: true, expl: "正確。課程強調促進「啟動 (Initiation) - 回應 (Response) - 反饋 (Feedback)」互動循環。" }, { label: "B", text: "Research", correct: false, expl: "錯誤。" }, { label: "C", text: "Retention", correct: false, expl: "錯誤。" }, { label: "D", text: "Resource", correct: false, expl: "錯誤。" } ] } },
+            { id: 5, en: { q: "Which prompt engineering framework should students master when collaborating with AI?", options: [ { label: "A", text: "SWOT", correct: false, expl: "Incorrect. A strategy tool." }, { label: "B", text: "VPC", correct: false, expl: "Incorrect. A model tool." }, { label: "C", text: "PBL", correct: false, expl: "Incorrect. Teaching method." }, { label: "D", text: "CRF", correct: true, expl: "Correct. Mastery of the CRF framework is mandated for effective AI collaboration." } ] }, zh: { q: "第 5 題：學生在與 AI 協作時，應掌握哪一種提示工程（Prompt Engineering）架構？", options: [ { label: "A", text: "SWOT", correct: false, expl: "錯誤。這是商業分析工具。" }, { label: "B", text: "VPC", correct: false, expl: "錯誤。這是商業模式分析工具。" }, { label: "C", text: "PBL", correct: false, expl: "錯誤。這是教學方法縮寫。" }, { label: "D", text: "CRF 架構", correct: true, expl: "正確。教材明確指出學生必須掌握如 CRF 架構等指令技巧。" } ] } },
+            { id: 6, en: { q: "What does SDL stand for in the course goals?", options: [ { label: "A", text: "Strategic Logic", correct: false, expl: "Incorrect." }, { label: "B", text: "Self-Directed Learning", correct: true, expl: "Correct. Goal is fostering SDL to prepare you for dynamic global markets." }, { label: "C", text: "Systematic Design", correct: false, expl: "Incorrect." }, { label: "D", text: "Social Digital", correct: false, expl: "Incorrect." } ] }, zh: { q: "第 6 題：課程強調培養學生的 SDL 能力，以應對動態的全球市場。SDL 的全稱是什麼？", options: [ { label: "A", text: "Strategic Logic", correct: false, expl: "錯誤。" }, { label: "B", text: "Self-Directed Learning", correct: true, expl: "正確。SDL 即「自主學習」，旨在讓您能在變動的全球市場中脫穎而出。" }, { label: "C", text: "Systematic Design", correct: false, expl: "錯誤。" }, { label: "D", text: "Social Digital", correct: false, expl: "錯誤。" } ] } }
+        ];
 
-    <!-- AUDIO STATUS BAR -->
-    <div id="audio-status" class="hidden fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-black/90 text-white px-4 py-2 rounded-full text-xs items-center space-x-3 shadow-lg z-50 backdrop-blur border border-gray-700">
-        <div class="playing-indicator flex items-end h-3 text-bcg-green">
-            <span></span><span></span><span></span>
-        </div>
-        <span id="audio-text">語音導覽中</span>
-        <button onclick="stopAudio()" class="ml-2 text-gray-400 hover:text-white"><i class="fas fa-times"></i></button>
-    </div>
+        const detailedSections = [
+            { 
+                id: 1, 
+                icon: <Icons.Target />, 
+                en: { 
+                    title: "Section 1: Course Vision & Goals", 
+                    subtitle: "Become a Competent Product Manager in MNCs", 
+                    content: "This course focuses on the Strategic Management of Multinational Corporations (SMMC). Our goal is to equip students with the Knowledge, Skills, and Attitudes (KSA) necessary to assess environmental changes and execute effective corporate strategies. Through the lens of the \"Strategy Tripod\" (Industry, Resource, and Institution-based views), the VPC Framework, etc., students will learn to analyze why firms succeed or fail globally. Ultimately, this course fosters Self-Directed Learning (SDL) capabilities, preparing you to thrive in a dynamic global market." 
+                }, 
+                zh: { 
+                    title: "Section 1: 課程願景與目標", 
+                    subtitle: "成為跨國企業中稱職的產品經理", 
+                    content: "本課程專注於跨國企業的國際策略管理 (SMMC)。我們的目標是讓學生具備必要的知識、技能與態度 (KSA)，以評估環境變遷並執行有效的企業策略。透過「策略三腳架」（產業、資源與制度觀點）、VPC 架構等概念視角，學生將學習分析企業在全球競爭中成敗的原因。最終，本課程旨在培養自主學習 (SDL) 的能力，使您能在變動的全球市場中脫穎而出。" 
+                } 
+            },
+            { 
+                id: 2, 
+                icon: <Icons.Graduation size={40} />, 
+                en: { 
+                    title: "Section 2: Teaching Methodology", 
+                    subtitle: "Flipped Classroom & Problem-Based Learning (PBL)", 
+                    content: "We adopt a blended teaching approach that puts you in the driver's seat. Moving away from traditional lectures, this course utilizes:\n\n• Flipped Classroom: Students engage with core materials and self-study notes before class, allowing class time to be dedicated to deep discussion and analysis.\n• Collaborative Mind-Mapping: Working in study groups, students utilize Coggle to structure their analysis, visualize strategic concepts, and present their findings in class.\n• SPA Webpage Competition: Apply product manager's thinking to build an Interactive Learning Webpage as a Minimum Viable Product (MVP). Presented as a Single-Page Application (SPA), this project integrates strategic analysis (LN1-LN12) as a Proof of Concept (POC)." 
+                }, 
+                zh: { 
+                    title: "Section 2: 教學方法", 
+                    subtitle: "翻轉教室與問題導向學習 (PBL)", 
+                    content: "我們採用混合式教學法，讓您成為學習的駕駛員。有別於傳統講授，本課程將運用：\n\n• 翻轉教室： 學生在課前完成自學筆記，課堂專注於深度討論與分析。\n• 協作心智圖： 運用線上工具 Coggle 將策略分析結構化與概念視覺化，並在課堂上進行發表。\n• SPA 網頁專題競賽： 應用產品經理思維，打造互動式學習網頁作為 MVP。此專案將以 單頁應用程式 (SPA) 的形式呈現，整合策略分析 (LN1-LN12)，作為您學習成果的概念驗證 (POC)。" 
+                } 
+            },
+            { 
+                id: 3, 
+                icon: <Icons.Sparkles />, 
+                en: { 
+                    title: "Section 3: AI & Tech Integration", 
+                    subtitle: "Empowered by Generative AI", 
+                    content: "This course mandates the integration of cutting-edge AI tools to revolutionize learning and productivity. We leverage AI for Initiation-Response-Feedback (IRF), Think-Pair-Share (TPS), and enhancing Critical Thinking.\n\n• Core AI Tools: ChatGPT, Claude, Gemini, Poe, and emerging Agentic AI for strategic brainstorming and analysis.\n• Multimedia & Productivity: NotebookLM, D-ID, ElevenLabs, Otter, NaturalReader, Gamma/Napkin, Mentimeter, and Stable Diffusion for Brief Interactive Tasks (BITs).\n• Smart Prompting: Master prompt engineering techniques (e.g., CRF framework) to collaborate effectively with AI." 
+                }, 
+                zh: { 
+                    title: "Section 3: AI 與科技整合", 
+                    subtitle: "生成式 AI 賦能學習", 
+                    content: "本課程強制整合具尖端性的 AI 工具，以革新學習體驗與生產力。我們運用 AI 不僅是為尋找答案，更是為了促進 啟動-回應-反饋 (IRF)、思考-配對-分享 (TPS) 循環並增強批判性思考。\n\n• 核心 AI 工具： 運用 ChatGPT、Claude、Gemini、Poe 與最新的 Agentic AI 進行策略腦力激盪。\n• 多媒體與生產力工具： 使用 NotebookLM、D-ID、ElevenLabs、Otter(轉錄)、NaturalReader、Gamma/Napkin、Mentimeter 與 Stable Diffusion 製作互動任務 (BITs)。\n• 智慧提示工程： 掌握提示工程技巧（如 CRF 架構），學會與 AI 高效協作。" 
+                } 
+            }
+        ];
 
-    <!-- SIDEBAR -->
-    <div id="overlay" class="fixed inset-0 bg-black/50 z-40 hidden backdrop-blur-sm transition-opacity"></div>
-    <div id="sidebar" class="fixed top-0 left-0 w-fit min-w-[200px] max-w-[85vw] h-full bg-white dark:bg-bcg-dark border-r border-gray-200 dark:border-gray-700 z-50 transform -translate-x-full shadow-2xl flex flex-col">
-        <!-- Sidebar Header (Click to Close - No X button) -->
-        <div onclick="toggleSidebar()" class="h-14 flex items-center justify-between px-6 border-b border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-black/20 cursor-pointer hover:bg-gray-100 dark:hover:bg-white/5 transition group">
-            <span class="font-bold text-lg text-gray-800 dark:text-white tracking-widest group-hover:text-bcg-green transition">MENU</span>
-            <i class="fas fa-chevron-left text-gray-400 group-hover:text-bcg-green transition text-sm"></i>
-        </div>
+        // 全新加入：學習指引的流程資料
+        const guideSteps = [
+            {
+                id: 1,
+                en: { title: "Step 1 | Read / Watch Moodle Materials", desc: "Build a solid foundation in strategic theories." },
+                zh: { title: "第一步｜閱讀 / 觀看 Moodle 教材", desc: "扎實奠定您的策略理論基礎。" }
+            },
+            {
+                id: 2,
+                en: { title: "Step 2 | Overview", desc: "Grasp the big picture. Clarify the position of each module in business operations, connect fragmented knowledge, and identify the learning objectives." },
+                zh: { title: "第二步｜Overview 全局理解", desc: "綜觀策略全貌。釐清各單元在企業運作中的定位，連結分散的知識點，並從中掌握該教材之學習目標。" }
+            },
+            {
+                id: 3,
+                en: { title: "Step 3 | Concept Lab", desc: "Deep dive into key frameworks to test if you have truly mastered the essence of the chapter." },
+                zh: { title: "第三步｜Concept Lab 概念拆解", desc: "深度剖析關鍵架構，檢驗您是否真正掌握該章節的核心精髓。" }
+            },
+            {
+                id: 4,
+                en: { title: "Step 4 | Strategy Pitfalls", desc: "Identify common business myths and correct flawed strategic intuition and misconceptions." },
+                zh: { title: "第四步｜Strategy Pitfalls 翻轉直覺", desc: "辨識常見的商業迷思，修正錯誤的策略直覺與概念理解。" }
+            },
+            {
+                id: 5,
+                en: { title: "Step 5 | Decision Check", desc: "Validate your grasp of strategic knowledge through targeted conceptual multiple-choice questions." },
+                zh: { title: "第五步｜Decision Check 觀念檢核", desc: "透過精煉的概念選擇題，快速測驗並驗證您對策略知識的吸收程度。" }
+            },
+            {
+                id: 6,
+                en: { title: "Step 6 | Collaborate", desc: "Bring your validated insights to your study group. Synthesize ideas and use online collaborative tools to structure and visualize the Lecture Notes." },
+                zh: { title: "第六步｜團隊協作", desc: "將您個人驗證過的觀點帶入小組。匯聚團隊想法，並運用線上工具將課程內容結構化與視覺化。" }
+            },
+            {
+                id: 7,
+                en: { title: "Step 7 | Present & Reflect", desc: "Present your findings in class, engage in peer Q&A, and discuss deeply with the professor. Reflect on the feedback to refine your intuition and cross-reference with the webpage’s core concepts." },
+                zh: { title: "第七步｜發表與反思", desc: "在課堂發表成果，參與跨組問答與教授的深度對話。吸收反饋進行反思，並將實戰討論與本平台的核心教材進行最終的交叉驗證。" }
+            }
+        ];
 
-        <nav class="flex-1 overflow-y-auto no-scrollbar py-4 space-y-1">
-            <a href="javascript:void(0)" onclick="switchSection('overview')" id="nav-overview" class="block px-6 py-4 border-l-4 border-bcg-green bg-gray-100 dark:bg-white/5 text-bcg-green dark:text-white whitespace-nowrap">
-                <div class="flex items-center">
-                    <span class="w-6 text-center mr-3"><i class="fas fa-chart-pie"></i></span>
-                    <span class="lang-en hidden">Overview</span><span class="lang-zh">綜覽</span>
-                </div>
-            </a>
-            
-            <!-- Week 1 - Active -->
-            <a href="javascript:void(0)" onclick="switchSection('w1w2')" id="nav-w1w2" class="block px-6 py-3 border-l-4 border-transparent text-gray-700 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5 transition whitespace-nowrap">
-                <div class="flex items-center">
-                    <span class="w-6 text-center mr-3"><i class="fas fa-flag"></i></span>
-                    <span>第一週</span>
-                    <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse ml-2"></span>
-                </div>
-            </a>
+        const uiText = {
+            en: {
+                logo: "SMMC‐EMI", header: "Global Boundary Spanner: Strategy Without Borders", subHeader: "Believe in Persistence, Build Resilience, and Be the Driver of Your Strategy",
+                introTitle: "Course Introduction", introSubtitle: "Future-Ready Strategy: AI-Empowered & Action-Oriented", introDesc: "Step into the role of a global strategist. This capstone course integrates Generative AI tools with the Strategy Tripod framework to navigate the complexities of MNCs. Click to explore detailed vision and methods.",
+                menuHome: "HOME", menuIntro: "COURSE INTRODUCTION", menuTeam: "MEET OUR TEAM", menuBusiness: "BUSINESS STRATEGY", menuCorporate: "CORPORATE STRATEGY",
+                guideTitle: "Learning Guide", guideSubtitle: "A Strategic Validation Engine", guideDesc: "This portal is not a static summary page; it is a dynamic Strategic Thinking Validation System. Designed to challenge your understanding after engaging with the Moodle materials, it guides you through reconstructing the big picture, decoding core theories, correcting flawed intuition, and simulating real-world strategic decisions.",
+                guidePageDesc: "How to Use This Portal\nThis platform is designed to reinforce and challenge your understanding of strategic concepts after completing your Moodle pre-class studies.",
+                part1Header: "Business Strategy (LN1-8)", part1CardLabel: "Part 1:", part1CardTitle: "Business Strategy",
+                part1CardDesc: "Business strategy focuses on how to compete within a given product market or industry to establish a competitive advantage.",
+                part1SyllabusDesc: "Business Strategy focuses on the fundamental question of how to compete within a specific market to establish and sustain a competitive advantage. By analyzing external industry dynamics and internal core competencies, firms can craft robust business models to effectively create and appropriate value.",
+                part2Header: "Corporate Strategy (LN9-12)", part2CardLabel: "Part 2:", part2CardTitle: "Corporate Strategy",
+                part2CardDesc: "Corporate strategy determines where to compete to define the multinational firm's overall growth scope.",
+                part2SyllabusDesc: "Corporate Strategy addresses the critical question of where to compete by determining the overall growth scope of a multinational firm. It explores how companies expand their boundaries through vertical integration, horizontal diversification, and global expansion, utilizing methods like strategic alliances and M&A.",
+                teamHeader: "Meet Our Team", back: "Back to Home", enter: "VIEW LECTURES", statusComing: "Coming soon",
+                footerCourse: "Strategic Management of Multinational Corporations", footerUpdate: "Last Updated: 2026-02-20 | v7.7.1", footerInstructor: "Instructor: Prof. Shihmin Lo", footerDept: "Dept. of International Business Studies (IBS)",
+            },
+            zh: {
+                logo: "國策管‐全英授課", header: "全球跨界者：無國界策略管理", subHeader: "堅信毅力、建立韌性，並成為策略的驅動者",
+                introTitle: "課程簡介", introSubtitle: "未來就緒的策略思維：AI 賦能與行動導向", introDesc: "踏入全球策略家的角色。本總結性課程結合具前瞻性的生成式 AI 工具與策略三腳架架構，帶領您駕馭挑戰。點擊探索願景細節。",
+                menuHome: "首頁", menuIntro: "課程簡介", menuTeam: "團隊介紹", menuBusiness: "事業策略", menuCorporate: "集團策略",
+                guideTitle: "學習指引", guideSubtitle: "專屬你的策略思維驗證引擎", guideDesc: <span>這不是靜態的摘要頁面，而是一套動態的<strong className="font-black">「策略思維驗證系統」</strong>。本平台旨在您完成 Moodle 的課前學習後，挑戰並重塑您的認知；帶領您從建構策略全局、拆解核心理論、翻轉錯誤直覺，一路邁向真實情境的決策模擬。</span>,
+                guidePageDesc: "使用方式說明\n本平台旨在於您完成 Moodle 課前預習後，進一步強化並挑戰您對策略概念的理解。",
+                part1Header: "事業策略 Business Strategy (LN1-8)", part1CardLabel: "第一部分：", part1CardTitle: "事業策略",
+                part1CardDesc: <span>事業策略聚焦於在特定市場中<strong className="font-black">「如何競爭 (How to compete)」</strong>，以建立並維持企業的競爭優勢。</span>,
+                part1SyllabusDesc: "事業策略聚焦於「如何競爭」的根本問題，旨在特定市場中建立並維持競爭優勢。透過分析外部產業動態與內部核心能耐，企業能打造出穩健的商業模式，有效地創造與獲取價值。",
+                part2Header: "集團策略 Corporate Strategy (LN9-12)", part2CardLabel: "第二部分：", part2CardTitle: "集團策略",
+                part2CardDesc: <span>集團策略旨在探討<strong className="font-black">「在哪裡競爭 (Where to compete)」</strong>，藉此決定跨國企業整體的成長範疇。</span>,
+                part2SyllabusDesc: "集團策略則探討「在哪裡競爭」的關鍵難題，藉此決定跨國企業整體的成長範疇。它剖析企業如何透過垂直整合、水平多角化與全球擴張來拓展版圖，並運用策略聯盟與併購等手段達成目標。",
+                teamHeader: "團隊介紹", back: "返回首頁", enter: "進入講義清單", statusComing: "即將推出",
+                footerCourse: "國際策略管理 (Strategic Management of MNCs)", footerUpdate: "最後更新: 2026-02-20 | v7.7.1", footerInstructor: "授課教師: Prof. Shihmin Lo", footerDept: "國企系 IBS"
+            }
+        };
 
-            <!-- Week 2 - Inactive -->
-            <a href="javascript:void(0)" class="block px-6 py-3 border-l-4 border-transparent text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap">
-                <div class="flex items-center">
-                    <span class="w-6 text-center mr-3"><i class="fas fa-flag"></i></span>
-                    <span>第二週</span>
-                </div>
-            </a>
+        const App = () => {
+            const [lang, setLang] = useState('en'); 
+            const [isDarkMode, setIsDarkMode] = useState(true);
+            const [view, setView] = useState('home'); 
+            const [isMenuOpen, setIsMenuOpen] = useState(false);
+            const [expandedMenu, setExpandedMenu] = useState(null); 
+            const [selectedMember, setSelectedMember] = useState(null);
+            const [activeModule, setActiveModule] = useState(null);
+            const [quizPage, setQuizPage] = useState(0); 
+            const [userAnswers, setUserAnswers] = useState({}); 
+            const [expandedStep, setExpandedStep] = useState(1); // 學習指引的預設展開步驟
 
-            <!-- Week 3 - Inactive -->
-            <a href="javascript:void(0)" class="block px-6 py-3 border-l-4 border-transparent text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap">
-                <div class="flex items-center">
-                    <span class="w-6 text-center mr-3"><i class="fas fa-robot"></i></span>
-                    <span>第三週</span>
-                </div>
-            </a>
+            const isEn = lang === 'en';
+            const currentUI = uiText[lang];
 
-            <!-- Week 4 - Inactive -->
-            <a href="#" class="block px-6 py-3 border-l-4 border-transparent text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap">
-                <div class="flex items-center">
-                    <span class="w-6 text-center mr-3"><i class="fas fa-robot"></i></span>
-                    <span>第四週</span>
-                </div>
-            </a>
+            const handleNavigate = (target) => { setView(target); setIsMenuOpen(false); setExpandedMenu(null); window.scrollTo(0, 0); };
+            const handleNavigateToLN = (lecture) => { setActiveModule(lecture); setView('detail'); setIsMenuOpen(false); setExpandedMenu(null); window.scrollTo(0, 0); };
+            const handleQuizAnswer = (qId, optionIdx) => { setUserAnswers(prev => ({ ...prev, [qId]: optionIdx })); };
+            const nextQuizPage = () => { setUserAnswers({}); setQuizPage((prev) => (prev + 1) % 3); };
+            const displayedQuestions = quizData.slice(quizPage * 2, quizPage * 2 + 2);
 
-            <!-- Week 5 - Inactive -->
-            <a href="#" class="block px-6 py-3 border-l-4 border-transparent text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap">
-                <div class="flex items-center">
-                    <span class="w-6 text-center mr-3"><i class="fas fa-robot"></i></span>
-                    <span>第五週</span>
-                </div>
-            </a>
+            const { ChevronRight, ChevronDown, X, Menu, Languages, Sun, Moon, Globe, Earth, Book, Users, Help, ArrowLeft, Clock, Play, External, Target, Graduation, Sparkles, MousePointer, Youtube, Mail } = Icons;
 
-            <!-- Future Weeks (6-16) -->
-            <a href="#" class="block px-6 py-3 text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap"><i class="fas fa-briefcase w-6 mr-3"></i> 第六週</a>
-            <a href="#" class="block px-6 py-3 text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap"><i class="fas fa-briefcase w-6 mr-3"></i> 第七週</a>
-            <a href="#" class="block px-6 py-3 text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap"><i class="fas fa-briefcase w-6 mr-3"></i> 第八週</a>
-            <a href="#" class="block px-6 py-3 text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap"><i class="fas fa-rocket w-6 mr-3"></i> 第九週</a>
-            <a href="#" class="block px-6 py-3 text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap"><i class="fas fa-compass w-6 mr-3"></i> 第十週</a>
-            <a href="#" class="block px-6 py-3 text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap"><i class="fas fa-compass w-6 mr-3"></i> 第十一週</a>
-            <a href="#" class="block px-6 py-3 text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap"><i class="fas fa-compass w-6 mr-3"></i> 第十二週</a>
-            <a href="#" class="block px-6 py-3 text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap"><i class="fas fa-tasks w-6 mr-3"></i> 第十三週</a>
-            <a href="#" class="block px-6 py-3 text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap"><i class="fas fa-tasks w-6 mr-3"></i> 第十四週</a>
-            <a href="#" class="block px-6 py-3 text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap"><i class="fas fa-tasks w-6 mr-3"></i> 第十五週</a>
-            <a href="#" class="block px-6 py-3 text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap"><i class="fas fa-rocket w-6 mr-3"></i> 第十六週</a>
-        </nav>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <main class="flex-1 pt-20 pb-20 px-4 md:px-8 lg:px-12 w-full">
-        
-        <!-- SECTION: OVERVIEW -->
-        <div id="section-overview" class="animate-fade-in">
-            <div class="mb-6 border-b border-gray-200 dark:border-gray-700 pb-4">
-                <h2 class="text-2xl font-light text-bcg-green uppercase tracking-wider">
-                    <span class="lang-en hidden">Overview</span><span class="lang-zh">綜覽</span>
-                </h2>
-            </div>
-
-            <div class="mb-8 border-l-4 border-bcg-green pl-6">
-                <h3 class="text-xl font-medium text-gray-900 dark:text-white mb-2">
-                    <span class="lang-en hidden">Welcome to SMMC</span>
-                    <span class="lang-zh">歡迎來到 SMMC</span>
-                </h3>
-                <p class="text-gray-700 dark:text-gray-400 text-sm leading-relaxed">
-                    <span class="lang-en hidden">Strategic thinking and project execution in the age of Artificial Intelligence. This course integrates PBL (Problem-Based Learning) and SDL (Self-Directed Learning).</span>
-                    <span class="lang-zh">人工智慧時代的策略思維與專案執行。本課程整合了問題導向學習 (PBL) 與自主學習 (SDL)。</span>
-                </p> 
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Syllabus Card -->
-                <div class="bg-white dark:bg-white/5 border border-gray-300 dark:border-white/10 rounded-lg p-6 hover:shadow-md dark:hover:bg-white/10 transition group">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="p-3 bg-bcg-green/10 text-bcg-green rounded-md">
-                            <i class="fas fa-book"></i>
-                        </div>
-                        <i class="fas fa-arrow-right text-gray-400 group-hover:text-bcg-green transition"></i>
-                    </div>
-                    <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">
-                        <span class="lang-en hidden">Course Syllabus</span><span class="lang-zh">課程大綱</span>
-                    </h3>
-                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-4 h-10">
-                        <span class="lang-en hidden">Comprehensive guide to grading, schedule, and expectations.</span>
-                        <span class="lang-zh">包含完整評分標準、課程進度表與課堂預期。</span>
-                    </p>
-                    <div class="flex flex-wrap gap-2">
-                        <a href="https://drive.google.com/file/d/1d9F6zv4x09E6c1ZNnyvGL3BCPcroWaB0/view?usp=sharing" target="_blank" class="inline-block text-xs font-bold text-bcg-green uppercase tracking-wide border border-bcg-green px-3 py-1 rounded hover:bg-bcg-green hover:text-white transition">
-                            <span class="lang-en hidden">Syllabus</span><span class="lang-zh">課綱</span>
-                        </a>
-                        <a href="https://drive.google.com/file/d/1S5lUWJm6gMxraF5ATCVr8FUsp2GV1uTC/view?usp=sharing" target="_blank" class="inline-block text-xs font-bold text-bcg-green uppercase tracking-wide border border-bcg-green px-3 py-1 rounded hover:bg-bcg-green hover:text-white transition">
-                            <span class="lang-en hidden">TP List</span><span class="lang-zh">TP 公司清單</span>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- 1132 Showcase -->
-                <div class="bg-white dark:bg-white/5 border border-gray-300 dark:border-white/10 rounded-lg p-6 hover:shadow-md dark:hover:bg-white/10 transition group">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="p-3 bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-500 rounded-md">
-                            <i class="fas fa-trophy"></i>
-                        </div>
-                        <i class="fas fa-external-link-alt text-gray-400 group-hover:text-blue-500 transition"></i>
-                    </div>
-                    <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">
-                        <span class="lang-en hidden">1132 Project Gallery</span><span class="lang-zh">1132 期末專案</span>
-                    </h3>
-                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-4 h-10">
-                        <span class="lang-en hidden">Explore capstone projects from the previous semester.</span>
-                        <span class="lang-zh">探索上學期學長姐的優秀期末專案作品。</span>
-                    </p>
-                    <div class="flex flex-wrap gap-2">
-                        <a href="https://jeremywang0121.github.io/CDPS_First-Place-in-114_webpage-competition/" target="_blank" class="inline-block text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wide border border-blue-600 dark:border-blue-400 px-3 py-1 rounded hover:bg-blue-600 hover:text-white dark:hover:bg-blue-500 transition">
-                            <span class="lang-en hidden">Example 1</span><span class="lang-zh">範例1</span>
-                        </a>
-                        <a href="https://novoicefire.github.io/NCNU_1141-Co-opetitive-Dynamics-and-Platform-Strategy_G2_Nvidia/" target="_blank" class="inline-block text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wide border border-blue-600 dark:border-blue-400 px-3 py-1 rounded hover:bg-blue-600 hover:text-white dark:hover:bg-blue-500 transition">
-                            <span class="lang-en hidden">Example 2</span><span class="lang-zh">範例2</span>
-                        </a>
-                        <a href="https://gemini.google.com/share/d26e44cefd1d" target="_blank" class="inline-block text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wide border border-blue-600 dark:border-blue-400 px-3 py-1 rounded hover:bg-blue-600 hover:text-white dark:hover:bg-blue-500 transition">
-                            <span class="lang-en hidden">Example 3</span><span class="lang-zh">範例3</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- SECTION: W1 & W2 -->
-        <div id="section-w1w2" class="hidden animate-fade-in">
-            <div class="mb-6 border-b border-gray-200 dark:border-gray-700 pb-4">
-                <h2 class="text-2xl font-light text-bcg-green uppercase tracking-wider">
-                    <span class="lang-en hidden">W1 Orientation</span><span class="lang-zh">第一週 課程定位</span>
-                </h2>
-            </div>
-
-            <!-- Tabs -->
-            <div class="flex space-x-2 mb-6">
-                <button onclick="switchTab('w1-pre')" id="tab-w1-pre" class="px-4 py-2 text-sm font-medium border-b-2 border-bcg-green text-bcg-green transition">
-                    Pre W1 #1 (02/14)
-                </button>
-                <button onclick="switchTab('w1-post')" id="tab-w1-post" class="px-4 py-2 text-sm font-medium border-b-2 border-transparent text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition">
-                    Post W1 #2 (TBD)
-                </button>
-            </div>
-
-            <!-- Pre W1 Content -->
-            <div id="content-w1-pre">
-                <!-- UPDATED LOGISTICS -->
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-                    <div class="bg-white dark:bg-white/5 p-4 rounded border border-gray-300 dark:border-white/5 flex flex-col items-center justify-center text-center shadow-sm">
-                        <span class="text-[10px] uppercase text-gray-500 font-bold mb-1">上課時間</span>
-                        <span class="text-lg font-bold text-gray-900 dark:text-white">週一09:00</span>
-                        <span class="text-xs text-gray-600 dark:text-gray-500">請準時</span>
-                    </div>
-                    <div class="bg-white dark:bg-white/5 p-4 rounded border border-gray-300 dark:border-white/5 flex flex-col items-center justify-center text-center shadow-sm">
-                        <span class="text-[10px] uppercase text-gray-500 font-bold mb-1">上課教室</span>
-                        <span class="text-lg font-bold text-gray-900 dark:text-white">管228</span>
-                        <span class="text-xs text-gray-600 dark:text-gray-500">管理學院</span>
-                    </div>
-                    <div class="bg-white dark:bg-white/5 p-4 rounded border border-gray-300 dark:border-white/5 flex flex-col items-center justify-center text-center shadow-sm">
-                        <span class="text-[10px] uppercase text-gray-500 font-bold mb-1">評分</span>
-                        <span class="text-lg font-bold text-bcg-green">10%</span>
-                        <span class="text-xs text-gray-600 dark:text-gray-500">課程參與</span>
-                    </div>
-                </div>
-
-                <!-- Checklist -->
-                <div class="bg-white dark:bg-white/5 rounded-lg border border-gray-300 dark:border-gray-700 overflow-hidden shadow-md">
-                    <div class="px-6 py-4 border-b border-gray-300 dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-black/20">
-                        <h3 class="font-bold text-gray-800 dark:text-white text-sm uppercase tracking-wide flex items-center">
-                            <i class="fas fa-list-check mr-2 text-bcg-green"></i>
-                            <span class="lang-en hidden">Mission Checklist</span><span class="lang-zh">W1 課前任務清單</span>
-                        </h3>
-                        <span class="text-xs font-mono text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-900/20 px-2 py-1 rounded font-bold">Due: 2/22</span>
-                    </div>
-
-                    <div class="divide-y divide-gray-200 dark:divide-gray-700/50" id="checklist-container">
-                        <!-- Task 1: Form (Updated Link) -->
-                        <label class="flex items-start p-5 hover:bg-gray-50 dark:hover:bg-white/5 transition cursor-pointer">
-                            <input type="checkbox" class="custom-checkbox mt-1 mr-4 accent-bcg-green w-5 h-5">
-                            <div class="flex-1">
-                                <span class="block text-gray-900 dark:text-white font-bold mb-1">
-                                    <span class="lang-en hidden">1. Personal Info Form</span><span class="lang-zh">1. 填寫個人資料表單</span>
-                                </span>
-                                <span class="text-sm text-gray-700 dark:text-gray-400 mb-2 block">
-                                    <span class="lang-en hidden">Please complete before the first class.</span><span class="lang-zh">請務必於第一堂課前 (2/23) 完成。</span>
-                                </span>
-                                <a href="https://forms.gle/5vwizzWa535yrEcY9" target="_blank" class="inline-flex items-center text-sm text-blue-600 dark:text-blue-400 hover:underline bg-blue-50 dark:bg-blue-900/20 px-3 py-1 rounded-full border border-blue-200 dark:border-transparent">
-                                    <i class="fas fa-link mr-2"></i> Google Form Link
-                                </a>
+            return (
+                <div className={`min-h-screen transition-colors duration-700 flex flex-col ${isDarkMode ? 'bg-[#050507] text-white' : 'bg-slate-50 text-slate-900'}`}>
+                    
+                    {/* 全域背景點擊遮罩 */}
+                    {isMenuOpen && (
+                        <div className="fixed inset-0 z-[90] cursor-default bg-black/5" onClick={() => { setIsMenuOpen(false); setExpandedMenu(null); }}></div>
+                    )}
+                    
+                    {/* --- Navbar --- */}
+                    <nav className={`fixed top-0 w-full z-[100] glass-nav border-b h-24 transition-colors duration-700 ${isDarkMode ? 'border-white/10 bg-black/40' : 'border-black/10 bg-white/60'}`}>
+                        <div className="max-w-7xl mx-auto px-6 h-full flex items-center justify-between text-current">
+                            <div className="flex items-center gap-4 cursor-pointer group" onClick={() => handleNavigate('home')}>
+                                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center text-white shadow-lg">
+                                    <Earth />
+                                </div>
+                                <span className={`font-black text-xl sm:text-3xl tracking-tighter uppercase leading-none`}>{currentUI.logo}</span>
                             </div>
-                        </label>
 
-                        <!-- Task 2: Form Group (Replaced Syllabus) -->
-                        <label class="flex items-start p-5 hover:bg-gray-50 dark:hover:bg-white/5 transition cursor-pointer">
-                            <input type="checkbox" class="custom-checkbox mt-1 mr-4 accent-bcg-green w-5 h-5">
-                            <div class="flex-1">
-                                <span class="block text-gray-900 dark:text-white font-bold mb-1">
-                                    <span class="lang-en hidden">2. Form Group</span><span class="lang-zh">2. 事先找好組員</span>
-                                </span>
-                                <span class="text-sm text-gray-700 dark:text-gray-400 mb-2 block">
-                                    <span class="lang-en hidden">Groups registered in W1 class. 6 people per group.</span>
-                                    <span class="lang-zh">第一週課堂會登記小組名單，6人即可成為一組。</span>
-                                </span>
-                                <div class="bg-gray-50 dark:bg-white/5 p-3 rounded text-xs text-gray-600 dark:text-gray-400 border-l-4 border-orange-400">
-                                    <i class="fas fa-info-circle mr-1 text-orange-500"></i>
-                                    <span class="lang-en hidden">Note: Choose teammates carefully. Groups must accept assigned members in W1.</span>
-                                    <span class="lang-zh">為了達到更好的合作體驗，請慎選你的組員；另外，組別有義務接受老師安排未分到組別的組員，第一週會協助未分組的組員加入各組。</span>
+                            <div className="flex items-center gap-3 relative text-current">
+                                <button onClick={() => setLang(isEn ? 'zh' : 'en')} className={`p-3 rounded-xl border transition-all duration-700 active:scale-90 ${isDarkMode ? 'border-white/10 bg-white/5 text-blue-400' : 'border-black/5 bg-slate-100 text-blue-600'}`}><Languages /></button>
+                                <button onClick={() => setIsDarkMode(!isDarkMode)} className={`p-3 rounded-xl border transition-all duration-700 active:scale-90 ${isDarkMode ? 'border-white/10 bg-white/5 text-yellow-400' : 'border-black/5 bg-slate-100 text-slate-600'}`}>{isDarkMode ? <Sun /> : <Moon />}</button>
+                                <button onClick={() => setIsMenuOpen(!isMenuOpen)} className={`p-3 rounded-xl border transition-all duration-700 active:scale-90 ${isDarkMode ? 'border-white/10 bg-white/5 text-blue-400' : 'border-black/5 bg-slate-100 text-blue-600'}`}>{isMenuOpen ? <X /> : <Menu />}</button>
+                                
+                                {isMenuOpen && (
+                                    <div className={`absolute top-20 right-0 w-[85vw] max-w-sm border rounded-[2.5rem] p-8 shadow-2xl menu-animate z-[100] transition-colors duration-700 ${isDarkMode ? 'bg-black/95 border-white/10 text-white' : 'bg-white border-black/10 text-slate-900'}`}>
+                                        <div className="space-y-6 text-left max-h-[75vh] overflow-y-auto lg:overflow-visible no-scrollbar text-current">
+                                            <button onClick={() => handleNavigate('home')} className="w-full text-left font-black text-lg sm:text-xl tracking-widest hover:text-blue-500 uppercase">{currentUI.menuHome}</button>
+                                            <button onClick={() => handleNavigate('introDetail')} className="w-full text-left font-black text-lg sm:text-xl tracking-widest hover:text-blue-500 uppercase">{currentUI.menuIntro}</button>
+                                            <button onClick={() => handleNavigate('team')} className="w-full text-left font-black text-lg sm:text-xl tracking-widest hover:text-blue-500 uppercase">{currentUI.menuTeam}</button>
+                                            
+                                            {/* Business Strategy 子目錄邏輯 */}
+                                            <div className="relative group">
+                                                <div className="flex items-center justify-between w-full">
+                                                    <button onClick={() => handleNavigate('part1')} className="text-left font-black text-lg sm:text-xl leading-snug tracking-widest hover:text-blue-500 uppercase flex-grow break-words pr-2 py-2">
+                                                        {currentUI.menuBusiness}
+                                                    </button>
+                                                    <button onClick={(e) => { e.stopPropagation(); setExpandedMenu(expandedMenu === 'business' ? null : 'business'); }} className={`p-3 border rounded-xl lg:hidden active:scale-90 transition-all z-10 duration-700 ${isDarkMode ? 'bg-white/5 border-white/10 hover:bg-white/10' : 'bg-slate-50 border-slate-200 hover:bg-slate-100'}`}>
+                                                        <ChevronRight size={20} className={`transition-transform duration-300 ${expandedMenu === 'business' ? 'rotate-90' : ''}`} />
+                                                    </button>
+                                                </div>
+                                                
+                                                <div className={`
+                                                    submenu-animate
+                                                    ${expandedMenu === 'business' ? 'grid' : 'hidden'} 
+                                                    lg:!hidden lg:group-hover:!grid
+                                                    mt-4 grid-cols-1 gap-1 p-4 rounded-3xl border transition-colors duration-700
+                                                    lg:absolute lg:right-full lg:top-0 lg:mt-0 lg:mr-4 lg:w-72 lg:shadow-2xl z-50
+                                                    ${isDarkMode ? 'bg-black/40 lg:bg-black/95 border-white/10 text-white' : 'bg-slate-50 lg:bg-white border-slate-200 text-slate-900'}
+                                                `}>
+                                                    <div className="hidden lg:block absolute -right-6 top-0 w-6 h-full bg-transparent"></div>
+                                                    {allLectures.filter(l => l.part === 1).map(l => (
+                                                        <button key={l.id} onClick={() => handleNavigateToLN(l)} className={`text-[11px] font-black border py-3 px-4 rounded-xl transition-colors duration-700 uppercase text-left truncate leading-tight ${isDarkMode ? 'text-white/50 border-white/5 hover:bg-white/10 hover:text-blue-400' : 'text-slate-600 border-slate-200 hover:bg-slate-100 hover:text-blue-600'}`}>
+                                                            {isEn ? l.title_en : l.title_zh}
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            </div>
+
+                                            {/* Corporate Strategy 子目錄邏輯 */}
+                                            <div className="relative group">
+                                                <div className="flex items-center justify-between w-full">
+                                                    <button onClick={() => handleNavigate('part2')} className="text-left font-black text-lg sm:text-xl leading-snug tracking-widest hover:text-purple-500 uppercase flex-grow break-words pr-2 py-2">
+                                                        {currentUI.menuCorporate}
+                                                    </button>
+                                                    <button onClick={(e) => { e.stopPropagation(); setExpandedMenu(expandedMenu === 'corporate' ? null : 'corporate'); }} className={`p-3 border rounded-xl lg:hidden active:scale-90 transition-all z-10 duration-700 ${isDarkMode ? 'bg-white/5 border-white/10 hover:bg-white/10' : 'bg-slate-50 border-slate-200 hover:bg-slate-100'}`}>
+                                                        <ChevronRight size={20} className={`transition-transform duration-300 ${expandedMenu === 'corporate' ? 'rotate-90' : ''}`} />
+                                                    </button>
+                                                </div>
+                                                
+                                                <div className={`
+                                                    submenu-animate
+                                                    ${expandedMenu === 'corporate' ? 'grid' : 'hidden'} 
+                                                    lg:!hidden lg:group-hover:!grid
+                                                    mt-4 grid-cols-1 gap-1 p-4 rounded-3xl border transition-colors duration-700
+                                                    lg:absolute lg:right-full lg:top-0 lg:mt-0 lg:mr-4 lg:w-72 lg:shadow-2xl z-50
+                                                    ${isDarkMode ? 'bg-black/40 lg:bg-black/95 border-white/10 text-white' : 'bg-slate-50 lg:bg-white border-slate-200 text-slate-900'}
+                                                `}>
+                                                    <div className="hidden lg:block absolute -right-6 top-0 w-6 h-full bg-transparent"></div>
+                                                    {allLectures.filter(l => l.part === 2).map(l => (
+                                                        <button key={l.id} onClick={() => handleNavigateToLN(l)} className={`text-[11px] font-black border py-3 px-4 rounded-xl transition-colors duration-700 uppercase text-left truncate leading-tight ${isDarkMode ? 'text-white/50 border-white/5 hover:bg-white/10 hover:text-purple-400' : 'text-slate-600 border-slate-200 hover:bg-slate-100 hover:text-purple-600'}`}>
+                                                            {isEn ? l.title_en : l.title_zh}
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            </div>
+
+                                            <div className="h-px bg-current opacity-10 my-4"></div>
+                                            <p className="text-[10px] font-bold opacity-30 tracking-[0.3em] uppercase leading-none text-current">v7.7.1 STABLE</p>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </nav>
+
+                    <main className="pt-40 pb-24 px-4 sm:px-10 max-w-7xl mx-auto flex-grow w-full overflow-x-hidden md:overflow-visible">
+                        {view === 'home' && (
+                            <div className="animate-in overflow-visible text-center">
+                                <div className="max-w-6xl mx-auto mb-24 overflow-visible px-2 flex flex-col items-center">
+                                    <div className="block overflow-visible pb-10 text-center">
+                                        <h1 className={`text-3xl sm:text-6xl md:text-[5.5rem] font-black text-gradient bg-gradient-to-r ${isDarkMode ? 'from-white via-blue-400 to-indigo-500' : 'from-black via-blue-700 to-blue-900'} tracking-tight leading-[1.2]`}>
+                                            {currentUI.header}
+                                        </h1>
+                                    </div>
+                                    <p className={`text-lg sm:text-2xl font-medium mt-4 text-center max-w-4xl mx-auto transition-colors duration-700 ${isDarkMode ? 'text-white/60 italic' : 'text-slate-700 italic'}`}>{currentUI.subHeader}</p>
+                                </div>
+
+                                <div className="space-y-8 mb-24 text-left text-current">
+                                    <div onClick={() => handleNavigate('introDetail')} className={`hover-card group p-10 sm:p-16 rounded-[4rem] border transition-all duration-700 cursor-pointer relative overflow-visible shadow-2xl ${isDarkMode ? 'bg-blue-600/5 border-white/10 hover:border-blue-500/50' : 'bg-white border-black/5 hover:border-blue-400'}`}>
+                                        <div className="flex items-center justify-between mb-8 text-blue-500"><div className="flex items-center gap-6 text-current"><Book /> <h2 className="text-3xl sm:text-5xl font-black tracking-tight">{currentUI.introTitle}</h2></div><MousePointer className="opacity-20 group-hover:opacity-100" /></div>
+                                        <h3 className={`text-lg sm:text-2xl font-black mb-6 italic transition-colors duration-700 ${isDarkMode ? 'text-[#00ffff]' : 'text-black font-black'}`}>{currentUI.introSubtitle}</h3>
+                                        <p className={`text-base sm:text-2xl leading-relaxed transition-colors duration-700 ${isDarkMode ? 'text-white/50' : 'text-slate-600'}`}>{currentUI.introDesc}</p>
+                                    </div>
+                                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 text-left">
+                                        <div onClick={() => handleNavigate('team')} className={`hover-card group p-10 rounded-[3.5rem] border transition-all duration-700 cursor-pointer shadow-2xl flex flex-col justify-between min-h-[350px] ${isDarkMode ? 'bg-emerald-600/5 border-white/10 hover:border-emerald-500/50' : 'bg-white border-black/5 hover:border-emerald-400'}`}>
+                                            <div><div className="flex items-center gap-6 text-emerald-500 mb-8 text-current font-black"><Users /> <h2 className="text-3xl sm:text-4xl font-black">{currentUI.menuTeam}</h2></div><p className={`text-lg sm:text-xl italic transition-colors duration-700 ${isDarkMode ? 'text-white/60' : 'text-slate-700'}`}>{isEn ? "Educators and builders redefining how strategy is learned in the age of AI." : "在 AI 時代重新定義策略學習方式的教育者與建構者。"}</p></div>
+                                            <div className="mt-8 flex items-center gap-4 text-emerald-500 font-black uppercase text-xs tracking-widest text-current">Profiles &rarr;</div>
+                                        </div>
+                                        
+                                        {/* 全新 Learning Guide 卡片 */}
+                                        <div onClick={() => handleNavigate('guide')} className={`hover-card group p-10 rounded-[3.5rem] border transition-all duration-700 cursor-pointer shadow-2xl flex flex-col justify-between min-h-[350px] ${isDarkMode ? 'bg-indigo-600/5 border-white/10 hover:border-indigo-500/50' : 'bg-white border-black/5 hover:border-indigo-400'}`}>
+                                            <div>
+                                                <div className="flex items-center justify-between mb-8 text-indigo-500">
+                                                    <div className="flex items-center gap-6 text-current font-black"><Help /> <h2 className="text-3xl sm:text-4xl font-black">{currentUI.guideTitle}</h2></div>
+                                                    <MousePointer className="opacity-20 group-hover:opacity-100" />
+                                                </div>
+                                                <h3 className={`text-lg sm:text-xl font-bold mb-4 transition-colors duration-700 ${isDarkMode ? 'text-indigo-400' : 'text-indigo-600'}`}>{currentUI.guideSubtitle}</h3>
+                                                <p className={`text-sm sm:text-base leading-relaxed transition-colors duration-700 ${isDarkMode ? 'text-white/60' : 'text-slate-700'}`}>{currentUI.guideDesc}</p>
+                                            </div>
+                                            <div className="mt-8 flex items-center gap-4 text-indigo-500 font-black uppercase text-xs tracking-widest text-current">View Guide &rarr;</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <h3 className="text-center text-xs font-black mb-16 uppercase tracking-[0.6em] opacity-30 text-current">{currentUI.tracks}</h3>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-10 text-left text-current">
+                                    <div onClick={() => handleNavigate('part1')} className={`hover-card group p-12 rounded-[4rem] border transition-all duration-700 cursor-pointer min-h-[420px] flex flex-col justify-between shadow-2xl ${isDarkMode ? 'bg-[#08080a] border-white/10 hover:border-blue-500/40' : 'bg-white border-black/5 hover:border-blue-400'}`}>
+                                        <div><h2 className="text-xl sm:text-2xl font-black mb-1 opacity-50 tracking-widest uppercase">{currentUI.part1CardLabel}</h2><h2 className={`text-2xl sm:text-4xl lg:text-[2.8rem] leading-tight break-words font-black mb-8 transition-colors duration-700 ${!isDarkMode && 'text-slate-900'}`}>{currentUI.part1CardTitle}</h2><p className={`text-sm sm:text-lg italic leading-relaxed transition-colors duration-700 ${isDarkMode ? 'text-white/60 font-medium' : 'text-slate-600 font-medium'}`}>{isEn ? currentUI.part1CardDesc : uiText.zh.part1CardDesc}</p></div>
+                                        <button className="flex items-center gap-4 font-black uppercase text-blue-500 tracking-widest">{currentUI.enter} <ChevronRight /></button>
+                                    </div>
+                                    <div onClick={() => handleNavigate('part2')} className={`hover-card group p-12 rounded-[4rem] border transition-all duration-700 cursor-pointer min-h-[420px] flex flex-col justify-between shadow-2xl ${isDarkMode ? 'bg-[#08080a] border-white/10 hover:border-purple-500/40' : 'bg-white border-black/5 hover:border-purple-400'}`}>
+                                        <div><h2 className="text-xl sm:text-2xl font-black mb-1 opacity-50 tracking-widest uppercase">{currentUI.part2CardLabel}</h2><h2 className={`text-2xl sm:text-4xl lg:text-[2.8rem] leading-tight break-words font-black mb-8 transition-colors duration-700 ${!isDarkMode && 'text-slate-900'}`}>{currentUI.part2CardTitle}</h2><p className={`text-sm sm:text-lg italic leading-relaxed transition-colors duration-700 ${isDarkMode ? 'text-white/60 font-medium' : 'text-slate-600 font-medium'}`}>{isEn ? currentUI.part2CardDesc : uiText.zh.part2CardDesc}</p></div>
+                                        <button className="flex items-center gap-4 font-black uppercase text-purple-500 tracking-widest">{currentUI.enter} <ChevronRight /></button>
+                                    </div>
                                 </div>
                             </div>
-                        </label>
-                    </div>
+                        )}
 
-                    <!-- Visual Progress Bar (Thermometer Style) -->
-                    <div class="bg-gray-50 dark:bg-black/20 px-6 py-4 border-t border-gray-300 dark:border-gray-700">
-                        <div class="flex flex-col items-center justify-center">
-                            <div class="w-full max-w-xs h-4 bg-gray-300 dark:bg-gray-700 rounded-full overflow-hidden relative shadow-inner">
-                                <div id="progress-bar" class="h-full bg-gradient-to-r from-bcg-green to-green-400 transition-all duration-500 ease-out" style="width: 0%"></div>
+                        {/* 新增的 Learning Guide 頁面 */}
+                        {view === 'guide' && (
+                            <div className="animate-in max-w-5xl mx-auto pb-32 text-left text-current">
+                                <button onClick={() => handleNavigate('home')} className="flex items-center justify-start gap-4 mb-16 opacity-50 hover:opacity-100 font-bold uppercase tracking-widest transition-all"><Icons.ArrowLeft size={20} /> {currentUI.back}</button>
+                                <h1 className={`text-4xl sm:text-7xl font-black mb-6 text-gradient bg-gradient-to-r ${isDarkMode ? 'from-white via-indigo-400 to-indigo-600' : 'from-black via-indigo-700 to-indigo-900'} tracking-tighter uppercase leading-tight`}>{currentUI.guideTitle}</h1>
+                                <p className={`text-lg sm:text-2xl font-medium italic mb-16 whitespace-pre-line leading-relaxed max-w-4xl transition-colors duration-700 ${isDarkMode ? 'text-white/70' : 'text-slate-700'}`}>{currentUI.guidePageDesc}</p>
+
+                                <div className="relative pl-6 sm:pl-12 ml-4 sm:ml-6 border-l-[3px] border-indigo-500/20 space-y-12 sm:space-y-16">
+                                    {guideSteps.map((step, index) => (
+                                        <div key={step.id} className="relative group cursor-pointer" onClick={() => setExpandedStep(expandedStep === step.id ? null : step.id)}>
+                                            {/* 節點圓圈 */}
+                                            <div className={`absolute -left-[39px] sm:-left-[67px] top-2 w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-black text-sm sm:text-base border-4 transition-all duration-500 ${expandedStep === step.id ? (isDarkMode ? 'bg-indigo-500 border-[#050507] text-white scale-110' : 'bg-indigo-600 border-slate-50 text-white scale-110') : (isDarkMode ? 'bg-[#050507] border-indigo-500/50 text-indigo-400 group-hover:border-indigo-500' : 'bg-slate-50 border-indigo-300 text-indigo-600 group-hover:border-indigo-500')}`}>
+                                                {step.id}
+                                            </div>
+                                            
+                                            {/* 內容卡片 */}
+                                            <div className={`p-6 sm:p-10 rounded-[2rem] border transition-all duration-500 ${expandedStep === step.id ? (isDarkMode ? 'bg-indigo-900/20 border-indigo-500/50 shadow-[0_0_40px_rgba(99,102,241,0.15)]' : 'bg-indigo-50 border-indigo-300 shadow-xl') : (isDarkMode ? 'bg-white/5 border-white/10 hover:border-indigo-500/30' : 'bg-white border-black/5 hover:border-indigo-300 shadow-sm')}`}>
+                                                <div className="flex justify-between items-center gap-4">
+                                                    <h3 className={`text-xl sm:text-2xl font-black transition-colors duration-500 ${expandedStep === step.id ? (isDarkMode ? 'text-white' : 'text-indigo-900') : (isDarkMode ? 'text-white/80' : 'text-slate-800')}`}>
+                                                        {isEn ? step.en.title : step.zh.title}
+                                                    </h3>
+                                                    <div className={`transform transition-transform duration-500 ${expandedStep === step.id ? 'rotate-180' : 'opacity-50'}`}>
+                                                        <ChevronDown />
+                                                    </div>
+                                                </div>
+                                                <div className={`overflow-hidden transition-all duration-500 ${expandedStep === step.id ? 'max-h-60 mt-6 opacity-100' : 'max-h-0 opacity-0'}`}>
+                                                    <p className={`text-base sm:text-xl leading-relaxed font-medium ${isDarkMode ? 'text-indigo-200' : 'text-indigo-800/80'}`}>
+                                                        {isEn ? step.en.desc : step.zh.desc}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
-                            <div class="mt-2 text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">
-                                <span class="lang-en hidden">Progress</span><span class="lang-zh">完成進度</span>: 
-                                <span id="checked-count" class="text-bcg-green text-sm">0</span> / <span id="total-count">2</span>
+                        )}
+
+                        {view === 'team' && (
+                            <div className="animate-in pb-32 text-left text-current">
+                                <button onClick={() => handleNavigate('home')} className="flex items-center justify-start gap-4 mb-16 opacity-50 hover:opacity-100 font-bold uppercase tracking-widest transition-all"><Icons.ArrowLeft size={20} /> {currentUI.back}</button>
+                                <h1 className={`text-4xl sm:text-7xl font-black mb-16 text-gradient bg-gradient-to-r ${isDarkMode ? 'from-white via-emerald-400 to-emerald-600' : 'from-black via-emerald-700 to-emerald-900'} tracking-tighter uppercase leading-tight`}>{isEn ? "Meet Our Team" : "團隊介紹"}</h1>
+                                
+                                <div className={`p-8 sm:p-12 lg:p-20 rounded-[3rem] lg:rounded-[4rem] mb-16 lg:mb-20 border shadow-2xl flex flex-col md:flex-row items-center md:items-start gap-8 lg:gap-12 text-center md:text-left transition-colors duration-700 ${isDarkMode ? 'bg-[#0a0a0c] border-white/10' : 'bg-white border-black/5'}`}>
+                                    <div className="w-48 h-64 sm:w-64 sm:h-80 rounded-[2rem] bg-slate-800 shrink-0 overflow-hidden flex items-center justify-center transition-all duration-700 relative shadow-xl">
+                                        <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-slate-700 to-slate-900 text-white/10 font-black text-9xl z-0">LO</div>
+                                        <img src="https://drive.google.com/thumbnail?id=1N0PdU_C5zS_P-z0tgjzAy1AbYYo1FrQu&sz=w1000" alt="Prof. Shihmin Lo" onError={(e) => e.target.style.display='none'} className="w-full h-full object-cover relative z-10" />
+                                    </div>
+                                    <div className="flex-grow text-left text-current">
+                                        <h3 className={`font-extrabold mb-4 tracking-tight leading-[1.1] transition-colors duration-700 ${!isDarkMode ? 'text-slate-900' : 'text-white'} ${isEn ? 'text-4xl sm:text-6xl' : 'text-4xl sm:text-5xl'}`}>
+                                            {isEn ? "Prof. Shihmin Lo" : "駱世民"}
+                                        </h3>
+                                        <div className="mb-6 flex flex-wrap items-center gap-4 justify-center md:justify-start">
+                                            <span className="inline-block bg-emerald-500/10 text-emerald-500 px-4 py-1.5 rounded-full uppercase tracking-wider text-xs font-semibold border border-emerald-500/20">
+                                                {isEn ? "Instructor" : "指導教授"}
+                                            </span>
+                                            <div className={`inline-flex items-center gap-2 text-sm font-medium transition-colors ${isDarkMode ? 'text-white/50' : 'text-slate-500'}`}>
+                                                <Mail size={16} /> smlo@ncnu.edu.tw
+                                            </div>
+                                        </div>
+                                        <div className={`h-px w-full my-6 transition-colors duration-700 ${isDarkMode ? 'bg-white/5' : 'bg-black/5'}`}></div>
+                                        <div className="border-l-2 border-emerald-500/40 pl-6 max-w-3xl">
+                                            <h4 className="text-xs font-bold opacity-40 uppercase tracking-widest mb-2 transition-opacity duration-700">
+                                                {isEn ? "Expertise" : "專長領域"}
+                                            </h4>
+                                            <p className={`text-lg sm:text-2xl font-medium leading-relaxed transition-colors duration-700 ${isDarkMode ? 'text-white/70' : 'text-slate-700'} ${!isEn && 'tracking-wide'}`}>
+                                                {isEn ? "Int'l Business Strategy, Competitive Analysis, Platform Models" : "國際企業經營策略、產業競爭分析、平台商業模式。"}
+                                            </p>
+                                        </div>
+                                        
+                                        {/* 新增：YouTube 按鈕 */}
+                                        <a href="https://youtube.com/@shihminlo6097?si=bydjIojm0I49X16n" target="_blank" rel="noopener noreferrer" className={`mt-10 inline-flex items-center gap-3 px-6 py-3 rounded-full font-bold text-sm tracking-widest uppercase transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-1 ${isDarkMode ? 'bg-red-600 hover:bg-red-500 text-white' : 'bg-red-600 hover:bg-red-700 text-white'}`}>
+                                            <Youtube /> {isEn ? "YouTube Channel" : "YouTube 頻道"}
+                                        </a>
+                                    </div>
+                                </div>
+                                
+                                {/* TA Grid - RWD 優化，精確分為三欄 */}
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 text-left text-current w-full">
+                                    {members.map(m => (
+                                        <div key={m.id} onClick={() => setSelectedMember(m)} className={`hover-card group relative p-0 rounded-[2.5rem] border cursor-pointer overflow-hidden min-h-[400px] sm:min-h-[500px] flex flex-col justify-end transition-colors duration-700 ${isDarkMode ? 'border-white/5' : 'border-black/5'}`}>
+                                            <div className="absolute inset-0 bg-slate-800 z-0 flex items-center justify-center text-white/5 font-black text-[12rem] uppercase select-none leading-none">{m.initials}</div>
+                                            {m.img && <img src={m.img} alt={isEn ? m.en.name : m.zh.name} onError={(e) => e.target.style.display='none'} className="absolute inset-0 w-full h-full object-cover z-0 group-hover:scale-105 transition-transform duration-700" />}
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent z-10"></div>
+                                            <div className="relative z-20 p-6 sm:p-8 text-white text-left break-words w-full">
+                                                <h4 className="text-2xl sm:text-3xl font-black mb-1 leading-none">{isEn ? m.en.name : m.zh.name}</h4>
+                                                <p className="text-emerald-400 font-bold text-xs tracking-widest uppercase mb-4">{isEn ? m.en.dept : m.zh.dept}</p>
+                                                <div className="pt-6 mt-6 border-t border-white/10 flex items-center justify-between opacity-60 group-hover:opacity-100 transition-opacity font-black text-[9px] tracking-widest uppercase">Profile &rarr;</div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {view === 'introDetail' && (
+                            <div className="animate-in max-w-6xl mx-auto pb-32 overflow-visible px-2 text-left text-current">
+                                <button onClick={() => handleNavigate('home')} className="flex items-center justify-start gap-4 mb-20 opacity-50 hover:opacity-100 font-bold uppercase tracking-widest transition-all"><Icons.ArrowLeft size={20} /> {currentUI.back}</button>
+                                <h1 className={`text-4xl sm:text-7xl font-black mb-16 text-gradient bg-gradient-to-r ${isDarkMode ? 'from-white via-blue-400 to-blue-600' : 'from-black via-blue-700 to-blue-950'} tracking-tighter uppercase leading-tight`}>{isEn ? "Course Introduction" : "課程簡介"}</h1>
+                                
+                                <div className="space-y-16 mb-24 text-current">
+                                    {detailedSections.map(sec => (
+                                        <div key={sec.id} className={`active-section p-10 sm:p-16 rounded-[4rem] border border-transparent shadow-xl transition-colors duration-700 ${isDarkMode ? 'hover:bg-white/5 text-white' : 'hover:bg-slate-200/50 text-slate-900'}`}>
+                                            <div className="flex items-center gap-8 mb-10 overflow-visible text-current">
+                                                <div className="p-3 bg-slate-500/10 rounded-2xl shrink-0 text-current">{React.cloneElement(sec.icon, { size: 40 })}</div>
+                                                <h2 className={`text-xl sm:text-4xl md:text-5xl font-black tracking-tight leading-tight whitespace-normal text-current`}>{isEn ? sec.en.title : sec.zh.title}</h2>
+                                            </div>
+                                            {/* 解決了淺色模式下的副標題顏色問題，採用高質感的青藍色 (cyan-600) */}
+                                            <h3 className={`text-xl sm:text-[2.2rem] font-black mb-8 italic border-b pb-6 leading-tight transition-colors duration-700 ${isDarkMode ? 'text-[#00ffff] border-white/10' : 'text-cyan-600 border-black/10'}`}>
+                                                {isEn ? sec.en.subtitle : sec.zh.subtitle}
+                                            </h3>
+                                            <div className={`text-lg sm:text-2xl leading-relaxed whitespace-pre-line font-medium italic transition-colors duration-700 ${isDarkMode ? 'text-white/90' : 'text-slate-800'}`}>{isEn ? sec.en.content : sec.zh.content}</div>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <div className={`p-10 sm:p-16 rounded-[4rem] border shadow-2xl relative overflow-hidden transition-colors duration-700 ${isDarkMode ? 'bg-indigo-600/5 text-white border-white/10' : 'bg-indigo-50 text-slate-900 border-indigo-100'}`}>
+                                    <div className="flex flex-col items-center mb-12 text-current text-center">
+                                        <div className="w-16 h-16 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400 mb-6 animate-pulse"><Help size={32} /></div>
+                                        <h2 className="text-3xl sm:text-5xl font-black text-center tracking-tight">{isEn ? "Knowledge Check" : "互動式問答挑戰"}</h2>
+                                        <p className="opacity-50 mt-4 font-bold text-sm uppercase tracking-widest">{isEn ? `Set ${quizPage + 1} of 3` : `第 ${quizPage + 1} 組測驗 / 共 3 組`}</p>
+                                    </div>
+
+                                    <div className="space-y-12 text-current">
+                                        {displayedQuestions.map((q) => (
+                                            <div key={q.id} className={`p-8 sm:p-10 rounded-[3rem] border transition-all duration-700 ${isDarkMode ? 'bg-black/40 border-white/5' : 'bg-white border-black/5 shadow-lg'}`}>
+                                                <h4 className="text-xl sm:text-2xl font-bold mb-8 leading-relaxed text-left text-current">{q[lang].q}</h4>
+                                                <div className="grid grid-cols-1 gap-4">
+                                                    {q[lang].options.map((opt, idx) => {
+                                                        const userChoiceIdx = userAnswers[q.id];
+                                                        const isRevealed = userChoiceIdx !== undefined;
+                                                        const isSelected = userChoiceIdx === idx;
+                                                        const isCorrect = opt.correct;
+                                                        
+                                                        let btnClass = isDarkMode ? "bg-white/5 border-white/5 hover:bg-white/10 text-white" : "bg-slate-50 border-slate-100 hover:bg-slate-100 text-slate-900";
+                                                        if (isRevealed) {
+                                                            if (isCorrect) btnClass = "bg-emerald-500/20 border-emerald-500 text-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.2)]";
+                                                            else if (isSelected) btnClass = "bg-rose-500/20 border-rose-500 text-rose-400 shadow-[0_0_20px_rgba(244,63,94,0.2)]";
+                                                            else btnClass = isDarkMode ? "opacity-30 grayscale" : "opacity-30 bg-slate-200 text-slate-400";
+                                                        }
+                                                        
+                                                        return (
+                                                            <div key={idx} className="space-y-2 text-left">
+                                                                <button disabled={isRevealed} onClick={() => handleQuizAnswer(q.id, idx)} className={`w-full text-left p-5 rounded-2xl border transition-all flex items-start gap-4 group ${btnClass}`}>
+                                                                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center font-black shrink-0 ${isSelected ? (isDarkMode ? 'bg-white text-black' : 'bg-slate-900 text-white') : (isDarkMode ? 'bg-white/10 text-blue-400' : 'bg-slate-200 text-blue-600')}`}>
+                                                                        {opt.label}
+                                                                    </span>
+                                                                    <span className="font-semibold text-base sm:text-lg leading-snug">{opt.text}</span>
+                                                                </button>
+                                                                
+                                                                {isRevealed && (
+                                                                    <div className="animate-in slide-in-from-top-2 duration-300">
+                                                                        {isCorrect && (
+                                                                            <div className="mt-2 p-6 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-left">
+                                                                                <div className="flex items-center gap-2 mb-2 text-current font-black"><span className="text-emerald-400">✅ {isEn ? "Correct Answer Logic" : "正確答案解析"}</span></div>
+                                                                                <p className={`text-sm sm:text-base opacity-95 leading-relaxed italic transition-colors duration-700 ${!isDarkMode && 'text-slate-800'}`}>{opt.expl}</p>
+                                                                            </div>
+                                                                        )}
+                                                                        {isSelected && !isCorrect && (
+                                                                            <div className="mt-2 p-6 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-left">
+                                                                                <div className="flex items-center gap-2 mb-2 text-current font-black"><span className="text-rose-400">❌ {isEn ? "Your Choice Analysis" : "您的選項解析"}</span></div>
+                                                                                <p className={`text-sm sm:text-base opacity-95 leading-relaxed italic transition-colors duration-700 ${!isDarkMode && 'text-slate-800'}`}>{opt.expl}</p>
+                                                                            </div>
+                                                                        )}
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                        );
+                                                    })}
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <div className="mt-16 text-center">
+                                        <button onClick={nextQuizPage} className="px-12 py-5 rounded-full bg-gradient-to-r from-indigo-600 to-blue-600 font-black uppercase tracking-[0.2em] shadow-2xl hover:scale-105 active:scale-95 transition-all flex items-center gap-4 mx-auto group text-white">
+                                            {isEn ? "Continue Challenge" : "繼續挑戰題目"} <ChevronRight className="group-hover:translate-x-1 transition-transform" />
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {(view === 'part1' || view === 'part2') && (
+                            <div className="animate-in pb-24 text-left text-current">
+                                <button onClick={() => handleNavigate('home')} className="flex items-center justify-start gap-4 mb-16 opacity-50 hover:opacity-100 font-bold uppercase tracking-widest transition-all text-current"><Icons.ArrowLeft size={20} /> {currentUI.back}</button>
+                                <div className={`mb-24 p-10 sm:p-16 rounded-[4rem] shadow-2xl border transition-colors duration-700 ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-white border-black/5'}`}>
+                                    <h2 className="text-3xl sm:text-6xl font-black mb-10 text-gradient bg-gradient-to-r from-blue-400 to-indigo-500">{view === 'part1' ? currentUI.part1Header : currentUI.part2Header}</h2>
+                                    <div className={`space-y-10 text-lg sm:text-2xl leading-relaxed font-medium italic text-left text-current`}>
+                                        <p className={`transition-colors duration-700 ${isDarkMode ? 'text-white/90' : 'text-slate-800'}`}>{isEn ? (view === 'part1' ? uiText.en.part1SyllabusDesc : uiText.en.part2SyllabusDesc) : (view === 'part1' ? uiText.zh.part1SyllabusDesc : uiText.zh.part2SyllabusDesc)}</p>
+                                    </div>
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-current text-left text-current">
+                                    {allLectures.filter(l => (view === 'part1' ? l.part === 1 : l.part === 2)).map(l => (
+                                        <div key={l.id} onClick={() => handleNavigateToLN(l)} className={`hover-card group p-12 rounded-[3.5rem] border transition-all duration-700 cursor-pointer flex flex-col justify-between min-h-[520px] shadow-2xl ${isDarkMode ? 'bg-[#0e0e12] border-white/5 hover:border-blue-500/30' : 'bg-white border-black/5 hover:border-blue-400'}`}>
+                                            <div>
+                                                <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${l.color} flex items-center justify-center text-white font-black text-2xl mb-12 shadow-lg transform group-hover:rotate-6 transition-transform`}>{l.id}</div>
+                                                <h3 className={`text-2xl sm:text-3xl font-bold mb-4 tracking-tight leading-tight group-hover:text-blue-500 transition-colors duration-700 ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>{isEn ? l.title_en : l.title_zh}</h3>
+                                                <p className="text-sm opacity-40 italic mb-10 leading-relaxed text-current">"{isEn ? l.quote_en : l.quote_zh}"</p>
+                                                <div className={`w-16 h-1.5 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 mb-8 group-hover:w-full transition-all duration-700`}></div>
+                                                <p className="text-xs font-black opacity-60 uppercase tracking-[0.3em]">{isEn ? l.tag_en : l.tag_zh}</p>
+                                            </div>
+                                            <div className="pt-10 border-t border-white/5 flex items-center justify-between transition-all text-current"><span className="flex items-center gap-3 text-sm font-black text-amber-500 uppercase tracking-[0.2em] italic animate-pulse"><Clock /> {currentUI.statusComing}</span><ChevronRight size={24} className="opacity-20 group-hover:opacity-100 group-hover:translate-x-3 transition-all" /></div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {view === 'detail' && activeModule && (
+                            <div className="animate-in slide-in-from-bottom-5 duration-700 text-left text-current">
+                                <button onClick={() => setView(activeModule.part === 1 ? 'part1' : 'part2')} className="flex items-center justify-start gap-4 mb-16 opacity-50 hover:opacity-100 font-bold uppercase tracking-widest text-current"><Icons.ArrowLeft size={20} /> Back to List</button>
+                                <div className={`p-16 rounded-[4rem] border shadow-2xl transition-colors duration-700 ${isDarkMode ? 'bg-[#0a0a0c] border-white/10 text-white' : 'bg-white shadow-xl text-slate-900'}`}>
+                                    <div className="flex flex-col md:flex-row items-start md:items-center gap-10 mb-16 text-current text-left">
+                                        <div className={`w-24 h-24 rounded-3xl bg-gradient-to-br ${activeModule.color} flex items-center justify-center text-white text-4xl font-black shadow-2xl`}>{activeModule.id}</div>
+                                        <div className="min-w-0">
+                                            <span className="text-blue-500 font-black text-[10px] tracking-widest uppercase mb-2 block tracking-[0.4em]">INTERACTIVE MODULE</span>
+                                            <h2 className={`text-4xl sm:text-6xl font-black leading-tight break-words pb-4`}>{isEn ? activeModule.title_en : activeModule.title_zh}</h2>
+                                            <p className={`opacity-50 text-2xl italic mt-1 font-medium leading-relaxed`}>"{isEn ? activeModule.quote_en : activeModule.quote_zh}"</p>
+                                        </div>
+                                    </div>
+                                    <div className="min-h-[400px] flex items-center justify-center border-2 border-dashed border-slate-500/20 rounded-[3rem] opacity-30 italic text-xl text-center text-current">
+                                        [ Concept Lab Content Underway ]
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </main>
+
+                    {/* --- Footer --- */}
+                    <footer className={`py-12 border-t transition-colors duration-700 ${isDarkMode ? 'border-white/5 bg-black/95 text-white/40' : 'border-black/5 bg-slate-100 text-slate-500'}`}>
+                        <div className="max-w-7xl mx-auto px-10 flex flex-col md:flex-row justify-between items-center md:items-end gap-12 md:gap-0 text-center md:text-left text-current font-black">
+                            <div className="flex flex-col gap-4 items-center md:items-start text-xs font-black uppercase tracking-widest leading-none text-current text-left">
+                                <span>{currentUI.footerCourse}</span>
+                                <div className="flex gap-8 text-[11px] opacity-30 mt-2 text-current font-black"><span>v7.7.1</span><a href="https://www.ncnu.edu.tw/" target="_blank" rel="noreferrer" className="hover:text-blue-500 underline decoration-white/20 transition-colors">NCNU</a></div>
+                            </div>
+                            <div className="flex flex-col items-center md:items-end gap-4 text-center md:text-right text-current font-black">
+                                <div className="flex gap-6 mb-2 text-[11px] font-bold uppercase tracking-widest text-current font-black">
+                                    <a href="https://www.ibs.ncnu.edu.tw/index.php/faculty/tenured-professor/299-smlo" target="_blank" rel="noreferrer" className="opacity-60 hover:opacity-100 hover:text-purple-400 transition-all flex items-center gap-2">{currentUI.footerInstructor} <External size={12} /></a>
+                                    <a href="https://www.ibs.ncnu.edu.tw/" target="_blank" rel="noreferrer" className={`opacity-60 hover:opacity-100 hover:text-blue-400 transition-all flex items-center gap-2`}>{currentUI.footerDept} <External size={12} /></a>
+                                </div>
+                                <p className="text-[10px] font-bold opacity-30 tracking-tight text-current font-black text-right">© 2026 International Strategic Management Portal</p>
                             </div>
                         </div>
-                    </div>
+                    </footer>
+
+                    {/* Member Modal */}
+                    {selectedMember && (
+                        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 sm:p-6 bg-black/95 backdrop-blur-md transition-colors duration-700">
+                            <div className={`modal-animate relative w-full max-w-5xl rounded-[3rem] overflow-hidden flex flex-col lg:flex-row border shadow-[0_80px_160px_rgba(0,0,0,1)] text-left transition-colors duration-700 ${isDarkMode ? 'bg-[#0a0a0c] text-white border-white/10' : 'bg-white text-slate-900 border-slate-200'}`}>
+                                <button onClick={() => setSelectedMember(null)} className={`absolute top-6 right-6 z-30 p-2 rounded-full transition-colors duration-700 ${isDarkMode ? 'bg-white/10 hover:bg-white/20 text-white' : 'bg-black/5 hover:bg-black/10 text-slate-900'}`}><X /></button>
+                                <div className={`lg:w-1/2 h-[450px] lg:h-auto relative overflow-hidden flex items-center justify-center text-center transition-colors duration-700 ${isDarkMode ? 'bg-slate-900' : 'bg-slate-100'}`}>
+                                    <div className={`absolute inset-0 flex items-center justify-center font-black text-[12rem] select-none leading-none transition-colors duration-700 ${isDarkMode ? 'text-white/10' : 'text-black/5'}`}>{selectedMember.initials}</div>
+                                    {selectedMember.img && <img src={selectedMember.img} alt={isEn ? selectedMember.en.name : selectedMember.zh.name} onError={(e) => e.target.style.display='none'} className="absolute inset-0 w-full h-full object-cover z-0" />}
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10"></div>
+                                    <div className="absolute bottom-10 left-10 z-20 text-white text-left">
+                                        <h2 className="text-4xl sm:text-5xl font-black mb-1 leading-none text-left">{isEn ? selectedMember.en.name : selectedMember.zh.name}</h2>
+                                        <div className="mt-2 space-y-2">
+                                            <p className="text-emerald-400 font-bold uppercase tracking-widest text-sm text-left">{isEn ? selectedMember.en.dept : selectedMember.zh.dept}</p>
+                                            {selectedMember.email && (
+                                                <div className="inline-flex items-center gap-2 text-xs font-medium text-white/70 transition-colors">
+                                                    <Mail size={14} /> {selectedMember.email}
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
-            </div>
+            );
+        };
 
-            <!-- Post W1 Content (TBD) -->
-            <div id="content-w1-post" class="hidden"> 
-                <div class="tbd-card border border-dashed border-gray-300 dark:border-gray-600 rounded-lg h-48 flex flex-col items-center justify-center p-6 text-center">
-                    <i class="fas fa-hourglass-half text-3xl text-gray-400 dark:text-gray-600 mb-3"></i>
-                    <h3 class="text-lg font-bold text-gray-500 dark:text-gray-400">Post-Class Content</h3>
-                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                        <span class="lang-en hidden">Will be available after W1 class</span><span class="lang-zh">第一週課後開放</span>
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <!-- SECTION: W3-5 (TBD) -->
-        <div id="section-w3w5" class="hidden animate-fade-in"> 
-            <div class="mb-6 border-b border-gray-200 dark:border-gray-700 pb-4">
-                <h2 class="text-2xl font-light text-bcg-green uppercase tracking-wider">
-                    <span class="lang-en hidden">W3-5 GenAI</span><span class="lang-zh">第三至五週 生成式 AI</span>
-                </h2>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="tbd-card border border-dashed border-gray-300 dark:border-gray-600 rounded-lg h-40 flex flex-col items-center justify-center">
-                    <span class="text-xl font-bold text-gray-400 dark:text-gray-600">Module 1</span>
-                    <span class="text-xs text-gray-500 dark:text-gray-400 mt-1">Week 3</span>
-                </div>
-                <div class="tbd-card border border-dashed border-gray-300 dark:border-gray-600 rounded-lg h-40 flex flex-col items-center justify-center">
-                    <span class="text-xl font-bold text-gray-400 dark:text-gray-600">Module 2</span>
-                    <span class="text-xs text-gray-500 dark:text-gray-400 mt-1">Week 4-5</span>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <!-- FOOTER (Compact Height: h-14) -->
-    <footer class="fixed bottom-0 w-full h-14 bg-white dark:bg-black/95 border-t border-gray-200 dark:border-gray-800 flex items-center justify-between px-3 md:px-6 z-50 text-xs transition-colors duration-300">
-        <!-- Left: Version & Instructor -->
-        <div class="flex flex-col space-y-0.5">
-            <span class="text-[9px] text-gray-500 dark:text-gray-500 font-mono">v2026.02.14 &copy; NCNU</span>
-            <div class="flex items-center space-x-1">
-                <span class="text-gray-600 dark:text-gray-500 uppercase font-bold text-[9px]">Inst.</span>
-                <a href="mailto:katiemhc@gmail.com" class="text-gray-800 dark:text-gray-300 hover:text-bcg-green dark:hover:text-white hover:underline transition font-medium">
-                    Prof. Katie Mei
-                </a>
-                <span class="text-gray-800 dark:text-gray-300 font-medium">&</span>
-                <a href="https://www.ibs.ncnu.edu.tw/index.php/faculty/tenured-professor/299-smlo" target="_blank" class="text-gray-800 dark:text-gray-300 hover:text-bcg-green dark:hover:text-white hover:underline transition font-medium">
-                    Prof. Shihmin Lo
-                </a>
-            </div>
-        </div>
-
-        <!-- Right: TAs Stacked Vertically -->
-        <div class="flex flex-col space-y-1 items-end">
-            <div class="flex items-center space-x-2">
-                <div class="flex items-center text-gray-600 dark:text-gray-300">
-                    <span class="hidden md:inline mr-1.5 text-[10px]">Jan Tai</span>
-                    <span class="lang-zh md:inline mr-1.5 text-[10px]">戴子然</span>
-                    <span class="w-4 h-4 rounded-full bg-gray-200 dark:bg-gray-800 flex items-center justify-center text-[8px] text-gray-600 dark:text-gray-400">J</span>
-                </div>
-            </div>
-            <div class="flex items-center space-x-2">
-                <div class="flex items-center text-gray-600 dark:text-gray-300">
-                    <span class="hidden md:inline mr-1.5 text-[10px]">Jeremy Wang</span>
-                    <span class="lang-zh md:inline mr-1.5 text-[10px]">王毓翰</span>
-                    <span class="w-4 h-4 rounded-full bg-gray-200 dark:bg-gray-800 flex items-center justify-center text-[8px] text-gray-600 dark:text-gray-400">J</span>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <script>
-        // === STATE & CONFIG ===
-        let currentLang = 'zh'; // Default to Chinese
-        let isDarkMode = true;
-        let isAudioPlaying = false;
-        let speechUtterance = null;
-        
-        // === UI ELEMENTS ===
-        const langToggle = document.getElementById('lang-toggle');
-        const themeToggle = document.getElementById('theme-toggle');
-        const audioBtn = document.getElementById('audio-btn');
-        const audioStatus = document.getElementById('audio-status');
-        const checklistInputs = document.querySelectorAll('#checklist-container input[type="checkbox"]');
-        const checkedCountEl = document.getElementById('checked-count');
-        const totalCountEl = document.getElementById('total-count');
-        const progressBar = document.getElementById('progress-bar');
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('overlay');
-
-        // === INIT ===
-        updateChecklistCounter();
-        
-        // --- THEME LOGIC FIX ---
-        // Force default to Dark Mode unless user explicitly set to light
-        if (localStorage.theme === 'light') {
-            isDarkMode = false;
-            document.documentElement.classList.remove('dark');
-        } else {
-            // Default to dark if 'dark' or if no preference (regardless of system pref)
-            isDarkMode = true;
-            document.documentElement.classList.add('dark');
-        }
-        updateThemeIcon();
-
-        // 2. Toggle Theme Function
-        themeToggle.addEventListener('click', () => {
-            isDarkMode = !isDarkMode;
-            
-            if (isDarkMode) {
-                document.documentElement.classList.add('dark');
-                localStorage.theme = 'dark';
-            } else {
-                document.documentElement.classList.remove('dark');
-                localStorage.theme = 'light';
-            }
-            
-            updateThemeIcon();
-        });
-
-        function updateThemeIcon() {
-            themeToggle.innerHTML = isDarkMode 
-                 ? '<i class="fas fa-sun text-sm"></i>' 
-                 : '<i class="fas fa-moon text-sm"></i>';
-        }
-
-        // 2. Language Toggle
-        langToggle.addEventListener('click', () => {
-            currentLang = currentLang === 'en' ? 'zh' : 'en';
-            
-            // Toggle Logic
-            document.querySelectorAll('.lang-en').forEach(el => el.classList.toggle('hidden', currentLang !== 'en'));
-            document.querySelectorAll('.lang-zh').forEach(el => el.classList.toggle('hidden', currentLang !== 'zh'));
-            
-            if(isAudioPlaying) stopAudio();
-        });
-
-        // 3. Audio Guide (Comprehensive Read from Top)
-        audioBtn.addEventListener('click', () => {
-            if(isAudioPlaying) {
-                stopAudio();
-            } else {
-                playAudio();
-            }
-        });
-
-        function playAudio() {
-            if (!('speechSynthesis' in window)) {
-                alert("Audio not supported");
-                return;
-            }
-
-            let textToRead = "";
-            const isOverview = !document.getElementById('section-overview').classList.contains('hidden');
-            const isW1W2 = !document.getElementById('section-w1w2').classList.contains('hidden');
-            const isW3W5 = !document.getElementById('section-w3w5').classList.contains('hidden');
-
-            // Header Info + Page Title (Read first for context)
-            if(currentLang === 'en') {
-                textToRead += "SMMC. Strategic Management of Multinational Corporations. Course Notification. ";
-            } else {
-                textToRead += "SMMC。國際策略管理。課程通知。";
-            }
-
-            // Content Logic based on active section
-            if(isOverview) {
-                if(currentLang === 'en') {
-                    // UPDATED AUDIO TEXT: Added specific mention of syllabus availability
-                    textToRead += "Overview Section. Welcome to SMMC. Strategic thinking and project execution in the age of Artificial Intelligence. Please note that the Course Syllabus will be uploaded on Week 1.";
-                } else {
-                    // UPDATED AUDIO TEXT: Added specific mention of syllabus availability in Chinese
-                    textToRead += "綜覽頁面。歡迎來到 SMMC。這是人工智慧時代的策略思維與專案執行課程。請注意，課程大綱將於第一週上傳。";
-                }
-            } else if(isW1W2) {
-                // Determine active tab within W1W2
-                const isPre = !document.getElementById('content-w1-pre').classList.contains('hidden');
-                if(isPre) {
-                    if(currentLang === 'en') { 
-                        // Updated to Mon 09:00, Room 228, 10%, and Checklist 
-                        textToRead += "Week 1 Orientation Section. Pre-Week 1 Content. Logistics: Monday 9:00 AM at College of Management Room 228. Participation is 10 percent. Mission Checklist: Complete Personal Info Form and Form your group before Week 1 class.";
-                    } else {
-                        // Updated to Mon 09:00, Room 228, 10%, and Checklist
-                        textToRead += "第一週課程定位頁面。第一週課前內容。行政資訊：週一早上九點，管理學院 228 教室。出席佔分百分之十。本週任務清單包括：填寫個人資料表，以及在第一週課前找好組員。";
-                    }
-                } else {
-                    if(currentLang === 'en') {
-                        textToRead += "Week 1 Orientation Section. Post-Week 1 Content. This content will be available after the first class.";
-                    } else {
-                        textToRead += "第一週課程定位頁面。第一週課後內容。此內容將於第一週課後開放。";
-                    }
-                }
-            } else if(isW3W5) {
-                if(currentLang === 'en') {
-                    textToRead += "Week 3 to 5, Generative AI Section. Modules coming soon.";
-                } else { 
-                    textToRead += "第三至五週，生成式 AI 頁面。模組即將發布。";
-                }
-            }
-
-            speechUtterance = new SpeechSynthesisUtterance(textToRead);
-            
-            // Voice Selection (Try best match)
-            const voices = window.speechSynthesis.getVoices();
-            if(currentLang === 'en') { 
-                // Try UK Male -> UK -> Any EN
-                const voice = voices.find(v => v.lang === 'en-GB' && v.name.includes('Male'))
-                            || voices.find(v => v.lang === 'en-GB')
-                            || voices.find(v => v.lang.startsWith('en'));
-                if(voice) speechUtterance.voice = voice;
-            } else {
-                // Try TW -> CN
-                const voice = voices.find(v => v.lang === 'zh-TW') || voices.find(v => v.lang === 'zh-CN');
-                if(voice) speechUtterance.voice = voice;
-            }
-
-            speechUtterance.onstart = () => {
-                isAudioPlaying = true;
-                audioBtn.classList.add('text-bcg-green', 'bg-gray-100', 'dark:bg-white/10');
-                audioStatus.classList.remove('hidden');
-                audioStatus.classList.add('flex');
-                document.getElementById('audio-text').textContent = currentLang === 'en' ? "Audio Guide Active" : "語音導覽中";
-            };
-
-            speechUtterance.onend = () => {
-                stopAudio();
-            };
-
-            window.speechSynthesis.speak(speechUtterance);
-        }
-
-        function stopAudio() {
-            window.speechSynthesis.cancel();
-            isAudioPlaying = false;
-            audioBtn.classList.remove('text-bcg-green', 'bg-gray-100', 'dark:bg-white/10');
-            audioStatus.classList.add('hidden');
-            audioStatus.classList.remove('flex');
-        }
-
-        // 4. Navigation & Tabs
-        window.switchSection = function(sectionId) {
-            ['overview', 'w1w2', 'w3w5'].forEach(id => document.getElementById('section-' + id).classList.add('hidden'));
-            document.getElementById('section-' + sectionId).classList.remove('hidden');
-            
-            document.querySelectorAll('#sidebar a').forEach(el => {
-                el.classList.remove('border-bcg-green', 'bg-gray-100', 'dark:bg-white/5', 'text-bcg-green', 'dark:text-white');
-                el.classList.add('border-transparent', 'text-gray-700', 'dark:text-gray-400');
-            });
-            
-            const activeNav = document.getElementById('nav-' + sectionId);
-            if(activeNav) {
-                activeNav.classList.remove('border-transparent', 'text-gray-700', 'dark:text-gray-400');
-                activeNav.classList.add('border-bcg-green', 'bg-gray-100', 'dark:bg-white/5', 'text-bcg-green', 'dark:text-white');
-            }
-
-            window.scrollTo(0,0);
-            
-            // Auto close sidebar on mobile AND desktop for smoother navigation as requested
-            const sidebar = document.getElementById('sidebar');
-            if (!sidebar.classList.contains('-translate-x-full')) {
-                toggleSidebar();
-            }
-        }
-
-        window.switchTab = function(tabId) {
-            document.getElementById('tab-w1-pre').classList.replace('border-bcg-green', 'border-transparent');
-            document.getElementById('tab-w1-pre').classList.replace('text-bcg-green', 'text-gray-500');
-            document.getElementById('tab-w1-post').classList.replace('border-bcg-green', 'border-transparent');
-            document.getElementById('tab-w1-post').classList.replace('text-bcg-green', 'text-gray-500');
-            
-            const activeTab = document.getElementById('tab-' + tabId);
-            activeTab.classList.replace('border-transparent', 'border-bcg-green');
-            activeTab.classList.replace('text-gray-500', 'text-bcg-green');
-            
-            if(tabId === 'w1-pre') {
-                document.getElementById('content-w1-pre').classList.remove('hidden');
-                document.getElementById('content-w1-post').classList.add('hidden');
-            } else {
-                document.getElementById('content-w1-pre').classList.add('hidden');
-                document.getElementById('content-w1-post').classList.remove('hidden');
-            }
-        }
-
-        // 5. Sidebar
-        function toggleSidebar() {
-            const isClosed = sidebar.classList.contains('-translate-x-full');
-            if (isClosed) {
-                sidebar.classList.remove('-translate-x-full');
-                overlay.classList.remove('hidden');
-            } else {
-                sidebar.classList.add('-translate-x-full');
-                overlay.classList.add('hidden');
-            }
-        }
-        document.getElementById('menu-btn').addEventListener('click', toggleSidebar);
-        document.getElementById('overlay').addEventListener('click', toggleSidebar); // Overlay closes sidebar
-
-        // 6. Checklist & Thermometer Logic
-        checklistInputs.forEach(input => input.addEventListener('change', updateChecklistCounter));
-        
-        function updateChecklistCounter() {
-            const checked = document.querySelectorAll('#checklist-container input[type="checkbox"]:checked').length;
-            const total = checklistInputs.length;
-            
-            // Update Text
-            checkedCountEl.textContent = checked;
-            totalCountEl.textContent = total;
-
-            // Update Thermometer Bar
-            const percentage = Math.round((checked / total) * 100);
-            progressBar.style.width = percentage + '%';
-        }
-
-        // Init Voice Load
-        window.speechSynthesis.getVoices();
-
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
     </script>
 </body>
 </html>
