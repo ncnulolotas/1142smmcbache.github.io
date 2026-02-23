@@ -161,11 +161,12 @@
                 </div>
             </a>
 
-            <!-- Week 2 - Inactive -->
-            <a href="javascript:void(0)" class="block px-6 py-3 border-l-4 border-transparent text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap">
+            <!-- Week 2 - Active -->
+            <a href="javascript:void(0)" onclick="switchSection('w2')" id="nav-w2" class="block px-6 py-3 border-l-4 border-transparent text-gray-700 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5 transition whitespace-nowrap">
                 <div class="flex items-center">
                     <span class="w-6 text-center mr-3"><i class="fas fa-flag"></i></span>
                     <span>第二週</span>
+                    <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse ml-2"></span>
                 </div>
             </a>
 
@@ -300,7 +301,7 @@
                     Pre W1 #1 (02/14)
                 </button>
                 <button onclick="switchTab('w1-post')" id="tab-w1-post" class="px-4 py-2 text-sm font-medium border-b-2 border-transparent text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition">
-                    Post W1 #2 (TBD)
+                    Post W1 #2
                 </button>
             </div>
 
@@ -387,13 +388,163 @@
                 </div>
             </div>
 
-            <!-- Post W1 Content (TBD) -->
+            <!-- Post W1 Content -->
             <div id="content-w1-post" class="hidden"> 
+                <div class="bg-white dark:bg-white/5 rounded-lg border border-gray-300 dark:border-gray-700 overflow-hidden shadow-md">
+                    <div class="px-6 py-4 border-b border-gray-300 dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-black/20">
+                        <h3 class="font-bold text-gray-800 dark:text-white text-sm uppercase tracking-wide flex items-center">
+                            <i class="fas fa-bell mr-2 text-bcg-green"></i>
+                            <span class="lang-en hidden">W1 Post-Class Reminder</span><span class="lang-zh">W1 課後提醒</span>
+                        </h3>
+                    </div>
+                    <div class="divide-y divide-gray-200 dark:divide-gray-700/50">
+                        <!-- Post Task 1 -->
+                        <label class="flex items-start p-5 hover:bg-gray-50 dark:hover:bg-white/5 transition cursor-pointer">
+                            <input type="checkbox" class="custom-checkbox mt-1 mr-4 accent-bcg-green w-5 h-5">
+                            <div class="flex-1">
+                                <span class="block text-gray-900 dark:text-white font-bold mb-1">
+                                    <span class="lang-en hidden">1. Complete Personal Info Form</span><span class="lang-zh">1. 完成個人資料表</span>
+                                </span>
+                                <a href="https://docs.google.com/forms/d/e/1FAIpQLSfS0euCUPCjUkAPotzQUnldQjGc3TytFM706IcpwOm7sMRowg/viewform" target="_blank" class="inline-flex items-center text-sm text-blue-600 dark:text-blue-400 hover:underline bg-blue-50 dark:bg-blue-900/20 px-3 py-1 rounded-full border border-blue-200 dark:border-transparent mt-2">
+                                    <i class="fas fa-link mr-2"></i> Google Form Link
+                                </a>
+                            </div>
+                        </label>
+
+                        <!-- Post Task 2 -->
+                        <label class="flex items-start p-5 hover:bg-gray-50 dark:hover:bg-white/5 transition cursor-pointer">
+                            <input type="checkbox" class="custom-checkbox mt-1 mr-4 accent-bcg-green w-5 h-5">
+                            <div class="flex-1">
+                                <span class="block text-gray-900 dark:text-white font-bold mb-1">
+                                    <span class="lang-en hidden">2. Group Leaders: Fill out Group Info Form</span><span class="lang-zh">2. 各組組長填寫小組資料表</span>
+                                </span>
+                                <a href="https://docs.google.com/forms/d/e/1FAIpQLSfPLTHhHPxQi2YL4P9Gj4isntvf4QUiW_KNteHsZCorElf_ow/viewform" target="_blank" class="inline-flex items-center text-sm text-blue-600 dark:text-blue-400 hover:underline bg-blue-50 dark:bg-blue-900/20 px-3 py-1 rounded-full border border-blue-200 dark:border-transparent mt-2">
+                                    <i class="fas fa-link mr-2"></i> Google Form Link
+                                </a>
+                            </div>
+                        </label>
+                        
+                        <!-- Post Task 3 -->
+                        <label class="flex items-start p-5 hover:bg-gray-50 dark:hover:bg-white/5 transition cursor-pointer">
+                            <input type="checkbox" class="custom-checkbox mt-1 mr-4 accent-bcg-green w-5 h-5">
+                            <div class="flex-1">
+                                <span class="block text-gray-900 dark:text-white font-bold mb-1">
+                                    <span class="lang-en hidden">3. Group: Create NotebookLM & Coggle</span><span class="lang-zh">3. 小組創建NotebookLM, Coggle</span>
+                                </span>
+                                <div class="bg-gray-50 dark:bg-white/5 p-3 rounded text-xs text-gray-600 dark:text-gray-400 border-l-4 border-orange-400 mt-2">
+                                    <i class="fas fa-info-circle mr-1 text-orange-500"></i>
+                                    <span class="lang-en hidden">Note: Remember to add the professor and TAs as editors.</span>
+                                    <span class="lang-zh">記得將老師與助教們加入共同編輯</span>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION: W2 -->
+        <div id="section-w2" class="hidden animate-fade-in">
+            <div class="mb-6 border-b border-gray-200 dark:border-gray-700 pb-4">
+                <h2 class="text-2xl font-light text-bcg-green uppercase tracking-wider">
+                    <span class="lang-en hidden">W2 Orientation</span><span class="lang-zh">第二週 課程定位</span>
+                </h2>
+            </div>
+
+            <!-- Tabs -->
+            <div class="flex space-x-2 mb-6">
+                <button onclick="switchTab('w2-pre')" id="tab-w2-pre" class="px-4 py-2 text-sm font-medium border-b-2 border-bcg-green text-bcg-green transition">
+                    Pre W2
+                </button>
+                <button onclick="switchTab('w2-post')" id="tab-w2-post" class="px-4 py-2 text-sm font-medium border-b-2 border-transparent text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition">
+                    Post W2
+                </button>
+            </div>
+
+            <!-- Pre W2 Content -->
+            <div id="content-w2-pre">
+                <!-- Logistics Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+                    <div class="bg-white dark:bg-white/5 p-4 rounded border border-gray-300 dark:border-white/5 flex flex-col items-center justify-center text-center shadow-sm">
+                        <span class="text-[10px] uppercase text-gray-500 font-bold mb-1">上課時間</span>
+                        <span class="text-lg font-bold text-gray-900 dark:text-white">週一09:00</span>
+                        <span class="text-xs text-gray-600 dark:text-gray-500">請準時</span>
+                    </div>
+                    <div class="bg-white dark:bg-white/5 p-4 rounded border border-gray-300 dark:border-white/5 flex flex-col items-center justify-center text-center shadow-sm">
+                        <span class="text-[10px] uppercase text-gray-500 font-bold mb-1">上課教室</span>
+                        <span class="text-lg font-bold text-gray-900 dark:text-white">管228</span>
+                        <span class="text-xs text-gray-600 dark:text-gray-500">管理學院</span>
+                    </div>
+                    <div class="bg-white dark:bg-white/5 p-4 rounded border border-gray-300 dark:border-white/5 flex flex-col items-center justify-center text-center shadow-sm">
+                        <span class="text-[10px] uppercase text-gray-500 font-bold mb-1">評分</span>
+                        <span class="text-lg font-bold text-bcg-green">10%</span>
+                        <span class="text-xs text-gray-600 dark:text-gray-500">課程參與</span>
+                    </div>
+                </div>
+
+                <!-- Checklist -->
+                <div class="bg-white dark:bg-white/5 rounded-lg border border-gray-300 dark:border-gray-700 overflow-hidden shadow-md">
+                    <div class="px-6 py-4 border-b border-gray-300 dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-black/20">
+                        <h3 class="font-bold text-gray-800 dark:text-white text-sm uppercase tracking-wide flex items-center">
+                            <i class="fas fa-list-check mr-2 text-bcg-green"></i>
+                            <span class="lang-en hidden">Mission Checklist</span><span class="lang-zh">W2 課前任務清單</span>
+                        </h3>
+                    </div>
+
+                    <div class="divide-y divide-gray-200 dark:divide-gray-700/50" id="checklist-container-w2">
+                        <!-- Task 1: W2 -->
+                        <label class="flex items-start p-5 hover:bg-gray-50 dark:hover:bg-white/5 transition cursor-pointer">
+                            <input type="checkbox" class="custom-checkbox mt-1 mr-4 accent-bcg-green w-5 h-5">
+                            <div class="flex-1">
+                                <span class="block text-gray-900 dark:text-white font-bold mb-1">
+                                    <span class="lang-en hidden">1. Group Discussion [Desert Survival] & [Group Reflection]</span><span class="lang-zh">1. 小組討論[沙漠求生]及[小組心得]</span>
+                                </span>
+                                <div class="bg-gray-50 dark:bg-white/5 p-3 rounded text-xs text-gray-600 dark:text-gray-400 border-l-4 border-orange-400 mt-2">
+                                    <i class="fas fa-info-circle mr-1 text-orange-500"></i>
+                                    <span class="lang-en hidden">Note: Upload [Coggle Mindmap] or [Word File 2 Pages] according to format.</span>
+                                    <span class="lang-zh">依規定格式上傳[Coggle心智圖]或[Word檔2頁]</span>
+                                </div>
+                            </div>
+                        </label>
+
+                        <!-- Task 2: W2 -->
+                        <label class="flex items-start p-5 hover:bg-gray-50 dark:hover:bg-white/5 transition cursor-pointer">
+                            <input type="checkbox" class="custom-checkbox mt-1 mr-4 accent-bcg-green w-5 h-5">
+                            <div class="flex-1">
+                                <span class="block text-gray-900 dark:text-white font-bold mb-1">
+                                    <span class="lang-en hidden">2. Complete Personal Intro Video</span><span class="lang-zh">2. 完成個人自我介紹影片</span>
+                                </span>
+                                <div class="bg-gray-50 dark:bg-white/5 p-3 rounded text-xs text-gray-600 dark:text-gray-400 border-l-4 border-orange-400 mt-2">
+                                    <i class="fas fa-info-circle mr-1 text-orange-500"></i>
+                                    <span class="lang-en hidden">Note: Use D-ID to make a video with clear visuals and audio.</span>
+                                    <span class="lang-zh">利用D-ID製作畫面清楚且音量清晰的自我介紹影片</span>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Visual Progress Bar (Thermometer Style) -->
+                    <div class="bg-gray-50 dark:bg-black/20 px-6 py-4 border-t border-gray-300 dark:border-gray-700">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="w-full max-w-xs h-4 bg-gray-300 dark:bg-gray-700 rounded-full overflow-hidden relative shadow-inner">
+                                <div id="progress-bar-w2" class="h-full bg-gradient-to-r from-bcg-green to-green-400 transition-all duration-500 ease-out" style="width: 0%"></div>
+                            </div>
+                            <div class="mt-2 text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">
+                                <span class="lang-en hidden">Progress</span><span class="lang-zh">完成進度</span>: 
+                                <span id="checked-count-w2" class="text-bcg-green text-sm">0</span> / <span id="total-count-w2">2</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Post W2 Content (TBD) -->
+            <div id="content-w2-post" class="hidden"> 
                 <div class="tbd-card border border-dashed border-gray-300 dark:border-gray-600 rounded-lg h-48 flex flex-col items-center justify-center p-6 text-center">
                     <i class="fas fa-hourglass-half text-3xl text-gray-400 dark:text-gray-600 mb-3"></i>
                     <h3 class="text-lg font-bold text-gray-500 dark:text-gray-400">Post-Class Content</h3>
                     <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                        <span class="lang-en hidden">Will be available after W1 class</span><span class="lang-zh">第一週課後開放</span>
+                        <span class="lang-en hidden">Will be available after W2 class</span><span class="lang-zh">第二週課後開放</span>
                     </p>
                 </div>
             </div>
@@ -468,7 +619,7 @@
         const themeToggle = document.getElementById('theme-toggle');
         const audioBtn = document.getElementById('audio-btn');
         const audioStatus = document.getElementById('audio-status');
-        const checklistInputs = document.querySelectorAll('#checklist-container input[type="checkbox"]');
+        const checklistInputs = document.querySelectorAll('.custom-checkbox'); // Updated targeting
         const checkedCountEl = document.getElementById('checked-count');
         const totalCountEl = document.getElementById('total-count');
         const progressBar = document.getElementById('progress-bar');
@@ -540,6 +691,7 @@
             let textToRead = "";
             const isOverview = !document.getElementById('section-overview').classList.contains('hidden');
             const isW1W2 = !document.getElementById('section-w1w2').classList.contains('hidden');
+            const isW2 = document.getElementById('section-w2') ? !document.getElementById('section-w2').classList.contains('hidden') : false;
             const isW3W5 = !document.getElementById('section-w3w5').classList.contains('hidden');
 
             // Header Info + Page Title (Read first for context)
@@ -573,7 +725,22 @@
                     if(currentLang === 'en') {
                         textToRead += "Week 1 Orientation Section. Post-Week 1 Content. This content will be available after the first class.";
                     } else {
-                        textToRead += "第一週課程定位頁面。第一週課後內容。此內容將於第一週課後開放。";
+                        textToRead += "第一週課程定位頁面。第一週課後提醒，包含完成個人資料表，以及組長填寫小組資料表。";
+                    }
+                }
+            } else if(isW2) {
+                const isPre = !document.getElementById('content-w2-pre').classList.contains('hidden');
+                if(isPre) {
+                    if(currentLang === 'en') { 
+                        textToRead += "Week 2 Orientation Section. Pre-Week 2 Content. Mission Checklist includes Group Discussion Desert Survival and Personal Intro Video.";
+                    } else {
+                        textToRead += "第二週課程定位頁面。第二週課前內容。本週任務清單包括：小組討論沙漠求生及小組心得，以及個人自我介紹影片。";
+                    }
+                } else {
+                    if(currentLang === 'en') {
+                        textToRead += "Week 2 Orientation Section. Post-Week 2 Content. This content will be available after the second class.";
+                    } else {
+                        textToRead += "第二週課程定位頁面。第二週課後內容。此內容將於第二週課後開放。";
                     }
                 }
             } else if(isW3W5) {
@@ -625,7 +792,10 @@
 
         // 4. Navigation & Tabs
         window.switchSection = function(sectionId) {
-            ['overview', 'w1w2', 'w3w5'].forEach(id => document.getElementById('section-' + id).classList.add('hidden'));
+            ['overview', 'w1w2', 'w2', 'w3w5'].forEach(id => {
+                const el = document.getElementById('section-' + id);
+                if (el) el.classList.add('hidden');
+            });
             document.getElementById('section-' + sectionId).classList.remove('hidden');
             
             document.querySelectorAll('#sidebar a').forEach(el => {
@@ -649,21 +819,27 @@
         }
 
         window.switchTab = function(tabId) {
-            document.getElementById('tab-w1-pre').classList.replace('border-bcg-green', 'border-transparent');
-            document.getElementById('tab-w1-pre').classList.replace('text-bcg-green', 'text-gray-500');
-            document.getElementById('tab-w1-post').classList.replace('border-bcg-green', 'border-transparent');
-            document.getElementById('tab-w1-post').classList.replace('text-bcg-green', 'text-gray-500');
+            const prefix = tabId.split('-')[0]; // Determines 'w1' or 'w2' dynamically
+            
+            if (document.getElementById('tab-' + prefix + '-pre')) {
+                document.getElementById('tab-' + prefix + '-pre').classList.replace('border-bcg-green', 'border-transparent');
+                document.getElementById('tab-' + prefix + '-pre').classList.replace('text-bcg-green', 'text-gray-500');
+            }
+            if (document.getElementById('tab-' + prefix + '-post')) {
+                document.getElementById('tab-' + prefix + '-post').classList.replace('border-bcg-green', 'border-transparent');
+                document.getElementById('tab-' + prefix + '-post').classList.replace('text-bcg-green', 'text-gray-500');
+            }
             
             const activeTab = document.getElementById('tab-' + tabId);
             activeTab.classList.replace('border-transparent', 'border-bcg-green');
             activeTab.classList.replace('text-gray-500', 'text-bcg-green');
             
-            if(tabId === 'w1-pre') {
-                document.getElementById('content-w1-pre').classList.remove('hidden');
-                document.getElementById('content-w1-post').classList.add('hidden');
+            if(tabId === prefix + '-pre') {
+                document.getElementById('content-' + prefix + '-pre').classList.remove('hidden');
+                document.getElementById('content-' + prefix + '-post').classList.add('hidden');
             } else {
-                document.getElementById('content-w1-pre').classList.add('hidden');
-                document.getElementById('content-w1-post').classList.remove('hidden');
+                document.getElementById('content-' + prefix + '-pre').classList.add('hidden');
+                document.getElementById('content-' + prefix + '-post').classList.remove('hidden');
             }
         }
 
@@ -685,16 +861,28 @@
         checklistInputs.forEach(input => input.addEventListener('change', updateChecklistCounter));
         
         function updateChecklistCounter() {
-            const checked = document.querySelectorAll('#checklist-container input[type="checkbox"]:checked').length;
-            const total = checklistInputs.length;
+            // W1 Tracker
+            const checkedW1 = document.querySelectorAll('#checklist-container input[type="checkbox"]:checked').length;
+            const totalW1 = document.querySelectorAll('#checklist-container input[type="checkbox"]').length;
             
-            // Update Text
-            checkedCountEl.textContent = checked;
-            totalCountEl.textContent = total;
-
-            // Update Thermometer Bar
-            const percentage = Math.round((checked / total) * 100);
-            progressBar.style.width = percentage + '%';
+            if (checkedCountEl) checkedCountEl.textContent = checkedW1;
+            if (totalCountEl) totalCountEl.textContent = totalW1;
+            if (progressBar && totalW1 > 0) progressBar.style.width = Math.round((checkedW1 / totalW1) * 100) + '%';
+            
+            // W2 Tracker
+            const w2Container = document.getElementById('checklist-container-w2');
+            if (w2Container) {
+                const checkedW2 = w2Container.querySelectorAll('input[type="checkbox"]:checked').length;
+                const totalW2 = w2Container.querySelectorAll('input[type="checkbox"]').length;
+                
+                const checkedCountW2El = document.getElementById('checked-count-w2');
+                const totalCountW2El = document.getElementById('total-count-w2');
+                const progressBarW2 = document.getElementById('progress-bar-w2');
+                
+                if (checkedCountW2El) checkedCountW2El.textContent = checkedW2;
+                if (totalCountW2El) totalCountW2El.textContent = totalW2;
+                if (progressBarW2 && totalW2 > 0) progressBarW2.style.width = Math.round((checkedW2 / totalW2) * 100) + '%';
+            }
         }
 
         // Init Voice Load
