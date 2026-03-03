@@ -689,12 +689,29 @@
                                 <div class="bg-gray-50 dark:bg-white/5 p-3 rounded text-xs text-gray-600 dark:text-gray-400 border-l-4 border-orange-400 mt-2 space-y-1">
                                     <p class="lang-zh"><i class="fas fa-info-circle mr-1 text-orange-500"></i>說明：</p>
                                     <p class="lang-zh ml-4">a. 各組需對所有報告組別進行提問</p>
-                                    <p class="lang-zh ml-4">b. 報告組別必須從提問中挑選3組的問題進行回答</p>
+                                    <p class="lang-zh ml-4">b. 報告組別必須從提問中挑選3則問題進行回答</p>
+                                    <p class="lang-zh ml-4">c. 當週的報告組別也必須對當週的其他報告組別提問</p>
                                     <div class="lang-en hidden space-y-1">
                                         <p><i class="fas fa-info-circle mr-1 text-orange-500"></i>Description:</p>
                                         <p class="ml-4">a. Each group must ask questions to all presenting groups.</p>
-                                        <p class="ml-4">b. Presenting groups must select and answer questions from 3 different groups.</p>
+                                        <p class="ml-4">b. Presenting groups must select and answer 3 questions from the audience.</p>
+                                        <p class="ml-4">c. The presenting groups of the week must also ask questions to other presenting groups of the same week.</p>
                                     </div>
+                                </div>
+                            </div>
+                        </label>
+
+                        <!-- Task 3: W3 -->
+                        <label class="flex items-start p-5 hover:bg-gray-50 dark:hover:bg-white/5 transition cursor-pointer">
+                            <input type="checkbox" class="custom-checkbox mt-1 mr-4 accent-bcg-green w-5 h-5">
+                            <div class="flex-1">
+                                <span class="block text-gray-900 dark:text-white font-bold mb-1">
+                                    <span class="lang-en hidden">3. Reminder: Bring Laptop or Tablet</span><span class="lang-zh">3. 提醒：攜帶筆電或平板</span>
+                                </span>
+                                <div class="bg-gray-50 dark:bg-white/5 p-3 rounded text-xs text-gray-600 dark:text-gray-400 border-l-4 border-orange-400 mt-2">
+                                    <i class="fas fa-info-circle mr-1 text-orange-500"></i>
+                                    <span class="lang-en hidden">This week's class will be taught by Prof. Shihmin Lo, and will cover how to use AI tools correctly. Please remember to bring a laptop or tablet!</span>
+                                    <span class="lang-zh">本週由駱世民教授上課，課堂會教導正確使用AI工具之方法，請記得攜帶筆電或平板！</span>
                                 </div>
                             </div>
                         </label>
@@ -708,7 +725,7 @@
                             </div>
                             <div class="mt-2 text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">
                                 <span class="lang-en hidden">Progress</span><span class="lang-zh">完成進度</span>: 
-                                <span id="checked-count-w3" class="text-bcg-green text-sm">0</span> / <span id="total-count-w3">2</span>
+                                <span id="checked-count-w3" class="text-bcg-green text-sm">0</span> / <span id="total-count-w3">3</span>
                             </div>
                         </div>
                     </div>
@@ -925,9 +942,9 @@
                 const isPre = !document.getElementById('content-w3-pre').classList.contains('hidden');
                 if(isPre) {
                     if(currentLang === 'en') { 
-                        textToRead += "Week 3 Section. Pre-Week 3 Content. Mission Checklist includes Group Prep for LN-1 Superior Performance and Strategy, and Menti Questioning Rules.";
+                        textToRead += "Week 3 Section. Pre-Week 3 Content. Mission Checklist includes Group Prep for LN-1 Superior Performance and Strategy, Menti Questioning Rules, and bringing your laptop or tablet.";
                     } else {
-                        textToRead += "第三週課程頁面。第三週課前內容。本週任務清單包括：LN-1 Superior Performance & Strategy 小組預習作業，以及Menti提問規則。";
+                        textToRead += "第三週課程頁面。第三週課前內容。本週任務清單包括：LN-1 Superior Performance & Strategy 小組預習作業、Menti提問規則，以及提醒攜帶筆電或平板上課。";
                     }
                 } else {
                     if(currentLang === 'en') {
