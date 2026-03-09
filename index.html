@@ -768,11 +768,11 @@
                                 </span>
                                 <div class="bg-gray-50 dark:bg-white/5 p-3 rounded text-xs text-gray-600 dark:text-gray-400 border-l-4 border-orange-400 mt-2 space-y-1">
                                     <p class="lang-zh"><i class="fas fa-info-circle mr-1 text-orange-500"></i>說明：</p>
-                                    <p class="lang-zh">Deadline: 3/9 (一) 13:00</p>
+                                    <p class="lang-zh">Deadline: 3/9 (一) 18:00</p>
                                     <p class="lang-zh">檔案/討論區名稱: 國策管_GX_姓名</p>
                                     <div class="lang-en hidden space-y-1">
                                         <p><i class="fas fa-info-circle mr-1 text-orange-500"></i>Description:</p>
-                                        <p>Deadline: 3/9 (Mon) 13:00</p>
+                                        <p>Deadline: 3/9 (Mon) 18:00</p>
                                         <p>File/Discussion Name: 國策管_GX_姓名</p>
                                     </div>
                                 </div>
@@ -1116,6 +1116,36 @@
             } else if(isW1W2) {
                 // Determine active tab within W1W2
                 const isPre = !document.getElementById('content-w1-pre').classList.contains('hidden');
+                if(isPre) {
+                    if(currentLang === 'en') { 
+                        // Updated to Mon 09:00, Room 228, 10%, and Checklist 
+                        textToRead += "Week 1 Orientation Section. Pre-Week 1 Content. Logistics: Monday 9:00 AM at College of Management Room 228. Participation is 10 percent. Mission Checklist: Complete Personal Info Form and Form your group before Week 1 class.";
+                    } else {
+                        // Updated to Mon 09:00, Room 228, 10%, and Checklist
+                        textToRead += "第一週課程定位頁面。第一週課前內容。行政資訊：週一早上九點，管理學院 228 教室。出席佔分百分之十。本週任務清單包括：填寫個人資料表，以及在第一週課前找好組員。";
+                    }
+                } else {
+                    if(currentLang === 'en') {
+                        textToRead += "Week 1 Orientation Section. Post-Week 1 Content. This content will be available after the first class.";
+                    } else {
+                        textToRead += "第一週課程定位頁面。第一週課後提醒，包含完成個人資料表、組長填寫小組資料表，以及小組創建NotebookLM和Coggle。";
+                    }
+                }
+            } else if(isW2) {
+                const isPre = !document.getElementById('content-w2-pre').classList.contains('hidden');
+                if(isPre) {
+                    if(currentLang === 'en') { 
+                        textToRead += "Week 2 Orientation Section. Pre-Week 2 Content. Mission Checklist includes Group Discussion Desert Survival and Personal Intro Video.";
+                    } else {
+                        textToRead += "第二週課程定位頁面。第二週課前內容。本週任務清單包括：小組討論沙漠求生及小組心得，以及完成個人自我介紹影片。";
+                    }
+                } else {
+                    if(currentLang === 'en') {
+                        textToRead += "Week 2 Orientation Section. Post-Week 2 Content. This content will be available after the second class.";
+                    } else {
+                        textToRead += "第二週課程定位頁面。第二週課後提醒。包含觀看D-ID影片、下週課程預告，以及Coggle加入揭露原則。";
+                    }
+                }
             } else if(isW3) {
                 const isPre = !document.getElementById('content-w3-pre').classList.contains('hidden');
                 if(isPre) {
