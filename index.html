@@ -950,6 +950,21 @@
                                 </div>
                             </div>
                         </label>
+
+                        <!-- Task 3: W4 -->
+                        <label class="flex items-start p-5 hover:bg-gray-50 dark:hover:bg-white/5 transition cursor-pointer">
+                            <input type="checkbox" class="custom-checkbox mt-1 mr-4 accent-bcg-green w-5 h-5">
+                            <div class="flex-1">
+                                <span class="block text-gray-900 dark:text-white font-bold mb-1">
+                                    <span class="lang-en hidden">3. Reminder: This Week's Instructor</span><span class="lang-zh">3. 提醒：第四週同樣由駱老師代課</span>
+                                </span>
+                                <div class="bg-gray-50 dark:bg-white/5 p-3 rounded text-xs text-gray-600 dark:text-gray-400 border-l-4 border-orange-400 mt-2">
+                                    <i class="fas fa-info-circle mr-1 text-orange-500"></i>
+                                    <span class="lang-en hidden">Week 4 will also be taught by Prof. Shihmin Lo.</span>
+                                    <span class="lang-zh">第四週同樣由駱老師代課。</span>
+                                </div>
+                            </div>
+                        </label>
                     </div>
 
                     <!-- Visual Progress Bar (Thermometer Style) -->
@@ -960,7 +975,7 @@
                             </div>
                             <div class="mt-2 text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">
                                 <span class="lang-en hidden">Progress</span><span class="lang-zh">完成進度</span>: 
-                                <span id="checked-count-w4" class="text-bcg-green text-sm">0</span> / <span id="total-count-w4">2</span>
+                                <span id="checked-count-w4" class="text-bcg-green text-sm">0</span> / <span id="total-count-w4">3</span>
                             </div>
                         </div>
                     </div>
@@ -1189,9 +1204,9 @@
                 const isPre = !document.getElementById('content-w4-pre').classList.contains('hidden');
                 if(isPre) {
                     if(currentLang === 'en') { 
-                        textToRead += "Week 4 Section. Pre-Week 4 Content. Mission Checklist includes TP0 Proposal Upload and LN-2 Group Prep.";
+                        textToRead += "Week 4 Section. Pre-Week 4 Content. Mission Checklist includes TP0 Proposal Upload, LN-2 Group Prep, and a reminder that Professor Lo will be teaching this week.";
                     } else {
-                        textToRead += "第四週課程頁面。第四週課前內容。本週任務清單包括：TP0 Proposal 上傳，以及 LN-2 Strategic Innovation & Business Model 小組預習作業。";
+                        textToRead += "第四週課程頁面。第四週課前內容。本週任務清單包括：TP0 Proposal 上傳、LN-2 Strategic Innovation & Business Model 小組預習作業，以及提醒本週同樣由駱老師代課。";
                     }
                 } else {
                     if(currentLang === 'en') {
