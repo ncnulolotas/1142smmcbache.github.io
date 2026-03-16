@@ -1008,6 +1008,22 @@
                                 </div>
                             </div>
                         </label>
+
+                        <!-- Post Task 2 -->
+                        <label class="flex items-start p-5 hover:bg-gray-50 dark:hover:bg-white/5 transition cursor-pointer">
+                            <input type="checkbox" class="custom-checkbox mt-1 mr-4 accent-bcg-green w-5 h-5">
+                            <div class="flex-1">
+                                <span class="block text-gray-900 dark:text-white font-bold mb-1">
+                                    <span class="lang-en hidden">2. Encourage AI Notes and Images</span><span class="lang-zh">2. 鼓勵同學製作AI筆記與圖像</span>
+                                </span>
+                                <div class="bg-gray-50 dark:bg-white/5 p-3 rounded text-xs text-gray-600 dark:text-gray-400 border-l-4 border-orange-400 mt-2 space-y-1">
+                                    <p class="lang-zh"><i class="fas fa-info-circle mr-1 text-orange-500"></i>說明：有上傳者會記加分作業，請上傳到 Moodle 的 [加分作業區 -個人]</p>
+                                    <div class="lang-en hidden space-y-1">
+                                        <p><i class="fas fa-info-circle mr-1 text-orange-500"></i>Description: Those who upload will receive bonus points. Please upload to the [Bonus Assignment Area - Individual] on Moodle.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </label>
                     </div>
                 </div>
             </div>
@@ -1298,19 +1314,19 @@
             } else if(isW1W2) {
                 // Determine active tab within W1W2
                 const isPre = !document.getElementById('content-w1-pre').classList.contains('hidden');
+            } else if (isW4) {
+                const isPre = !document.getElementById('content-w4-pre').classList.contains('hidden');
                 if(isPre) {
                     if(currentLang === 'en') { 
-                        // Updated to Mon 09:00, Room 228, 10%, and Checklist 
-                        textToRead += "Week 1 Orientation Section. Pre-Week 1 Content. Logistics: Monday 9:00 AM at College of Management Room 228. Participation is 10 percent. Mission Checklist: Complete Personal Info Form and Form your group before Week 1 class.";
+                        textToRead += "Week 4 Section. Pre-Week 4 Content. Mission Checklist includes TP0 Proposal Upload, LN-2 Group Prep, and a reminder that Professor Lo will be teaching this week.";
                     } else {
-                        // Updated to Mon 09:00, Room 228, 10%, and Checklist
-                        textToRead += "第一週課程定位頁面。第一週課前內容。行政資訊：週一早上九點，管理學院 228 教室。出席佔分百分之十。本週任務清單包括：填寫個人資料表，以及在第一週課前找好組員。";
+                        textToRead += "第四週課程頁面。第四週課前內容。本週任務清單包括：TP0 Proposal 上傳、LN-2 Strategic Innovation & Business Model 小組預習作業，以及提醒本週同樣由駱老師代課。";
                     }
                 } else {
                     if(currentLang === 'en') {
-                        textToRead += "Week 4 Section. Post-Week 4 Content. Reminder: G5 please select 3 questions from this week's submissions to answer, and reply under the Menti Note.";
+                        textToRead += "Week 4 Section. Post-Week 4 Content. Reminder: G5 please select 3 questions to answer. Also, we encourage creating AI notes and images for bonus points on Moodle.";
                     } else {
-                        textToRead += "第四週課程頁面。第四週課後內容。本週提醒：G5 回覆 Menti 提問，請從本週的提問中挑選3則問題進行回答，並回覆在該週的Menti Note底下。";
+                        textToRead += "第四週課程頁面。第四週課後內容。本週提醒：第一，G5 回覆 Menti 提問。第二，鼓勵同學製作AI筆記與圖像，有上傳者會記加分作業。";
                     }
                 }
             } else if(isW5) {
