@@ -224,8 +224,16 @@
                 </div>
             </a>
 
-            <!-- Future Weeks (9-16) -->
-            <a href="#" class="block px-6 py-3 text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap"><i class="fas fa-rocket w-6 mr-3"></i> 第九週</a>
+            <!-- Week 9 - Active -->
+            <a href="javascript:void(0)" onclick="switchSection('w9')" id="nav-w9" class="block px-6 py-3 border-l-4 border-transparent text-gray-700 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5 transition whitespace-nowrap">
+                <div class="flex items-center">
+                    <span class="w-6 text-center mr-3"><i class="fas fa-rocket"></i></span>
+                    <span>第九週</span>
+                    <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse ml-2"></span>
+                </div>
+            </a>
+
+            <!-- Future Weeks (10-16) -->
             <a href="#" class="block px-6 py-3 text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap"><i class="fas fa-compass w-6 mr-3"></i> 第十週</a>
             <a href="#" class="block px-6 py-3 text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap"><i class="fas fa-compass w-6 mr-3"></i> 第十一週</a>
             <a href="#" class="block px-6 py-3 text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap"><i class="fas fa-compass w-6 mr-3"></i> 第十二週</a>
@@ -1531,7 +1539,7 @@
                     Pre W8 (4/13)
                 </button>
                 <button onclick="switchTab('w8-post')" id="tab-w8-post" class="px-4 py-2 text-sm font-medium border-b-2 border-transparent text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition">
-                    Post W8 (TBD)
+                    Post W8
                 </button>
             </div>
 
@@ -1696,13 +1704,269 @@
                 </div>
             </div>
 
-            <!-- Post W8 Content (TBD) -->
+            <!-- Post W8 Content -->
             <div id="content-w8-post" class="hidden"> 
+                <div class="bg-white dark:bg-white/5 rounded-lg border border-gray-300 dark:border-gray-700 overflow-hidden shadow-md">
+                    <div class="px-6 py-4 border-b border-gray-300 dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-black/20">
+                        <h3 class="font-bold text-gray-800 dark:text-white text-sm uppercase tracking-wide flex items-center">
+                            <i class="fas fa-bell mr-2 text-bcg-green"></i>
+                            <span class="lang-en hidden">W8 Post-Class Reminder</span><span class="lang-zh">W8 課後提醒</span>
+                        </h3>
+                    </div>
+                    <div class="divide-y divide-gray-200 dark:divide-gray-700/50">
+                        <!-- Post Task 1 (New) -->
+                        <label class="flex items-start p-5 hover:bg-gray-50 dark:hover:bg-white/5 transition cursor-pointer">
+                            <input type="checkbox" class="custom-checkbox mt-1 mr-4 accent-bcg-green w-5 h-5">
+                            <div class="flex-1">
+                                <span class="block text-gray-900 dark:text-white font-bold mb-1">
+                                    <span class="lang-en hidden">1. TP1 Questioning</span><span class="lang-zh">1. TP1 提問</span>
+                                </span>
+                                <div class="bg-gray-50 dark:bg-white/5 p-3 rounded text-xs text-gray-600 dark:text-gray-400 border-l-4 border-orange-400 mt-2 space-y-1">
+                                    <p class="lang-zh"><i class="fas fa-info-circle mr-1 text-orange-500"></i>說明：</p>
+                                    <ul class="list-disc ml-5 lang-zh space-y-1">
+                                        <li>課堂尚未提問的小組要在Moodle補充提問</li>
+                                        <li>小組需要對「同一個產業別的報告組別」進行至少一則提問</li>
+                                        <li>請在 W8「[TP1] TP Progress Report 1_心智圖上傳」討論區留言</li>
+                                        <li class="font-bold text-red-600 dark:text-red-400">提問期限：4/13(一) 16:00</li>
+                                    </ul>
+                                    <div class="lang-en hidden space-y-1">
+                                        <p><i class="fas fa-info-circle mr-1 text-orange-500"></i>Description:</p>
+                                        <ul class="list-disc ml-5 space-y-1">
+                                            <li>Groups that haven't asked questions in class must ask supplementary questions on Moodle.</li>
+                                            <li>Groups must ask at least one question to the "presenting groups in the same industry".</li>
+                                            <li>Please leave a message in the W8 "[TP1] TP Progress Report 1_Mindmap Upload" discussion forum.</li>
+                                            <li class="font-bold text-red-600 dark:text-red-400">Deadline: 4/13 (Mon) 16:00</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </label>
+
+                        <!-- Post Task 2 -->
+                        <label class="flex items-start p-5 hover:bg-gray-50 dark:hover:bg-white/5 transition cursor-pointer">
+                            <input type="checkbox" class="custom-checkbox mt-1 mr-4 accent-bcg-green w-5 h-5">
+                            <div class="flex-1">
+                                <span class="block text-gray-900 dark:text-white font-bold mb-1">
+                                    <span class="lang-en hidden">2. Reply to TP1 Menti Questions</span><span class="lang-zh">2. 回覆 TP1 Menti 提問</span>
+                                </span>
+                                <div class="bg-gray-50 dark:bg-white/5 p-3 rounded text-xs text-gray-600 dark:text-gray-400 border-l-4 border-orange-400 mt-2 space-y-1">
+                                    <p class="lang-zh"><i class="fas fa-info-circle mr-1 text-orange-500"></i>說明：</p>
+                                    <ul class="list-disc ml-5 lang-zh space-y-1">
+                                        <li>今天的報告組別課後需要回覆 3 則 Menti 提問(提問不滿3題者，依照提問總數回覆)</li>
+                                        <li>課堂報告回答過的問題不用在課後回覆</li>
+                                        <li class="font-bold text-red-600 dark:text-red-400">Deadline: 4/13(一) 23:59</li>
+                                    </ul>
+                                    <div class="lang-en hidden space-y-1">
+                                        <p><i class="fas fa-info-circle mr-1 text-orange-500"></i>Description:</p>
+                                        <ul class="list-disc ml-5 space-y-1">
+                                            <li>Today's presenting groups need to reply to 3 Menti questions after class (if less than 3 questions were asked, reply to all).</li>
+                                            <li>Questions already answered during the class presentation do not need to be replied to again.</li>
+                                            <li class="font-bold text-red-600 dark:text-red-400">Deadline: 4/13 (Mon) 23:59</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </label>
+
+                        <!-- Post Task 3 -->
+                        <label class="flex items-start p-5 hover:bg-gray-50 dark:hover:bg-white/5 transition cursor-pointer">
+                            <input type="checkbox" class="custom-checkbox mt-1 mr-4 accent-bcg-green w-5 h-5">
+                            <div class="flex-1">
+                                <span class="block text-gray-900 dark:text-white font-bold mb-1">
+                                    <span class="lang-en hidden">3. Midterm Peer Review</span><span class="lang-zh">3. 期中互評</span>
+                                </span>
+                                <div class="bg-gray-50 dark:bg-white/5 p-3 rounded text-xs text-gray-600 dark:text-gray-400 border-l-4 border-orange-400 mt-2 space-y-1">
+                                    <p class="lang-zh"><i class="fas fa-info-circle mr-1 text-orange-500"></i>說明：</p>
+                                    <ul class="list-disc ml-5 lang-zh space-y-1">
+                                        <li>助教已經寄出互評連結與亂碼到同學們的學校信箱，請同學盡早完成填答。</li>
+                                        <li>如果沒收到信或是遇到其他問題，請寄信給助教子然 (s113212501@mail1.ncnu.edu.tw)。</li>
+                                        <li class="font-bold text-red-600 dark:text-red-400">填答期限：4/15(三) 23:59</li>
+                                    </ul>
+                                    <div class="lang-en hidden space-y-1">
+                                        <p><i class="fas fa-info-circle mr-1 text-orange-500"></i>Description:</p>
+                                        <ul class="list-disc ml-5 space-y-1">
+                                            <li>TAs have sent peer review links and codes to your school emails. Please complete it as early as possible.</li>
+                                            <li>If you didn't receive the email or encounter issues, please email TA Jan (s113212501@mail1.ncnu.edu.tw).</li>
+                                            <li class="font-bold text-red-600 dark:text-red-400">Deadline: 4/15 (Wed) 23:59</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </label>
+
+                        <!-- Post Task 4 -->
+                        <label class="flex items-start p-5 hover:bg-gray-50 dark:hover:bg-white/5 transition cursor-pointer">
+                            <input type="checkbox" class="custom-checkbox mt-1 mr-4 accent-bcg-green w-5 h-5">
+                            <div class="flex-1">
+                                <span class="block text-gray-900 dark:text-white font-bold mb-1">
+                                    <span class="lang-en hidden">4. Reminder: Assignment Naming Format</span><span class="lang-zh">4. 提醒：作業檔名請遵守命名格式</span>
+                                </span>
+                                <div class="bg-gray-50 dark:bg-white/5 p-3 rounded text-xs text-gray-600 dark:text-gray-400 border-l-4 border-orange-400 mt-2 space-y-1">
+                                    <p class="lang-zh"><i class="fas fa-info-circle mr-1 text-orange-500"></i>說明：同學上傳作業時，檔案名稱與Moodle討論主題皆須依照說明欄位的範例進行命名。</p>
+                                    <p class="lang-zh font-bold">範例：</p>
+                                    <ul class="list-disc ml-5 lang-zh">
+                                        <li>檔案名稱：[G12] 蘋果TP1.pdf</li>
+                                        <li>Moodle討論主題：[G12] 蘋果TP1</li>
+                                    </ul>
+                                    <div class="lang-en hidden space-y-1">
+                                        <p><i class="fas fa-info-circle mr-1 text-orange-500"></i>Description: When uploading assignments, both the file name and the Moodle discussion topic must follow the examples below.</p>
+                                        <p class="font-bold">Examples:</p>
+                                        <ul class="list-disc ml-5">
+                                            <li>File Name: [G12] Apple TP1.pdf</li>
+                                            <li>Moodle Topic: [G12] Apple TP1</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION: W9 -->
+        <div id="section-w9" class="hidden animate-fade-in">
+            <div class="mb-6 border-b border-gray-200 dark:border-gray-700 pb-4">
+                <h2 class="text-2xl font-light text-bcg-green uppercase tracking-wider">
+                    <span class="lang-en hidden">W9 Orientation</span><span class="lang-zh">第九週 課程定位</span>
+                </h2>
+            </div>
+
+            <!-- Tabs -->
+            <div class="flex space-x-2 mb-6">
+                <button onclick="switchTab('w9-pre')" id="tab-w9-pre" class="px-4 py-2 text-sm font-medium border-b-2 border-bcg-green text-bcg-green transition">
+                    Pre W9 (4/20)
+                </button>
+                <button onclick="switchTab('w9-post')" id="tab-w9-post" class="px-4 py-2 text-sm font-medium border-b-2 border-transparent text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition">
+                    Post W9 (TBD)
+                </button>
+            </div>
+
+            <!-- Pre W9 Content -->
+            <div id="content-w9-pre">
+                <!-- Logistics Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+                    <div class="bg-white dark:bg-white/5 p-4 rounded border border-gray-300 dark:border-white/5 flex flex-col items-center justify-center text-center shadow-sm">
+                        <span class="text-[10px] uppercase text-gray-500 font-bold mb-1">上課時間</span>
+                        <span class="text-lg font-bold text-gray-900 dark:text-white">週一09:00</span>
+                        <span class="text-xs text-gray-600 dark:text-gray-500">請準時</span>
+                    </div>
+                    <div class="bg-white dark:bg-white/5 p-4 rounded border border-gray-300 dark:border-white/5 flex flex-col items-center justify-center text-center shadow-sm">
+                        <span class="text-[10px] uppercase text-gray-500 font-bold mb-1">上課教室</span>
+                        <span class="text-lg font-bold text-gray-900 dark:text-white">管228</span>
+                        <span class="text-xs text-gray-600 dark:text-gray-500">管理學院</span>
+                    </div>
+                    <div class="bg-white dark:bg-white/5 p-4 rounded border border-gray-300 dark:border-white/5 flex flex-col items-center justify-center text-center shadow-sm">
+                        <span class="text-[10px] uppercase text-gray-500 font-bold mb-1">評分</span>
+                        <span class="text-lg font-bold text-bcg-green">10%</span>
+                        <span class="text-xs text-gray-600 dark:text-gray-500">課程參與</span>
+                    </div>
+                </div>
+
+                <!-- Checklist -->
+                <div class="bg-white dark:bg-white/5 rounded-lg border border-gray-300 dark:border-gray-700 overflow-hidden shadow-md">
+                    <div class="px-6 py-4 border-b border-gray-300 dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-black/20">
+                        <h3 class="font-bold text-gray-800 dark:text-white text-sm uppercase tracking-wide flex items-center">
+                            <i class="fas fa-list-check mr-2 text-bcg-green"></i>
+                            <span class="lang-en hidden">Mission Checklist</span><span class="lang-zh">W9 課前提醒</span>
+                        </h3>
+                        <span class="text-xs font-mono text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-900/20 px-2 py-1 rounded font-bold">Due: 4/19 18:00</span>
+                    </div>
+
+                    <div class="divide-y divide-gray-200 dark:divide-gray-700/50" id="checklist-container-w9">
+                        <!-- Task 1: TP1 Presentation -->
+                        <label class="flex items-start p-5 hover:bg-gray-50 dark:hover:bg-white/5 transition cursor-pointer">
+                            <input type="checkbox" class="custom-checkbox mt-1 mr-4 accent-bcg-green w-5 h-5">
+                            <div class="flex-1">
+                                <span class="block text-gray-900 dark:text-white font-bold mb-1">
+                                    <span class="lang-en hidden">1. TP1 Presentation</span><span class="lang-zh">1. TP1 報告</span>
+                                </span>
+                                <div class="bg-gray-50 dark:bg-white/5 p-4 rounded text-sm text-gray-700 dark:text-gray-300 border-l-4 border-orange-400 mt-3 space-y-2">
+                                    <ul class="list-disc ml-5 lang-zh space-y-1 text-gray-600 dark:text-gray-400">
+                                        <li>本週報告組別: <strong class="text-blue-600 dark:text-blue-400">G9 ~ G11</strong>。</li>
+                                        <li>每組報告時間8分鐘，提問時間2分鐘，不限報告人數。</li>
+                                        <li>同產業的小組須互相發問，每組提問3題，其他非同產業的小組自由提問。</li>
+                                    </ul>
+                                    <div class="lang-en hidden space-y-2">
+                                        <ul class="list-disc ml-5 space-y-1 text-gray-600 dark:text-gray-400">
+                                            <li>Presenting groups this week: <strong class="text-blue-600 dark:text-blue-400">G9 ~ G11</strong>.</li>
+                                            <li>Presentation time: 8 mins, Q&A: 2 mins. No limit on presenter count.</li>
+                                            <li>Groups in the same industry must ask each other questions (3 questions per group). Other groups can ask freely.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </label>
+
+                        <!-- Task 2: LN-6 -->
+                        <label class="flex items-start p-5 hover:bg-gray-50 dark:hover:bg-white/5 transition cursor-pointer">
+                            <input type="checkbox" class="custom-checkbox mt-1 mr-4 accent-bcg-green w-5 h-5">
+                            <div class="flex-1">
+                                <span class="block text-gray-900 dark:text-white font-bold mb-1">
+                                    <span class="lang-en hidden">2. LN-6 Dynamic Capabilities & Org. Learning Group Prep</span><span class="lang-zh">2. LN-6 Dynamic Capabilities & Org. Learning 小組預習作業</span>
+                                </span>
+                                <div class="bg-gray-50 dark:bg-white/5 p-4 rounded text-sm text-gray-700 dark:text-gray-300 border-l-4 border-orange-400 mt-3 space-y-2">
+                                    <p class="lang-zh"><i class="fas fa-info-circle text-orange-500 mr-1"></i> <strong>說明：</strong></p>
+                                    <ul class="list-disc ml-5 lang-zh space-y-1 text-gray-600 dark:text-gray-400">
+                                        <li><span class="font-bold text-red-600 dark:text-red-400">*本週繳交組別為: G1、G10、G11</span></li>
+                                        <li>製作Coggle 心智圖。</li>
+                                        <li>請依規定檔名格式上傳檔案。e.g. G1-SMMC-LN-6 Dynamic Capabilities & Org. Learning</li>
+                                        <li>請於<span class="font-bold text-red-600 dark:text-red-400">4/19(日) 18:00</span> 以前上傳檔案。</li>
+                                    </ul>
+                                    <hr class="my-2 border-gray-300 dark:border-gray-600">
+                                    <p class="lang-zh font-bold text-gray-900 dark:text-white"><i class="fas fa-bullhorn text-bcg-green mr-1"></i> 報告規則:</p>
+                                    <ul class="list-disc ml-5 lang-zh space-y-1 text-gray-600 dark:text-gray-400">
+                                        <li>本週報告組別: <strong class="text-blue-600 dark:text-blue-400">G1、G10、G11</strong>。</li>
+                                        <li>每組報告時間8分鐘，不限報告人數。</li>
+                                    </ul>
+                                    <div class="lang-zh bg-green-50 dark:bg-green-900/20 p-3 rounded mt-3 border border-green-200 dark:border-green-800">
+                                        <span class="font-bold text-green-700 dark:text-green-400">BA:</span> 除了當週指定預習報告組別，其他小組可提交Coggle報告作為BA加分。
+                                    </div>
+                                    <div class="lang-en hidden space-y-2">
+                                        <p><i class="fas fa-info-circle text-orange-500 mr-1"></i> <strong>Description:</strong></p>
+                                        <ul class="list-disc ml-5 space-y-1 text-gray-600 dark:text-gray-400">
+                                            <li><span class="font-bold text-red-600 dark:text-red-400">*Submitting groups this week: G1, G10, G11</span></li>
+                                            <li>Create a Coggle mind map.</li>
+                                            <li>Please upload the file according to the naming format. e.g. G1-SMMC-LN-6 Dynamic Capabilities & Org. Learning</li>
+                                            <li>Please upload before <span class="font-bold text-red-600 dark:text-red-400">4/19 (Sun) 18:00</span>.</li>
+                                        </ul>
+                                        <hr class="my-2 border-gray-300 dark:border-gray-600">
+                                        <p class="font-bold text-gray-900 dark:text-white"><i class="fas fa-bullhorn text-bcg-green mr-1"></i> Presentation Rules:</p>
+                                        <ul class="list-disc ml-5 space-y-1 text-gray-600 dark:text-gray-400">
+                                            <li>Presenting groups this week: <strong class="text-blue-600 dark:text-blue-400">G1, G10, G11</strong>.</li>
+                                            <li>Presentation time: 8 mins per group. No limit on presenter count.</li>
+                                        </ul>
+                                        <div class="bg-green-50 dark:bg-green-900/20 p-3 rounded mt-3 border border-green-200 dark:border-green-800">
+                                            <span class="font-bold text-green-700 dark:text-green-400">BA:</span> Other groups not designated for this week can submit a Coggle report for BA bonus points.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Visual Progress Bar (Thermometer Style) -->
+                    <div class="bg-gray-50 dark:bg-black/20 px-6 py-4 border-t border-gray-300 dark:border-gray-700">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="w-full max-w-xs h-4 bg-gray-300 dark:bg-gray-700 rounded-full overflow-hidden relative shadow-inner">
+                                <div id="progress-bar-w9" class="h-full bg-gradient-to-r from-bcg-green to-green-400 transition-all duration-500 ease-out" style="width: 0%"></div>
+                            </div>
+                            <div class="mt-2 text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">
+                                <span class="lang-en hidden">Progress</span><span class="lang-zh">完成進度</span>: 
+                                <span id="checked-count-w9" class="text-bcg-green text-sm">0</span> / <span id="total-count-w9">2</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Post W9 Content (TBD) -->
+            <div id="content-w9-post" class="hidden"> 
                 <div class="tbd-card border border-dashed border-gray-300 dark:border-gray-600 rounded-lg h-48 flex flex-col items-center justify-center p-6 text-center">
                     <i class="fas fa-hourglass-half text-3xl text-gray-400 dark:text-gray-600 mb-3"></i>
                     <h3 class="text-lg font-bold text-gray-500 dark:text-gray-400">Post-Class Content</h3>
                     <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                        <span class="lang-en hidden">Will be available after W8 class</span><span class="lang-zh">第八週課後開放</span>
+                        <span class="lang-en hidden">Will be available after W9 class</span><span class="lang-zh">第九週課後開放</span>
                     </p>
                 </div>
             </div>
@@ -1837,6 +2101,7 @@
             const isW6 = document.getElementById('section-w6') ? !document.getElementById('section-w6').classList.contains('hidden') : false;
             const isW7 = document.getElementById('section-w7') ? !document.getElementById('section-w7').classList.contains('hidden') : false;
             const isW8 = document.getElementById('section-w8') ? !document.getElementById('section-w8').classList.contains('hidden') : false;
+            const isW9 = document.getElementById('section-w9') ? !document.getElementById('section-w9').classList.contains('hidden') : false;
 
             // Header Info + Page Title (Read first for context)
             if(currentLang === 'en') {
@@ -1963,9 +2228,24 @@
                     }
                 } else {
                     if(currentLang === 'en') {
-                        textToRead += "Week 8 Section. Post-Week 8 Content. This content will be available after the eighth class.";
+                        textToRead += "Week 8 Section. Post-Week 8 Content. Reminders: First, TP1 Questioning. Second, Reply to TP1 Menti Questions. Third, Midterm Peer Review. Fourth, Assignment Naming Format.";
                     } else {
-                        textToRead += "第八週課程頁面。第八週課後內容。此內容將於第八週課後開放。";
+                        textToRead += "第八週課程頁面。第八週課後內容。本週提醒：第一，TP1 提問。第二，回覆 TP1 Menti 提問。第三，完成期中互評。第四，提醒作業檔名請遵守命名格式。";
+                    }
+                }
+            } else if(isW9) {
+                const isPre = !document.getElementById('content-w9-pre').classList.contains('hidden');
+                if(isPre) {
+                    if(currentLang === 'en') {
+                        textToRead += "Week 9 Section. Pre-Week 9 Content. Mission Checklist includes TP1 Presentation and LN-6 Dynamic Capabilities and Organizational Learning Group Prep.";
+                    } else {
+                        textToRead += "第九週課程頁面。第九週課前內容。本週任務清單包括：TP1 報告，以及 LN-6 Dynamic Capabilities & Org. Learning 小組預習作業。";
+                    }
+                } else {
+                    if(currentLang === 'en') {
+                        textToRead += "Week 9 Section. Post-Week 9 Content. This content will be available after the ninth class.";
+                    } else {
+                        textToRead += "第九週課程頁面。第九週課後內容。此內容將於第九週課後開放。";
                     }
                 }
             }
@@ -2011,7 +2291,7 @@
 
         // 4. Navigation & Tabs
         window.switchSection = function(sectionId) {
-            ['overview', 'w1w2', 'w2', 'w3', 'w4', 'w5', 'w6', 'w7', 'w8'].forEach(id => {
+            ['overview', 'w1w2', 'w2', 'w3', 'w4', 'w5', 'w6', 'w7', 'w8', 'w9'].forEach(id => {
                 const el = document.getElementById('section-' + id);
                 if (el) el.classList.add('hidden');
             });
@@ -2042,7 +2322,7 @@
         }
 
         window.switchTab = function(tabId) {
-            const prefix = tabId.split('-')[0]; // Determines 'w1', 'w2', 'w3', 'w4', 'w5', 'w6' or 'w8' dynamically
+            const prefix = tabId.split('-')[0]; // Determines 'w1', 'w2', 'w3', 'w4', 'w5', 'w6', 'w8' or 'w9' dynamically
             
             const tabPre = document.getElementById('tab-' + prefix + '-pre');
             if (tabPre) {
@@ -2187,6 +2467,21 @@
                 if (checkedCountW8El) checkedCountW8El.textContent = checkedW8;
                 if (totalCountW8El) totalCountW8El.textContent = totalW8;
                 if (progressBarW8 && totalW8 > 0) progressBarW8.style.width = Math.round((checkedW8 / totalW8) * 100) + '%';
+            }
+
+            // W9 Tracker
+            const w9Container = document.getElementById('checklist-container-w9');
+            if (w9Container) {
+                const checkedW9 = w9Container.querySelectorAll('input[type="checkbox"]:checked').length;
+                const totalW9 = w9Container.querySelectorAll('input[type="checkbox"]').length;
+                
+                const checkedCountW9El = document.getElementById('checked-count-w9');
+                const totalCountW9El = document.getElementById('total-count-w9');
+                const progressBarW9 = document.getElementById('progress-bar-w9');
+                
+                if (checkedCountW9El) checkedCountW9El.textContent = checkedW9;
+                if (totalCountW9El) totalCountW9El.textContent = totalW9;
+                if (progressBarW9 && totalW9 > 0) progressBarW9.style.width = Math.round((checkedW9 / totalW9) * 100) + '%';
             }
         }
 
