@@ -242,8 +242,16 @@
                 </div>
             </a>
 
-            <!-- Future Weeks (11-16) -->
-            <a href="#" class="block px-6 py-3 text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap"><i class="fas fa-compass w-6 mr-3"></i> 第十一週</a>
+            <!-- Week 11 - Active -->
+            <a href="javascript:void(0)" onclick="switchSection('w11')" id="nav-w11" class="block px-6 py-3 border-l-4 border-transparent text-gray-700 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5 transition whitespace-nowrap">
+                <div class="flex items-center">
+                    <span class="w-6 text-center mr-3"><i class="fas fa-rocket"></i></span>
+                    <span>第十一週</span>
+                    <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse ml-2"></span>
+                </div>
+            </a>
+
+            <!-- Future Weeks (12-16) -->
             <a href="#" class="block px-6 py-3 text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap"><i class="fas fa-compass w-6 mr-3"></i> 第十二週</a>
             <a href="#" class="block px-6 py-3 text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap"><i class="fas fa-tasks w-6 mr-3"></i> 第十三週</a>
             <a href="#" class="block px-6 py-3 text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap"><i class="fas fa-tasks w-6 mr-3"></i> 第十四週</a>
@@ -2064,7 +2072,7 @@
                     Pre W10 (4/27)
                 </button>
                 <button onclick="switchTab('w10-post')" id="tab-w10-post" class="px-4 py-2 text-sm font-medium border-b-2 border-transparent text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition">
-                    Post W10 (TBD)
+                    Post W10
                 </button>
             </div>
 
@@ -2177,14 +2185,36 @@
                 </div>
             </div>
 
-            <!-- Post W10 Content (TBD) -->
+            <!-- Post W10 Content -->
             <div id="content-w10-post" class="hidden"> 
-                <div class="tbd-card border border-dashed border-gray-300 dark:border-gray-600 rounded-lg h-48 flex flex-col items-center justify-center p-6 text-center">
-                    <i class="fas fa-hourglass-half text-3xl text-gray-400 dark:text-gray-600 mb-3"></i>
-                    <h3 class="text-lg font-bold text-gray-500 dark:text-gray-400">Post-Class Content</h3>
-                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                        <span class="lang-en hidden">Will be available after W10 class</span><span class="lang-zh">第十週課後開放</span>
-                    </p>
+                <div class="bg-white dark:bg-white/5 rounded-lg border border-gray-300 dark:border-gray-700 overflow-hidden shadow-md">
+                    <div class="px-6 py-4 border-b border-gray-300 dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-black/20">
+                        <h3 class="font-bold text-gray-800 dark:text-white text-sm uppercase tracking-wide flex items-center">
+                            <i class="fas fa-bell mr-2 text-bcg-green"></i>
+                            <span class="lang-en hidden">W10 Post-Class Reminder</span><span class="lang-zh">W10 課後提醒</span>
+                        </h3>
+                    </div>
+                    <div class="divide-y divide-gray-200 dark:divide-gray-700/50">
+                        <!-- Post Task 1 -->
+                        <label class="flex items-start p-5 hover:bg-gray-50 dark:hover:bg-white/5 transition cursor-pointer">
+                            <input type="checkbox" class="custom-checkbox mt-1 mr-4 accent-bcg-green w-5 h-5">
+                            <div class="flex-1">
+                                <span class="block text-gray-900 dark:text-white font-bold mb-1">
+                                    <span class="lang-en hidden">1. Upload Course Notes *2</span><span class="lang-zh">1. 上傳課程筆記*2</span>
+                                </span>
+                                <div class="bg-gray-50 dark:bg-white/5 p-3 rounded text-xs text-gray-600 dark:text-gray-400 border-l-4 border-orange-400 mt-2 space-y-1">
+                                    <p class="lang-zh font-bold text-red-600 dark:text-red-400">Deadline：4/27(一) 13:30</p>
+                                    <p class="lang-zh">第1、2節課討論區繳交名稱：W10 In-Class Note-svg-html-audio_姓名</p>
+                                    <p class="lang-zh">第3節課討論區繳交名稱：W10 In-Class Note-svg-html-audio_2_姓名</p>
+                                    <div class="lang-en hidden space-y-1">
+                                        <p class="font-bold text-red-600 dark:text-red-400">Deadline: 4/27 (Mon) 13:30</p>
+                                        <p>Periods 1 & 2 Discussion Board File Name: W10 In-Class Note-svg-html-audio_Name</p>
+                                        <p>Period 3 Discussion Board File Name: W10 In-Class Note-svg-html-audio_2_Name</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
                 </div>
             </div>
         </div>
@@ -2248,7 +2278,7 @@
                                 </span>
                                 <div class="bg-gray-50 dark:bg-white/5 p-4 rounded text-sm text-gray-700 dark:text-gray-300 border-l-4 border-orange-400 mt-3 space-y-2">
                                     <p class="lang-zh"><i class="fas fa-info-circle text-orange-500 mr-1"></i> <strong>注意事項：</strong></p>
-                                    <p class="lang-zh">請於<span class="font-bold text-red-600 dark:text-red-400">4/26(日) 18:00</span>以前上傳Coggle以方便老師批改，心智圖之左上角務必包含組別、成員（繳交前在名字旁邊簽名，可用Adobe等軟體於PDF上簽名），且版面由各組自行設計（兼顧專業與美觀）。</p>
+                                    <p class="lang-zh">請於<span class="font-bold text-red-600 dark:text-red-400">5/03(日) 18:00</span>以前上傳Coggle以方便老師批改，心智圖之左上角務必包含組別、成員（繳交前在名字旁邊簽名，可用Adobe等軟體於PDF上簽名），且版面由各組自行設計（兼顧專業與美觀）。</p>
                                     <p class="lang-zh">上傳檔名：[組別] 企業TP2 ， e.g. [Gx] 台積電TP2</p>
                                     
                                     <hr class="my-2 border-gray-300 dark:border-gray-600">
@@ -2266,7 +2296,7 @@
                                     
                                     <div class="lang-en hidden space-y-2">
                                         <p><i class="fas fa-info-circle text-orange-500 mr-1"></i> <strong>Notes:</strong></p>
-                                        <p>Please upload Coggle before <span class="font-bold text-red-600 dark:text-red-400">4/26 (Sun) 18:00</span> for grading. The upper left corner of the mind map must include group and members (sign next to the name before submission, can use Adobe or other software to sign on PDF). The layout is designed by each group (balancing professionalism and aesthetics).</p>
+                                        <p>Please upload Coggle before <span class="font-bold text-red-600 dark:text-red-400">5/03 (Sun) 18:00</span> for grading. The upper left corner of the mind map must include group and members (sign next to the name before submission, can use Adobe or other software to sign on PDF). The layout is designed by each group (balancing professionalism and aesthetics).</p>
                                         <p>File name: [Group] Company TP2, e.g., [Gx] TSMC TP2</p>
                                         <hr class="my-2 border-gray-300 dark:border-gray-600">
                                         <p class="font-bold text-gray-900 dark:text-white"><i class="fas fa-bullhorn text-bcg-green mr-1"></i> Presentation Rules:</p>
@@ -2277,6 +2307,42 @@
                                         </ul>
                                         <div class="bg-red-50 dark:bg-red-900/20 p-3 rounded mt-3 border border-red-200 dark:border-red-800">
                                             <span class="font-bold text-red-700 dark:text-red-400">* Please analyze background information specifically for the TP research topic. Do not just fill up the report or directly Copy & Paste others' reports or articles without digesting them. This behavior is absolutely not allowed.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </label>
+
+                        <!-- Task 2: LN-8 -->
+                        <label class="flex items-start p-5 hover:bg-gray-50 dark:hover:bg-white/5 transition cursor-pointer">
+                            <input type="checkbox" class="custom-checkbox mt-1 mr-4 accent-bcg-green w-5 h-5">
+                            <div class="flex-1">
+                                <span class="block text-gray-900 dark:text-white font-bold mb-1">
+                                    <span class="lang-en hidden">2. LN-8 Management of Technology, Innovation & Entrepreneurship Group Prep</span><span class="lang-zh">2. LN-8 Management of Technology, Innovation & Entrepreneurship 小組預習作業</span>
+                                </span>
+                                <div class="bg-gray-50 dark:bg-white/5 p-4 rounded text-sm text-gray-700 dark:text-gray-300 border-l-4 border-orange-400 mt-3 space-y-2">
+                                    <p class="lang-zh"><i class="fas fa-info-circle text-orange-500 mr-1"></i> <strong>說明：</strong></p>
+                                    <ul class="list-disc ml-5 lang-zh space-y-1 text-gray-600 dark:text-gray-400">
+                                        <li><span class="font-bold text-red-600 dark:text-red-400">*本週繳交組別為: G8、G9、G10、G11</span></li>
+                                        <li>製作Coggle 心智圖。</li>
+                                        <li>請依規定檔名格式上傳檔案。e.g. G1-SMMC-LN-8 Management of Technology, Innovation & Entrepreneurship</li>
+                                        <li>請於<span class="font-bold text-red-600 dark:text-red-400">5/3 (日) 18:00</span> 以前上傳檔案。</li>
+                                        <li><span class="font-bold text-red-600 dark:text-red-400">本週 TP2 須優先報告，故 LN-8 不報告。</span></li>
+                                    </ul>
+                                    <div class="lang-zh bg-green-50 dark:bg-green-900/20 p-3 rounded mt-3 border border-green-200 dark:border-green-800">
+                                        <span class="font-bold text-green-700 dark:text-green-400">BA:</span> 除了當週指定預習報告組別，其他小組可提交 Coggle 報告作為 BA 加分。
+                                    </div>
+                                    <div class="lang-en hidden space-y-2">
+                                        <p><i class="fas fa-info-circle text-orange-500 mr-1"></i> <strong>Description:</strong></p>
+                                        <ul class="list-disc ml-5 space-y-1 text-gray-600 dark:text-gray-400">
+                                            <li><span class="font-bold text-red-600 dark:text-red-400">*Submitting groups this week: G8, G9, G10, G11</span></li>
+                                            <li>Create a Coggle mind map.</li>
+                                            <li>Please upload the file according to the naming format. e.g. G1-SMMC-LN-8 Management of Technology, Innovation & Entrepreneurship</li>
+                                            <li>Please upload before <span class="font-bold text-red-600 dark:text-red-400">5/3 (Sun) 18:00</span>.</li>
+                                            <li><span class="font-bold text-red-600 dark:text-red-400">TP2 has presentation priority this week, so LN-8 will not be presented.</span></li>
+                                        </ul>
+                                        <div class="bg-green-50 dark:bg-green-900/20 p-3 rounded mt-3 border border-green-200 dark:border-green-800">
+                                            <span class="font-bold text-green-700 dark:text-green-400">BA:</span> Other groups not designated for this week can submit a Coggle report for BA bonus points.
                                         </div>
                                     </div>
                                 </div>
@@ -2599,18 +2665,18 @@
                     }
                 } else {
                     if(currentLang === 'en') {
-                        textToRead += "Week 10 Section. Post-Week 10 Content. This content will be available after the tenth class.";
+                        textToRead += "Week 10 Section. Post-Week 10 Content. Reminders: Upload Course Notes times 2.";
                     } else {
-                        textToRead += "第十週課程頁面。第十週課後內容。此內容將於第十週課後開放。";
+                        textToRead += "第十週課程頁面。第十週課後內容。提醒：上傳課程筆記兩份。";
                     }
                 }
             } else if(isW11) {
                 const isPre = !document.getElementById('content-w11-pre').classList.contains('hidden');
                 if(isPre) {
                     if(currentLang === 'en') {
-                        textToRead += "Week 11 Section. Pre-Week 11 Content. Mission Checklist includes TP2 Progress Report Mindmap Upload.";
+                        textToRead += "Week 11 Section. Pre-Week 11 Content. Mission Checklist includes TP2 Progress Report Mindmap Upload, and LN-8 Management of Technology Group Prep.";
                     } else {
-                        textToRead += "第十一週課程頁面。第十一週課前內容。本週任務清單包括：TP2 Progress Report 心智圖上傳。";
+                        textToRead += "第十一週課程頁面。第十一週課前內容。本週任務清單包括：TP2 Progress Report 心智圖上傳，以及 LN-8 小組預習作業。";
                     }
                 } else {
                     if(currentLang === 'en') {
