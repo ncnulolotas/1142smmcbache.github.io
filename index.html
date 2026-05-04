@@ -251,8 +251,16 @@
                 </div>
             </a>
 
-            <!-- Future Weeks (12-16) -->
-            <a href="#" class="block px-6 py-3 text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap"><i class="fas fa-compass w-6 mr-3"></i> 第十二週</a>
+            <!-- Week 12 - Active -->
+            <a href="javascript:void(0)" onclick="switchSection('w12')" id="nav-w12" class="block px-6 py-3 border-l-4 border-transparent text-gray-700 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5 transition whitespace-nowrap">
+                <div class="flex items-center">
+                    <span class="w-6 text-center mr-3"><i class="fas fa-rocket"></i></span>
+                    <span>第十二週</span>
+                    <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse ml-2"></span>
+                </div>
+            </a>
+
+            <!-- Future Weeks (13-16) -->
             <a href="#" class="block px-6 py-3 text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap"><i class="fas fa-tasks w-6 mr-3"></i> 第十三週</a>
             <a href="#" class="block px-6 py-3 text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap"><i class="fas fa-tasks w-6 mr-3"></i> 第十四週</a>
             <a href="#" class="block px-6 py-3 text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap"><i class="fas fa-tasks w-6 mr-3"></i> 第十五週</a>
@@ -2219,7 +2227,7 @@
             </div>
         </div>
 
-        <!-- SECTION: W11 (Hidden, moved from W10) -->
+        <!-- SECTION: W11 -->
         <div id="section-w11" class="hidden animate-fade-in">
             <div class="mb-6 border-b border-gray-200 dark:border-gray-700 pb-4">
                 <h2 class="text-2xl font-light text-bcg-green uppercase tracking-wider">
@@ -2233,7 +2241,7 @@
                     Pre W11 (5/4)
                 </button>
                 <button onclick="switchTab('w11-post')" id="tab-w11-post" class="px-4 py-2 text-sm font-medium border-b-2 border-transparent text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition">
-                    Post W11 (TBD)
+                    Post W11
                 </button>
             </div>
 
@@ -2358,20 +2366,212 @@
                             </div>
                             <div class="mt-2 text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">
                                 <span class="lang-en hidden">Progress</span><span class="lang-zh">完成進度</span>: 
-                                <span id="checked-count-w11" class="text-bcg-green text-sm">0</span> / <span id="total-count-w11">1</span>
+                                <span id="checked-count-w11" class="text-bcg-green text-sm">0</span> / <span id="total-count-w11">2</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Post W11 Content (TBD) -->
+            <!-- Post W11 Content -->
             <div id="content-w11-post" class="hidden"> 
+                <div class="bg-white dark:bg-white/5 rounded-lg border border-gray-300 dark:border-gray-700 overflow-hidden shadow-md">
+                    <div class="px-6 py-4 border-b border-gray-300 dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-black/20">
+                        <h3 class="font-bold text-gray-800 dark:text-white text-sm uppercase tracking-wide flex items-center">
+                            <i class="fas fa-bell mr-2 text-bcg-green"></i>
+                            <span class="lang-en hidden">W11 Post-Class Reminder</span><span class="lang-zh">W11 課後提醒</span>
+                        </h3>
+                    </div>
+                    <div class="divide-y divide-gray-200 dark:divide-gray-700/50">
+                        <!-- Post Task 1 -->
+                        <label class="flex items-start p-5 hover:bg-gray-50 dark:hover:bg-white/5 transition cursor-pointer">
+                            <input type="checkbox" class="custom-checkbox mt-1 mr-4 accent-bcg-green w-5 h-5">
+                            <div class="flex-1">
+                                <span class="block text-gray-900 dark:text-white font-bold mb-1">
+                                    <span class="lang-en hidden">1. TP2 Questioning</span><span class="lang-zh">1. TP2 提問</span>
+                                </span>
+                                <div class="bg-gray-50 dark:bg-white/5 p-3 rounded text-xs text-gray-600 dark:text-gray-400 border-l-4 border-orange-400 mt-2 space-y-1">
+                                    <p class="lang-zh"><i class="fas fa-info-circle mr-1 text-orange-500"></i>說明：</p>
+                                    <ul class="list-disc ml-5 lang-zh space-y-1">
+                                        <li>各組記得要向相同產業別之報告組提問至少一則問題，否則將酌予扣除參與分數。</li>
+                                        <li>今日未提問之組別請至「一般」- [Mentimeter Notes] - 「Menti-Note_國策管-W11 TP2」進行提問</li>
+                                        <li class="font-bold text-red-600 dark:text-red-400">截止期限為今日 19:00</li>
+                                    </ul>
+                                    <div class="lang-en hidden space-y-1">
+                                        <p><i class="fas fa-info-circle mr-1 text-orange-500"></i>Description:</p>
+                                        <ul class="list-disc ml-5 space-y-1">
+                                            <li>Groups must ask at least one question to presenting groups in the same industry, otherwise participation points will be deducted.</li>
+                                            <li>Groups that haven't asked questions today, please go to "General" - [Mentimeter Notes] - "Menti-Note_國策管-W11 TP2" to ask.</li>
+                                            <li class="font-bold text-red-600 dark:text-red-400">Deadline: 19:00 Today</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION: W12 -->
+        <div id="section-w12" class="hidden animate-fade-in">
+            <div class="mb-6 border-b border-gray-200 dark:border-gray-700 pb-4">
+                <h2 class="text-2xl font-light text-bcg-green uppercase tracking-wider">
+                    <span class="lang-en hidden">W12 Orientation</span><span class="lang-zh">第十二週 課程定位</span>
+                </h2>
+            </div>
+
+            <!-- Tabs -->
+            <div class="flex space-x-2 mb-6">
+                <button onclick="switchTab('w12-pre')" id="tab-w12-pre" class="px-4 py-2 text-sm font-medium border-b-2 border-bcg-green text-bcg-green transition">
+                    Pre W12 (5/11)
+                </button>
+                <button onclick="switchTab('w12-post')" id="tab-w12-post" class="px-4 py-2 text-sm font-medium border-b-2 border-transparent text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition">
+                    Post W12 (TBD)
+                </button>
+            </div>
+
+            <!-- Pre W12 Content -->
+            <div id="content-w12-pre">
+                <!-- Logistics Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+                    <div class="bg-white dark:bg-white/5 p-4 rounded border border-gray-300 dark:border-white/5 flex flex-col items-center justify-center text-center shadow-sm">
+                        <span class="text-[10px] uppercase text-gray-500 font-bold mb-1">上課時間</span>
+                        <span class="text-lg font-bold text-gray-900 dark:text-white">週一09:00</span>
+                        <span class="text-xs text-gray-600 dark:text-gray-500">請準時</span>
+                    </div>
+                    <div class="bg-white dark:bg-white/5 p-4 rounded border border-gray-300 dark:border-white/5 flex flex-col items-center justify-center text-center shadow-sm">
+                        <span class="text-[10px] uppercase text-gray-500 font-bold mb-1">上課教室</span>
+                        <span class="text-lg font-bold text-gray-900 dark:text-white">管228</span>
+                        <span class="text-xs text-gray-600 dark:text-gray-500">管理學院</span>
+                    </div>
+                    <div class="bg-white dark:bg-white/5 p-4 rounded border border-gray-300 dark:border-white/5 flex flex-col items-center justify-center text-center shadow-sm">
+                        <span class="text-[10px] uppercase text-gray-500 font-bold mb-1">評分</span>
+                        <span class="text-lg font-bold text-bcg-green">10%</span>
+                        <span class="text-xs text-gray-600 dark:text-gray-500">課程參與</span>
+                    </div>
+                </div>
+
+                <!-- Checklist -->
+                <div class="bg-white dark:bg-white/5 rounded-lg border border-gray-300 dark:border-gray-700 overflow-hidden shadow-md">
+                    <div class="px-6 py-4 border-b border-gray-300 dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-black/20">
+                        <h3 class="font-bold text-gray-800 dark:text-white text-sm uppercase tracking-wide flex items-center">
+                            <i class="fas fa-list-check mr-2 text-bcg-green"></i>
+                            <span class="lang-en hidden">Mission Checklist</span><span class="lang-zh">W12 課前提醒</span>
+                        </h3>
+                        <span class="text-xs font-mono text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-900/20 px-2 py-1 rounded font-bold">Due: 5/10 18:00</span>
+                    </div>
+
+                    <div class="divide-y divide-gray-200 dark:divide-gray-700/50" id="checklist-container-w12">
+                        <!-- Task 1: TP2 Presentation -->
+                        <label class="flex items-start p-5 hover:bg-gray-50 dark:hover:bg-white/5 transition cursor-pointer">
+                            <input type="checkbox" class="custom-checkbox mt-1 mr-4 accent-bcg-green w-5 h-5">
+                            <div class="flex-1">
+                                <span class="block text-gray-900 dark:text-white font-bold mb-1">
+                                    <span class="lang-en hidden">1. TP2 Presentation</span><span class="lang-zh">1. TP2 報告</span>
+                                </span>
+                                <div class="bg-gray-50 dark:bg-white/5 p-4 rounded text-sm text-gray-700 dark:text-gray-300 border-l-4 border-orange-400 mt-3 space-y-2">
+                                    <ul class="list-disc ml-5 lang-zh space-y-1 text-gray-600 dark:text-gray-400">
+                                        <li>本週報告組別: <strong class="text-blue-600 dark:text-blue-400">G4, G11</strong>。</li>
+                                        <li>每組報告時間8分鐘，提問時間2分鐘，不限報告人數。</li>
+                                        <li>同產業的小組須互相發問，每組提問3題，其他非同產業的小組自由提問。</li>
+                                    </ul>
+                                    <div class="lang-en hidden space-y-2">
+                                        <ul class="list-disc ml-5 space-y-1 text-gray-600 dark:text-gray-400">
+                                            <li>Presenting groups this week: <strong class="text-blue-600 dark:text-blue-400">G4, G11</strong>.</li>
+                                            <li>Presentation time: 8 mins, Q&A: 2 mins. No limit on presenter count.</li>
+                                            <li>Groups in the same industry must ask each other questions (3 questions per group). Other groups can ask freely.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </label>
+
+                        <!-- Task 2: LN-9&10 -->
+                        <label class="flex items-start p-5 hover:bg-gray-50 dark:hover:bg-white/5 transition cursor-pointer">
+                            <input type="checkbox" class="custom-checkbox mt-1 mr-4 accent-bcg-green w-5 h-5">
+                            <div class="flex-1">
+                                <span class="block text-gray-900 dark:text-white font-bold mb-1">
+                                    <span class="lang-en hidden">2. LN-9&10 Vertical Integration & Horizontal Diversification Group Prep</span><span class="lang-zh">2. LN-9&10 Vertical Integration & Horizontal Diversification 小組預習作業</span>
+                                </span>
+                                <div class="bg-gray-50 dark:bg-white/5 p-4 rounded text-sm text-gray-700 dark:text-gray-300 border-l-4 border-orange-400 mt-3 space-y-2">
+                                    <p class="lang-zh"><i class="fas fa-info-circle text-orange-500 mr-1"></i> <strong>說明：</strong></p>
+                                    <ul class="list-disc ml-5 lang-zh space-y-1 text-gray-600 dark:text-gray-400">
+                                        <li><span class="font-bold text-red-600 dark:text-red-400">*本週繳交組別為: G6、G7、G8</span></li>
+                                        <li>製作Coggle 心智圖。</li>
+                                        <li>請依規定檔名格式上傳檔案。e.g. G1-SMMC-LN-9&10 Vertical Integration & Horizontal Diversification</li>
+                                        <li>請於<span class="font-bold text-red-600 dark:text-red-400">5/10 (日) 18:00</span> 以前上傳檔案。</li>
+                                    </ul>
+                                    <hr class="my-2 border-gray-300 dark:border-gray-600">
+                                    <p class="lang-zh font-bold text-gray-900 dark:text-white"><i class="fas fa-bullhorn text-bcg-green mr-1"></i> 報告規則:</p>
+                                    <ul class="list-disc ml-5 lang-zh space-y-1 text-gray-600 dark:text-gray-400">
+                                        <li>本週報告組別: <strong class="text-blue-600 dark:text-blue-400">G6、G7、G8</strong>。</li>
+                                        <li>每組報告時間8分鐘，提問時間2分鐘，不限報告人數。</li>
+                                    </ul>
+                                    <div class="lang-zh bg-green-50 dark:bg-green-900/20 p-3 rounded mt-3 border border-green-200 dark:border-green-800">
+                                        <span class="font-bold text-green-700 dark:text-green-400">BA:</span> 除了當週指定預習報告組別，其他小組可提交Coggle報告作為BA加分。
+                                    </div>
+                                    <div class="lang-en hidden space-y-2">
+                                        <p><i class="fas fa-info-circle text-orange-500 mr-1"></i> <strong>Description:</strong></p>
+                                        <ul class="list-disc ml-5 space-y-1 text-gray-600 dark:text-gray-400">
+                                            <li><span class="font-bold text-red-600 dark:text-red-400">*Submitting groups this week: G6, G7, G8</span></li>
+                                            <li>Create a Coggle mind map.</li>
+                                            <li>Please upload the file according to the naming format. e.g. G1-SMMC-LN-9&10 Vertical Integration & Horizontal Diversification</li>
+                                            <li>Please upload before <span class="font-bold text-red-600 dark:text-red-400">5/10 (Sun) 18:00</span>.</li>
+                                        </ul>
+                                        <hr class="my-2 border-gray-300 dark:border-gray-600">
+                                        <p class="font-bold text-gray-900 dark:text-white"><i class="fas fa-bullhorn text-bcg-green mr-1"></i> Presentation Rules:</p>
+                                        <ul class="list-disc ml-5 space-y-1 text-gray-600 dark:text-gray-400">
+                                            <li>Presenting groups this week: <strong class="text-blue-600 dark:text-blue-400">G6, G7, G8</strong>.</li>
+                                            <li>Presentation time: 8 mins per group, Q&A: 2 mins. No limit on presenter count.</li>
+                                        </ul>
+                                        <div class="bg-green-50 dark:bg-green-900/20 p-3 rounded mt-3 border border-green-200 dark:border-green-800">
+                                            <span class="font-bold text-green-700 dark:text-green-400">BA:</span> Other groups not designated for this week can submit a Coggle report for BA bonus points.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </label>
+
+                        <!-- Task 3: W12 Prototype -->
+                        <label class="flex items-start p-5 hover:bg-gray-50 dark:hover:bg-white/5 transition cursor-pointer">
+                            <input type="checkbox" class="custom-checkbox mt-1 mr-4 accent-bcg-green w-5 h-5">
+                            <div class="flex-1">
+                                <span class="block text-gray-900 dark:text-white font-bold mb-1">
+                                    <span class="lang-en hidden">3. Interactive Webpage Competition Rules & Prototyping</span><span class="lang-zh">3. 互動式學習網頁競賽規則與網頁試作</span>
+                                </span>
+                                <div class="bg-gray-50 dark:bg-white/5 p-3 rounded text-xs text-gray-600 dark:text-gray-400 border-l-4 border-orange-400 mt-2 space-y-1">
+                                    <p class="lang-zh"><i class="fas fa-info-circle mr-1 text-orange-500"></i>說明：下星期除了將說明本學期之互動式學習網頁競賽規則之外，將讓各組實際製作TP Final的互動式學習網頁，故<span class="font-bold text-red-600 dark:text-red-400">請記得攜帶筆電！</span></p>
+                                    <div class="lang-en hidden space-y-1">
+                                        <p><i class="fas fa-info-circle mr-1 text-orange-500"></i>Description: Next week, in addition to explaining the rules for the interactive learning webpage competition for this semester, each group will actually prototype their interactive learning webpage for the TP Final. Therefore, <span class="font-bold text-red-600 dark:text-red-400">please remember to bring a laptop!</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Visual Progress Bar (Thermometer Style) -->
+                    <div class="bg-gray-50 dark:bg-black/20 px-6 py-4 border-t border-gray-300 dark:border-gray-700">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="w-full max-w-xs h-4 bg-gray-300 dark:bg-gray-700 rounded-full overflow-hidden relative shadow-inner">
+                                <div id="progress-bar-w12" class="h-full bg-gradient-to-r from-bcg-green to-green-400 transition-all duration-500 ease-out" style="width: 0%"></div>
+                            </div>
+                            <div class="mt-2 text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">
+                                <span class="lang-en hidden">Progress</span><span class="lang-zh">完成進度</span>: 
+                                <span id="checked-count-w12" class="text-bcg-green text-sm">0</span> / <span id="total-count-w12">3</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Post W12 Content (TBD) -->
+            <div id="content-w12-post" class="hidden"> 
                 <div class="tbd-card border border-dashed border-gray-300 dark:border-gray-600 rounded-lg h-48 flex flex-col items-center justify-center p-6 text-center">
                     <i class="fas fa-hourglass-half text-3xl text-gray-400 dark:text-gray-600 mb-3"></i>
                     <h3 class="text-lg font-bold text-gray-500 dark:text-gray-400">Post-Class Content</h3>
                     <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                        <span class="lang-en hidden">Will be available after W11 class</span><span class="lang-zh">第十一週課後開放</span>
+                        <span class="lang-en hidden">Will be available after W12 class</span><span class="lang-zh">第十二週課後開放</span>
                     </p>
                 </div>
             </div>
@@ -2509,6 +2709,7 @@
             const isW9 = document.getElementById('section-w9') ? !document.getElementById('section-w9').classList.contains('hidden') : false;
             const isW10 = document.getElementById('section-w10') ? !document.getElementById('section-w10').classList.contains('hidden') : false;
             const isW11 = document.getElementById('section-w11') ? !document.getElementById('section-w11').classList.contains('hidden') : false;
+            const isW12 = document.getElementById('section-w12') ? !document.getElementById('section-w12').classList.contains('hidden') : false;
 
             // Header Info + Page Title (Read first for context)
             if(currentLang === 'en') {
@@ -2674,15 +2875,45 @@
                 const isPre = !document.getElementById('content-w11-pre').classList.contains('hidden');
                 if(isPre) {
                     if(currentLang === 'en') {
+                        textToRead += "Week 11 Section. Pre-Week 11 Content. Mission Checklist includes TP2 Progress Report Mindmap Upload, LN-8 Management of Technology Group Prep, TP2 Presentation, and LN-9&10 Vertical Integration and Horizontal Diversification Group Prep.";
+                    } else {
+                        textToRead += "第十一週課程頁面。第十一週課前內容。本週任務清單包括：TP2 Progress Report 心智圖上傳、LN-8 小組預習作業、TP2 報告，以及 LN-9&10 小組預習作業。";
+                    }
+                } else {
+                    if(currentLang === 'en') {
+                        textToRead += "Week 10 Section. Post-Week 10 Content. Reminders: Upload Course Notes times 2.";
+                    } else {
+                        textToRead += "第十週課程頁面。第十週課後內容。提醒：上傳課程筆記兩份。";
+                    }
+                }
+            } else if(isW11) {
+                const isPre = !document.getElementById('content-w11-pre').classList.contains('hidden');
+                if(isPre) {
+                    if(currentLang === 'en') {
                         textToRead += "Week 11 Section. Pre-Week 11 Content. Mission Checklist includes TP2 Progress Report Mindmap Upload, and LN-8 Management of Technology Group Prep.";
                     } else {
                         textToRead += "第十一週課程頁面。第十一週課前內容。本週任務清單包括：TP2 Progress Report 心智圖上傳，以及 LN-8 小組預習作業。";
                     }
                 } else {
                     if(currentLang === 'en') {
-                        textToRead += "Week 11 Section. Post-Week 11 Content. This content will be available after the eleventh class.";
+                        textToRead += "Week 11 Section. Post-Week 11 Content. Reminder: TP2 Questioning.";
                     } else {
-                        textToRead += "第十一週課程頁面。第十一週課後內容。此內容將於第十一週課後開放。";
+                        textToRead += "第十一週課程頁面。第十一週課後內容。提醒：TP2 提問。";
+                    }
+                }
+            } else if(isW12) {
+                const isPre = !document.getElementById('content-w12-pre').classList.contains('hidden');
+                if(isPre) {
+                    if(currentLang === 'en') {
+                        textToRead += "Week 12 Section. Pre-Week 12 Content. Mission Checklist includes TP2 Presentation, LN-9 and 10 Vertical Integration and Horizontal Diversification Group Prep, and Interactive Webpage Competition Rules and Prototyping.";
+                    } else {
+                        textToRead += "第十二週課程頁面。第十二週課前內容。本週任務清單包括：TP2 報告，LN-9和10 小組預習作業，以及互動式學習網頁競賽規則與網頁試作。";
+                    }
+                } else {
+                    if(currentLang === 'en') {
+                        textToRead += "Week 12 Section. Post-Week 12 Content. This content will be available after the twelfth class.";
+                    } else {
+                        textToRead += "第十二週課程頁面。第十二週課後內容。此內容將於第十二週課後開放。";
                     }
                 }
             }
@@ -2728,7 +2959,7 @@
 
         // 4. Navigation & Tabs
         window.switchSection = function(sectionId) {
-            ['overview', 'w1w2', 'w2', 'w3', 'w4', 'w5', 'w6', 'w7', 'w8', 'w9', 'w10', 'w11'].forEach(id => {
+            ['overview', 'w1w2', 'w2', 'w3', 'w4', 'w5', 'w6', 'w7', 'w8', 'w9', 'w10', 'w11', 'w12'].forEach(id => {
                 const el = document.getElementById('section-' + id);
                 if (el) el.classList.add('hidden');
             });
@@ -2759,7 +2990,7 @@
         }
 
         window.switchTab = function(tabId) {
-            const prefix = tabId.split('-')[0]; // Determines 'w1', 'w2', 'w3', 'w4', 'w5', 'w6', 'w8', 'w9', 'w10' or 'w11' dynamically
+            const prefix = tabId.split('-')[0]; // Determines 'w1', 'w2', 'w3', 'w4', 'w5', 'w6', 'w8', 'w9', 'w10', 'w11' or 'w12' dynamically
             
             const tabPre = document.getElementById('tab-' + prefix + '-pre');
             if (tabPre) {
@@ -2949,6 +3180,21 @@
                 if (checkedCountW11El) checkedCountW11El.textContent = checkedW11;
                 if (totalCountW11El) totalCountW11El.textContent = totalW11;
                 if (progressBarW11 && totalW11 > 0) progressBarW11.style.width = Math.round((checkedW11 / totalW11) * 100) + '%';
+            }
+
+            // W12 Tracker
+            const w12Container = document.getElementById('checklist-container-w12');
+            if (w12Container) {
+                const checkedW12 = w12Container.querySelectorAll('input[type="checkbox"]:checked').length;
+                const totalW12 = w12Container.querySelectorAll('input[type="checkbox"]').length;
+                
+                const checkedCountW12El = document.getElementById('checked-count-w12');
+                const totalCountW12El = document.getElementById('total-count-w12');
+                const progressBarW12 = document.getElementById('progress-bar-w12');
+                
+                if (checkedCountW12El) checkedCountW12El.textContent = checkedW12;
+                if (totalCountW12El) totalCountW12El.textContent = totalW12;
+                if (progressBarW12 && totalW12 > 0) progressBarW12.style.width = Math.round((checkedW12 / totalW12) * 100) + '%';
             }
         }
 
