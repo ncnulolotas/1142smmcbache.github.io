@@ -144,7 +144,8 @@
             <i class="fas fa-chevron-left text-gray-400 group-hover:text-bcg-green transition text-sm"></i>
         </div>
 
-        <nav class="flex-1 overflow-y-auto no-scrollbar py-4 space-y-1">
+        <!-- 增加 pb-24 (Padding Bottom) 以避免被 Footer 擋住 -->
+        <nav class="flex-1 overflow-y-auto no-scrollbar pt-4 pb-24 space-y-1">
             <a href="javascript:void(0)" onclick="switchSection('overview')" id="nav-overview" class="block px-6 py-4 border-l-4 border-bcg-green bg-gray-100 dark:bg-white/5 text-bcg-green dark:text-white whitespace-nowrap">
                 <div class="flex items-center">
                     <span class="w-6 text-center mr-3"><i class="fas fa-chart-pie"></i></span>
@@ -287,13 +288,20 @@
                 </div>
             </a>
 
-            <!-- Future Weeks (16) -->
-            <a href="#" class="block px-6 py-3 text-gray-400 cursor-not-allowed flex items-center opacity-50 whitespace-nowrap"><i class="fas fa-rocket w-6 mr-3"></i> 第十六週</a>
+            <!-- Week 16 - Active -->
+            <a href="javascript:void(0)" onclick="switchSection('w16')" id="nav-w16" class="block px-6 py-3 border-l-4 border-transparent text-gray-700 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5 transition whitespace-nowrap">
+                <div class="flex items-center">
+                    <span class="w-6 text-center mr-3"><i class="fas fa-rocket"></i></span>
+                    <span>第十六週</span>
+                    <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse ml-2"></span>
+                </div>
+            </a>
         </nav>
     </div>
 
     <!-- MAIN CONTENT -->
-    <main class="flex-1 pt-20 pb-20 px-4 md:px-8 lg:px-12 w-full">
+    <!-- 增加 pb-28 (Padding Bottom) 讓最下方的卡片在滑動到底時有更多呼吸空間 -->
+    <main class="flex-1 pt-20 pb-28 px-4 md:px-8 lg:px-12 w-full">
         
         <!-- SECTION: OVERVIEW -->
         <div id="section-overview" class="animate-fade-in">
@@ -3010,7 +3018,7 @@
                     Pre W15 (6/1)
                 </button>
                 <button onclick="switchTab('w15-post')" id="tab-w15-post" class="px-4 py-2 text-sm font-medium border-b-2 border-transparent text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition">
-                    Post W15 (TBD)
+                    Post W15
                 </button>
             </div>
 
@@ -3124,13 +3132,132 @@
                 </div>
             </div>
 
-            <!-- Post W15 Content (TBD) -->
+            <!-- Post W15 Content -->
             <div id="content-w15-post" class="hidden"> 
+                <div class="bg-white dark:bg-white/5 rounded-lg border border-gray-300 dark:border-gray-700 overflow-hidden shadow-md">
+                    <div class="px-6 py-4 border-b border-gray-300 dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-black/20">
+                        <h3 class="font-bold text-gray-800 dark:text-white text-sm uppercase tracking-wide flex items-center">
+                            <i class="fas fa-bell mr-2 text-bcg-green"></i>
+                            <span class="lang-en hidden">W15 Post-Class Reminder</span><span class="lang-zh">W15 課後提醒</span>
+                        </h3>
+                    </div>
+                    <div class="divide-y divide-gray-200 dark:divide-gray-700/50">
+                        <!-- Post Task 1 -->
+                        <label class="flex items-start p-5 hover:bg-gray-50 dark:hover:bg-white/5 transition cursor-pointer">
+                            <input type="checkbox" class="custom-checkbox mt-1 mr-4 accent-bcg-green w-5 h-5">
+                            <div class="flex-1">
+                                <span class="block text-gray-900 dark:text-white font-bold mb-1">
+                                    <span class="lang-en hidden">1. Report Award Ceremony Attendance</span><span class="lang-zh">1. 回報頒獎典禮出席人數</span>
+                                </span>
+                                <div class="bg-gray-50 dark:bg-white/5 p-3 rounded text-xs text-gray-600 dark:text-gray-400 border-l-4 border-orange-400 mt-2 space-y-1">
+                                    <p class="lang-zh"><i class="fas fa-info-circle mr-1 text-orange-500"></i>說明：請各組組長 於今日23:59前完成回報下週一頒獎典禮出席人數與葷素調查</p>
+                                    <div class="lang-en hidden space-y-1">
+                                        <p><i class="fas fa-info-circle mr-1 text-orange-500"></i>Description: Group leaders, please report the attendance and dietary preferences for next Monday's award ceremony by 23:59 today.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION: W16 -->
+        <div id="section-w16" class="hidden animate-fade-in">
+            <div class="mb-6 border-b border-gray-200 dark:border-gray-700 pb-4">
+                <h2 class="text-2xl font-light text-bcg-green uppercase tracking-wider">
+                    <span class="lang-en hidden">W16 Orientation</span><span class="lang-zh">第十六週 課程定位</span>
+                </h2>
+            </div>
+
+            <!-- Tabs -->
+            <div class="flex space-x-2 mb-6">
+                <button onclick="switchTab('w16-pre')" id="tab-w16-pre" class="px-4 py-2 text-sm font-medium border-b-2 border-bcg-green text-bcg-green transition">
+                    Pre W16 (6/8)
+                </button>
+                <button onclick="switchTab('w16-post')" id="tab-w16-post" class="px-4 py-2 text-sm font-medium border-b-2 border-transparent text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition">
+                    Post W16
+                </button>
+            </div>
+
+            <!-- Pre W16 Content -->
+            <div id="content-w16-pre">
+                <!-- Logistics Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+                    <div class="bg-white dark:bg-white/5 p-4 rounded border border-gray-300 dark:border-white/5 flex flex-col items-center justify-center text-center shadow-sm">
+                        <span class="text-[10px] uppercase text-gray-500 font-bold mb-1">上課時間</span>
+                        <span class="text-lg font-bold text-gray-900 dark:text-white">週一10:30</span>
+                        <span class="text-xs text-gray-600 dark:text-gray-500">10:15 入場</span>
+                    </div>
+                    <div class="bg-white dark:bg-white/5 p-4 rounded border border-gray-300 dark:border-white/5 flex flex-col items-center justify-center text-center shadow-sm">
+                        <span class="text-[10px] uppercase text-gray-500 font-bold mb-1">上課教室</span>
+                        <span class="text-lg font-bold text-gray-900 dark:text-white">管228</span>
+                        <span class="text-xs text-gray-600 dark:text-gray-500">管理學院</span>
+                    </div>
+                    <div class="bg-white dark:bg-white/5 p-4 rounded border border-gray-300 dark:border-white/5 flex flex-col items-center justify-center text-center shadow-sm">
+                        <span class="text-[10px] uppercase text-gray-500 font-bold mb-1">評分</span>
+                        <span class="text-lg font-bold text-bcg-green">10%</span>
+                        <span class="text-xs text-gray-600 dark:text-gray-500">課程參與</span>
+                    </div>
+                </div>
+
+                <!-- Checklist -->
+                <div class="bg-white dark:bg-white/5 rounded-lg border border-gray-300 dark:border-gray-700 overflow-hidden shadow-md">
+                    <div class="px-6 py-4 border-b border-gray-300 dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-black/20">
+                        <h3 class="font-bold text-gray-800 dark:text-white text-sm uppercase tracking-wide flex items-center">
+                            <i class="fas fa-list-check mr-2 text-bcg-green"></i>
+                            <span class="lang-en hidden">Mission Checklist</span><span class="lang-zh">W16 課前提醒</span>
+                        </h3>
+                    </div>
+
+                    <div class="divide-y divide-gray-200 dark:divide-gray-700/50" id="checklist-container-w16">
+                        <!-- Task 1: Ceremony -->
+                        <label class="flex items-start p-5 hover:bg-gray-50 dark:hover:bg-white/5 transition cursor-pointer">
+                            <input type="checkbox" class="custom-checkbox mt-1 mr-4 accent-bcg-green w-5 h-5">
+                            <div class="flex-1">
+                                <span class="block text-gray-900 dark:text-white font-bold mb-1">
+                                    <span class="lang-en hidden">1. Award Ceremony Today</span><span class="lang-zh">1. 今日為頒獎典禮</span>
+                                </span>
+                                <div class="bg-gray-50 dark:bg-white/5 p-4 rounded text-sm text-gray-700 dark:text-gray-300 border-l-4 border-orange-400 mt-3 space-y-2">
+                                    <ul class="list-disc ml-5 lang-zh space-y-1 text-gray-600 dark:text-gray-400">
+                                        <li>入場時間：10:15</li>
+                                        <li>開始時間：10:30</li>
+                                    </ul>
+                                    <div class="lang-en hidden space-y-2">
+                                        <ul class="list-disc ml-5 space-y-1 text-gray-600 dark:text-gray-400">
+                                            <li>Admission time: 10:15</li>
+                                            <li>Start time: 10:30</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Visual Progress Bar (Thermometer Style) -->
+                    <div class="bg-gray-50 dark:bg-black/20 px-6 py-4 border-t border-gray-300 dark:border-gray-700">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="w-full max-w-xs h-4 bg-gray-300 dark:bg-gray-700 rounded-full overflow-hidden relative shadow-inner">
+                                <div id="progress-bar-w16" class="h-full bg-gradient-to-r from-bcg-green to-green-400 transition-all duration-500 ease-out" style="width: 0%"></div>
+                            </div>
+                            <div class="mt-2 text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">
+                                <span class="lang-en hidden">Progress</span><span class="lang-zh">完成進度</span>: 
+                                <span id="checked-count-w16" class="text-bcg-green text-sm">0</span> / <span id="total-count-w16">1</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Post W16 Content (TBD) -->
+            <div id="content-w16-post" class="hidden"> 
                 <div class="tbd-card border border-dashed border-gray-300 dark:border-gray-600 rounded-lg h-48 flex flex-col items-center justify-center p-6 text-center">
-                    <i class="fas fa-hourglass-half text-3xl text-gray-400 dark:text-gray-600 mb-3"></i>
-                    <h3 class="text-lg font-bold text-gray-500 dark:text-gray-400">Post-Class Content</h3>
+                    <i class="fas fa-gift text-3xl text-yellow-500 dark:text-yellow-600 mb-3"></i>
+                    <h3 class="text-lg font-bold text-gray-500 dark:text-gray-400">
+                        <span class="lang-en hidden">Semester Completed</span><span class="lang-zh">學期圓滿結束</span>
+                    </h3>
                     <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                        <span class="lang-en hidden">Will be available after W15 class</span><span class="lang-zh">第十五週課後開放</span>
+                        <span class="lang-en hidden">Thank you for your hard work this semester!</span><span class="lang-zh">感謝大家這學期的努力與參與！</span>
                     </p>
                 </div>
             </div>
@@ -3272,6 +3399,7 @@
             const isW13 = document.getElementById('section-w13') ? !document.getElementById('section-w13').classList.contains('hidden') : false;
             const isW14 = document.getElementById('section-w14') ? !document.getElementById('section-w14').classList.contains('hidden') : false;
             const isW15 = document.getElementById('section-w15') ? !document.getElementById('section-w15').classList.contains('hidden') : false;
+            const isW16 = document.getElementById('section-w16') ? !document.getElementById('section-w16').classList.contains('hidden') : false;
 
             // Header Info + Page Title (Read first for context)
             if(currentLang === 'en') {
@@ -3518,9 +3646,24 @@
                     }
                 } else {
                     if(currentLang === 'en') {
-                        textToRead += "Week 15 Section. Post-Week 15 Content. This content will be available after the fifteenth class.";
+                        textToRead += "Week 15 Section. Post-Week 15 Content. Reminder: Report Award Ceremony Attendance by 23:59 today.";
                     } else {
-                        textToRead += "第十五週課程頁面。第十五週課後內容。此內容將於第十五週課後開放。";
+                        textToRead += "第十五週課程頁面。第十五週課後內容。提醒：請各組組長於今日完成回報下週一頒獎典禮出席人數與葷素調查。";
+                    }
+                }
+            } else if(isW16) {
+                const isPre = !document.getElementById('content-w16-pre').classList.contains('hidden');
+                if(isPre) {
+                    if(currentLang === 'en') {
+                        textToRead += "Week 16 Section. Pre-Week 16 Content. Mission Checklist: Award Ceremony Today. Admission is at 10:15 and start time is 10:30.";
+                    } else {
+                        textToRead += "第十六週課程頁面。第十六週課前內容。今日為頒獎典禮，十點十五分入場，十點半開始。";
+                    }
+                } else {
+                    if(currentLang === 'en') {
+                        textToRead += "Week 16 Section. Post-Week 16 Content. Semester Completed. Thank you for your hard work!";
+                    } else {
+                        textToRead += "第十六週課程頁面。第十六週課後內容。本學期圓滿結束，感謝大家的參與！";
                     }
                 }
             }
@@ -3566,7 +3709,7 @@
 
         // 4. Navigation & Tabs
         window.switchSection = function(sectionId) {
-            ['overview', 'w1w2', 'w2', 'w3', 'w4', 'w5', 'w6', 'w7', 'w8', 'w9', 'w10', 'w11', 'w12', 'w13', 'w14', 'w15'].forEach(id => {
+            ['overview', 'w1w2', 'w2', 'w3', 'w4', 'w5', 'w6', 'w7', 'w8', 'w9', 'w10', 'w11', 'w12', 'w13', 'w14', 'w15', 'w16'].forEach(id => {
                 const el = document.getElementById('section-' + id);
                 if (el) el.classList.add('hidden');
             });
@@ -3597,7 +3740,7 @@
         }
 
         window.switchTab = function(tabId) {
-            const prefix = tabId.split('-')[0]; // Determines 'w1', 'w2', 'w3', 'w4', 'w5', 'w6', 'w8', 'w9', 'w10', 'w11', 'w12', 'w13', 'w14' or 'w15' dynamically
+            const prefix = tabId.split('-')[0]; // Determines 'w1', 'w2', 'w3', 'w4', 'w5', 'w6', 'w8', 'w9', 'w10', 'w11', 'w12', 'w13', 'w14', 'w15' or 'w16' dynamically
             
             const tabPre = document.getElementById('tab-' + prefix + '-pre');
             if (tabPre) {
@@ -3847,6 +3990,21 @@
                 if (checkedCountW15El) checkedCountW15El.textContent = checkedW15;
                 if (totalCountW15El) totalCountW15El.textContent = totalW15;
                 if (progressBarW15 && totalW15 > 0) progressBarW15.style.width = Math.round((checkedW15 / totalW15) * 100) + '%';
+            }
+
+            // W16 Tracker
+            const w16Container = document.getElementById('checklist-container-w16');
+            if (w16Container) {
+                const checkedW16 = w16Container.querySelectorAll('input[type="checkbox"]:checked').length;
+                const totalW16 = w16Container.querySelectorAll('input[type="checkbox"]').length;
+                
+                const checkedCountW16El = document.getElementById('checked-count-w16');
+                const totalCountW16El = document.getElementById('total-count-w16');
+                const progressBarW16 = document.getElementById('progress-bar-w16');
+                
+                if (checkedCountW16El) checkedCountW16El.textContent = checkedW16;
+                if (totalCountW16El) totalCountW16El.textContent = totalW16;
+                if (progressBarW16 && totalW16 > 0) progressBarW16.style.width = Math.round((checkedW16 / totalW16) * 100) + '%';
             }
         }
 
